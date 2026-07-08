@@ -4,9 +4,12 @@ import PageHero from '../components/PageHero.astro';
 import CtaBox from '../components/CtaBox.astro';
 import { getLang, type Lang } from '../i18n';
 import fs from 'node:fs';
+import path from 'node:path';
 const lang = getLang(Astro.currentLocale);
 // Screenshot automatisch einbinden, sobald die Datei existiert (public/images/plima-dashboard.png)
-const hasPlimaShot = fs.existsSync(new URL('../../public/images/plima-dashboard.png', import.meta.url));
+// process.cwd() statt import.meta.url: Vite bündelt die Frontmatter beim Build in
+// dist/.prerender/chunks/, wodurch ein relativer Pfad zur Quelldatei ins Leere liefe.
+const hasPlimaShot = fs.existsSync(path.join(process.cwd(), 'public/images/plima-dashboard.png'));
 
 const copy: Record<Lang, any> = {
   en: {
@@ -137,6 +140,11 @@ const t = copy[lang];
 
 <style>
   .plima {
+    /* PLIMA-Markenfarben – bewusste Ausnahme, nur in dieser Card */
+    --plima-primary: #6b3fe4;
+    --plima-gradient: linear-gradient(90deg, #9a84f4 0%, #6b3fe4 100%);
+    --plima-green: #40af74;
+    --plima-green-deep: #1e7a4c;
     position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -150,7 +158,7 @@ const t = copy[lang];
     left: 0;
     right: 0;
     height: 3px;
-    background: var(--mirano-gradient);
+    background: var(--plima-gradient);
   }
   .plima-badge {
     display: inline-block;
@@ -159,9 +167,9 @@ const t = copy[lang];
     font-weight: 500;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--mirano-orange-deep);
-    border: 1px solid color-mix(in srgb, var(--mirano-orange) 45%, transparent);
-    background: color-mix(in srgb, var(--mirano-orange) 8%, transparent);
+    color: var(--plima-green-deep);
+    border: 1px solid color-mix(in srgb, var(--plima-green) 45%, transparent);
+    background: color-mix(in srgb, var(--plima-green) 8%, transparent);
     border-radius: 999px;
     padding: 0.25rem 0.7rem;
     margin-bottom: 1.25rem;
@@ -179,6 +187,12 @@ const t = copy[lang];
   }
   .plima-actions {
     margin-top: 1.75rem;
+  }
+  .plima-actions .btn-primary {
+    background: var(--plima-primary);
+  }
+  .plima-actions .btn-primary:hover {
+    filter: brightness(1.08);
   }
   .plima-by {
     font-family: var(--font-mono);
