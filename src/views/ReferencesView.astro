@@ -1,0 +1,318 @@
+---
+// Referenzen mit Delivery-Timeline (wachsende Version des Hero-Ledgers).
+// SHOW_HEADSQUARE: Nennung schnell entfernbar (Freigabe ausstehend). Endkunde NIE namentlich.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBox from '../components/CtaBox.astro';
+import { getLang, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+const SHOW_HEADSQUARE = true;
+
+const copy: Record<Lang, any> = {
+  en: {
+    title: 'References – Mirano Solutions',
+    desc: 'Case studies: PLIMA HR software from idea to launch in 3 months, test management at a Munich insurance group.',
+    eyebrow: 'References',
+    h1: 'Proven, not promised',
+    lead: 'Two engagements, two very different jobs – one standard: documented delivery. More case studies follow as projects close.',
+    timelineLabel: 'Delivery timeline',
+    cases: [
+      {
+        id: 'plima',
+        eyebrow: 'Our own product · HR SaaS',
+        title: 'PLIMA: from idea to production in 3 months',
+        text: 'PLIMA digitalizes HR processes for small and mid-sized companies. Mirano designed, built and launched the product – and operates it. The first customer has been working with it daily since 2026; hypercare is complete.',
+        stats: [
+          ['3', 'months', 'idea → launch'],
+          ['1', 'customer', 'in production'],
+          ['100%', 'ownership', 'built & operated by Mirano'],
+        ],
+        timeline: [
+          ['Kickoff', 'Scope, architecture and design system defined'],
+          ['MVP', 'Core HR workflows functional and tested'],
+          ['Launch', 'First customer live on plima.cloud'],
+          ['Hypercare', 'Stabilization completed – regular operations'],
+        ],
+      },
+      {
+        id: 'insurance',
+        eyebrow: SHOW_HEADSQUARE ? 'For Headsquare · insurance group, Munich' : 'For a Munich IT consultancy · insurance group',
+        title: 'Test management in a regulated environment',
+        text: 'Quality assurance and test management in a project environment at a Munich insurance group – documented, traceable, audit-ready. The engagement is scaling: two additional QA experts join in Q3/2026.',
+        stats: [
+          ['2026', '', 'engaged since'],
+          ['2', 'QA experts', 'joining in Q3/2026'],
+          ['24h', '', 'typical response time'],
+        ],
+        timeline: [
+          ['Onboarding', 'Processes, tools and stakeholders mapped'],
+          ['Test management', 'Planning, coordination and reporting in the release cycle'],
+          ['Scaling', 'Two additional QA experts from Q3/2026'],
+        ],
+      },
+    ],
+    note: 'Client names are published only with written approval. End clients of partner engagements are never named.',
+  },
+  de: {
+    title: 'Referenzen – Mirano Solutions',
+    desc: 'Case Studies: PLIMA HR-Software von der Idee zum Launch in 3 Monaten, Testmanagement bei einem Münchner Versicherungskonzern.',
+    eyebrow: 'Referenzen',
+    h1: 'Belegt, nicht behauptet',
+    lead: 'Zwei Engagements, zwei sehr unterschiedliche Aufgaben – ein Standard: dokumentierte Lieferung. Weitere Case Studies folgen, sobald Projekte abgeschlossen sind.',
+    timelineLabel: 'Delivery-Timeline',
+    cases: [
+      {
+        id: 'plima',
+        eyebrow: 'Eigenes Produkt · HR-SaaS',
+        title: 'PLIMA: Von der Idee zur Produktion in 3 Monaten',
+        text: 'PLIMA digitalisiert HR-Prozesse für kleine und mittlere Unternehmen. Mirano hat das Produkt konzipiert, gebaut, gelauncht – und betreibt es. Der erste Kunde arbeitet seit 2026 täglich damit; die Hypercare-Phase ist abgeschlossen.',
+        stats: [
+          ['3', 'Monate', 'Idee → Launch'],
+          ['1', 'Kunde', 'produktiv'],
+          ['100%', 'Ownership', 'gebaut & betrieben von Mirano'],
+        ],
+        timeline: [
+          ['Kickoff', 'Scope, Architektur und Design-System definiert'],
+          ['MVP', 'HR-Kern-Workflows funktional und getestet'],
+          ['Launch', 'Erster Kunde live auf plima.cloud'],
+          ['Hypercare', 'Stabilisierung abgeschlossen – Regelbetrieb'],
+        ],
+      },
+      {
+        id: 'insurance',
+        eyebrow: SHOW_HEADSQUARE ? 'Für Headsquare · Versicherungskonzern, München' : 'Für eine Münchner IT-Beratung · Versicherungskonzern',
+        title: 'Testmanagement im regulierten Umfeld',
+        text: 'Qualitätssicherung und Testmanagement in einem Projektumfeld bei einem Münchner Versicherungskonzern – dokumentiert, nachvollziehbar, audit-fähig. Das Engagement wächst: Ab Q3/2026 kommen zwei weitere QA-Experten dazu.',
+        stats: [
+          ['2026', '', 'im Einsatz seit'],
+          ['2', 'QA-Experten', 'Ausbau ab Q3/2026'],
+          ['24h', '', 'typische Reaktionszeit'],
+        ],
+        timeline: [
+          ['Onboarding', 'Prozesse, Tools und Stakeholder erfasst'],
+          ['Testmanagement', 'Planung, Koordination und Reporting im Release-Zyklus'],
+          ['Ausbau', 'Zwei weitere QA-Experten ab Q3/2026'],
+        ],
+      },
+    ],
+    note: 'Kundennamen werden nur mit schriftlicher Freigabe veröffentlicht. Endkunden von Partner-Engagements werden nie genannt.',
+  },
+  hr: {
+    title: 'Reference – Mirano Solutions',
+    desc: 'Case studyji: PLIMA HR softver od ideje do lansiranja u 3 mjeseca, test management kod minhenskog osiguravajućeg koncerna.',
+    eyebrow: 'Reference',
+    h1: 'Dokazano, ne obećano',
+    lead: 'Dva angažmana, dva vrlo različita zadatka – jedan standard: dokumentirana isporuka. Novi case studyji slijede po završetku projekata.',
+    timelineLabel: 'Tijek isporuke',
+    cases: [
+      {
+        id: 'plima',
+        eyebrow: 'Vlastiti proizvod · HR SaaS',
+        title: 'PLIMA: od ideje do produkcije u 3 mjeseca',
+        text: 'PLIMA digitalizira HR procese za mala i srednja poduzeća. Mirano je proizvod osmislio, izgradio, lansirao – i održava ga. Prvi klijent s njim radi svakodnevno od 2026.; hypercare faza je završena.',
+        stats: [
+          ['3', 'mjeseca', 'ideja → lansiranje'],
+          ['1', 'klijent', 'u produkciji'],
+          ['100%', 'vlasništvo', 'izgradio i održava Mirano'],
+        ],
+        timeline: [
+          ['Kickoff', 'Opseg, arhitektura i dizajn sustav definirani'],
+          ['MVP', 'Ključni HR procesi funkcionalni i testirani'],
+          ['Lansiranje', 'Prvi klijent live na plima.cloud'],
+          ['Hypercare', 'Stabilizacija završena – redovan rad'],
+        ],
+      },
+      {
+        id: 'insurance',
+        eyebrow: SHOW_HEADSQUARE ? 'Za Headsquare · osiguravajući koncern, München' : 'Za minhensku IT tvrtku · osiguravajući koncern',
+        title: 'Test management u reguliranom okruženju',
+        text: 'Osiguranje kvalitete i test management u projektnom okruženju minhenskog osiguravajućeg koncerna – dokumentirano, sljedivo, spremno za reviziju. Angažman raste: od Q3/2026 pridružuju se još dva QA stručnjaka.',
+        stats: [
+          ['2026', '', 'u tijeku od'],
+          ['2', 'QA stručnjaka', 'proširenje od Q3/2026'],
+          ['24h', '', 'tipično vrijeme odziva'],
+        ],
+        timeline: [
+          ['Onboarding', 'Procesi, alati i dionici mapirani'],
+          ['Test management', 'Planiranje, koordinacija i izvještavanje u release ciklusu'],
+          ['Proširenje', 'Dva dodatna QA stručnjaka od Q3/2026'],
+        ],
+      },
+    ],
+    note: 'Imena klijenata objavljujemo samo uz pisano odobrenje. Krajnji klijenti partnerskih angažmana nikada se ne imenuju.',
+  },
+};
+const t = copy[lang];
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+
+  {
+    t.cases.map((c: any, idx: number) => (
+      <section class={`section ${idx % 2 === 1 ? 'section-limestone' : ''}`} id={c.id}>
+        <div class="container">
+          <div class="case-head reveal">
+            <span class="case-eyebrow">{c.eyebrow}</span>
+            <h2>{c.title}</h2>
+            <p>{c.text}</p>
+          </div>
+
+          <div class="case-stats reveal">
+            {c.stats.map(([num, unit, label]: [string, string, string]) => (
+              <div class="cstat">
+                <span class="stat-number">{num}</span>
+                {unit && <span class="cstat-unit">{unit}</span>}
+                <span class="cstat-label">{label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="timeline reveal">
+            <span class="timeline-label">{t.timelineLabel}</span>
+            <ol>
+              {c.timeline.map(([h, d]: [string, string], i: number) => (
+                <li>
+                  <span class="tl-num">{String(i + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3>{h}</h3>
+                    <p>{d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <!-- TODO: Tech-Logos je Case Study ergänzen, sobald Stack-Liste vorliegt -->
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="ref-note">
+    <div class="container">
+      <p>{t.note}</p>
+    </div>
+  </section>
+
+  <CtaBox />
+</Base>
+
+<style>
+  .case-head {
+    max-width: 46rem;
+    margin-bottom: 2.5rem;
+  }
+  .case-eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-orange-deep);
+    margin-bottom: 1rem;
+  }
+  .case-head h2 {
+    margin-bottom: 1rem;
+  }
+  .case-head p {
+    color: var(--mirano-slate);
+  }
+  .case-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .cstat {
+    background: var(--mirano-white);
+    border: 1px solid var(--mirano-border);
+    border-radius: var(--radius-card);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .cstat .stat-number {
+    font-size: 2.5rem;
+    line-height: 1.1;
+  }
+  .cstat-unit {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--mirano-ink);
+    margin-top: 0.25rem;
+  }
+  .cstat-label {
+    font-size: 0.8125rem;
+    color: var(--mirano-muted);
+    margin-top: 0.3rem;
+  }
+
+  .timeline-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-muted);
+    margin-bottom: 1.5rem;
+  }
+  .timeline ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    position: relative;
+  }
+  .timeline li {
+    position: relative;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--mirano-border);
+  }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--mirano-orange);
+  }
+  .tl-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--mirano-orange-deep);
+    letter-spacing: 0.06em;
+  }
+  .timeline h3 {
+    font-size: 1rem;
+    margin-top: 0.35rem;
+  }
+  .timeline p {
+    font-size: 0.875rem;
+    color: var(--mirano-slate);
+    margin-top: 0.3rem;
+  }
+  .ref-note {
+    padding-block: 0 1rem;
+  }
+  .ref-note p {
+    font-size: 0.8125rem;
+    color: var(--mirano-muted);
+    border-left: 2px solid var(--mirano-border);
+    padding-left: 1rem;
+  }
+  @media (max-width: 800px) {
+    .case-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+// Datenschutzerklärung – Basistext für eine cookielose Seite mit Vercel-Hosting.
+// ALS ZU PRÜFENDER PLATZHALTER MARKIERT – vor Livegang juristisch prüfen lassen.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { getLang, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+
+const copy: Record<Lang, any> = {
+  en: {
+    title: 'Privacy policy – Mirano Solutions',
+    desc: 'Privacy policy of Mirano Solutions d.o.o. – a website without cookies or tracking.',
+    eyebrow: 'Legal',
+    h1: 'Privacy policy',
+    sections: [
+      ['Controller', 'Mirano Solutions d.o.o., Ograjska ulica 1C, 10000 Zagreb, Croatia. Email: info@mirano-solutions.com.'],
+      ['No cookies, no tracking', 'This website sets no cookies and uses no tracking or analytics tools. Fonts are self-hosted; no requests are sent to third-party font or ad services.'],
+      ['Hosting & server logs', 'The website is hosted by Vercel Inc. When you visit, technically necessary connection data (IP address, time, requested page) is processed to deliver the site. Legal basis: Art. 6(1)(f) GDPR (legitimate interest in secure, reliable operation).'],
+      ['Contact by email or phone', 'If you contact us, we process the data you provide to handle your inquiry (Art. 6(1)(b) GDPR). Data is deleted when no longer needed and no retention duties apply.'],
+      ['Appointment booking (Calendly)', 'If you actively load the booking calendar, Calendly LLC (USA) processes the data you enter. The calendar loads only after your click (consent, Art. 6(1)(a) GDPR).'],
+      ['Your rights', 'You have the right to access, rectification, erasure, restriction, data portability and objection, and to lodge a complaint with a supervisory authority (in Croatia: AZOP).'],
+    ],
+    note: 'This is a base text and must be reviewed by a legal professional before go-live.',
+  },
+  de: {
+    title: 'Datenschutzerklärung – Mirano Solutions',
+    desc: 'Datenschutzerklärung der Mirano Solutions d.o.o. – eine Website ohne Cookies und Tracking.',
+    eyebrow: 'Rechtliches',
+    h1: 'Datenschutzerklärung',
+    sections: [
+      ['Verantwortlicher', 'Mirano Solutions d.o.o., Ograjska ulica 1C, 10000 Zagreb, Kroatien. E-Mail: info@mirano-solutions.com.'],
+      ['Keine Cookies, kein Tracking', 'Diese Website setzt keine Cookies und nutzt keine Tracking- oder Analyse-Tools. Schriften werden selbst gehostet; es werden keine Anfragen an Font- oder Werbedienste Dritter gesendet.'],
+      ['Hosting & Server-Logs', 'Die Website wird bei Vercel Inc. gehostet. Beim Besuch werden technisch notwendige Verbindungsdaten (IP-Adresse, Zeitpunkt, aufgerufene Seite) verarbeitet, um die Seite auszuliefern. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherem, zuverlässigem Betrieb).'],
+      ['Kontakt per E-Mail oder Telefon', 'Wenn Sie uns kontaktieren, verarbeiten wir die von Ihnen mitgeteilten Daten zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b DSGVO). Daten werden gelöscht, sobald sie nicht mehr erforderlich sind und keine Aufbewahrungspflichten bestehen.'],
+      ['Terminbuchung (Calendly)', 'Wenn Sie den Buchungskalender aktiv laden, verarbeitet Calendly LLC (USA) die von Ihnen eingegebenen Daten. Der Kalender lädt erst nach Ihrem Klick (Einwilligung, Art. 6 Abs. 1 lit. a DSGVO).'],
+      ['Ihre Rechte', 'Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch sowie auf Beschwerde bei einer Aufsichtsbehörde (in Kroatien: AZOP).'],
+    ],
+    note: 'Dies ist ein Basistext und muss vor dem Livegang juristisch geprüft werden.',
+  },
+  hr: {
+    title: 'Politika privatnosti – Mirano Solutions',
+    desc: 'Politika privatnosti Mirano Solutions d.o.o. – web stranica bez kolačića i praćenja.',
+    eyebrow: 'Pravno',
+    h1: 'Politika privatnosti',
+    sections: [
+      ['Voditelj obrade', 'Mirano Solutions d.o.o., Ograjska ulica 1C, 10000 Zagreb, Hrvatska. E-mail: info@mirano-solutions.com.'],
+      ['Bez kolačića, bez praćenja', 'Ova web stranica ne postavlja kolačiće i ne koristi alate za praćenje ili analitiku. Fontovi se poslužuju s vlastitog poslužitelja; nema zahtjeva prema vanjskim servisima.'],
+      ['Hosting i logovi poslužitelja', 'Stranicu hosta Vercel Inc. Pri posjetu se obrađuju tehnički nužni podaci o vezi (IP adresa, vrijeme, tražena stranica) radi isporuke stranice. Pravna osnova: čl. 6. st. 1. t. f GDPR-a.'],
+      ['Kontakt e-poštom ili telefonom', 'Ako nas kontaktirate, podatke koje navedete obrađujemo radi obrade upita (čl. 6. st. 1. t. b GDPR-a). Podaci se brišu kad više nisu potrebni i ne postoje obveze čuvanja.'],
+      ['Rezervacija termina (Calendly)', 'Ako aktivno učitate kalendar za rezervacije, Calendly LLC (SAD) obrađuje podatke koje unesete. Kalendar se učitava tek nakon vašeg klika (privola, čl. 6. st. 1. t. a GDPR-a).'],
+      ['Vaša prava', 'Imate pravo na pristup, ispravak, brisanje, ograničenje, prenosivost podataka i prigovor, te pravo na pritužbu nadzornom tijelu (u Hrvatskoj: AZOP).'],
+    ],
+    note: 'Ovo je osnovni tekst i prije objave ga treba pravno provjeriti.',
+  },
+};
+const t = copy[lang];
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.eyebrow} title={t.h1} />
+  <section class="section">
+    <div class="container privacy">
+      {
+        t.sections.map(([h, d]: [string, string]) => (
+          <div class="p-block">
+            <h2>{h}</h2>
+            <p>{d}</p>
+          </div>
+        ))
+      }
+      <p class="p-note">{t.note}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .privacy {
+    max-width: 46rem;
+    display: grid;
+    gap: 2rem;
+  }
+  .p-block h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .p-block p {
+    color: var(--mirano-slate);
+  }
+  .p-note {
+    font-size: 0.8125rem;
+    color: var(--mirano-muted);
+    border-left: 2px solid var(--mirano-border);
+    padding-left: 1rem;
+  }
+</style>

@@ -1,0 +1,12 @@
+import { chromium } from '/home/claude/.npm-global/lib/node_modules/playwright/index.mjs';
+const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+await page.evaluate(() => { document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible')); });
+await page.waitForTimeout(400);
+await page.screenshot({ path: '/tmp/home-full.png', fullPage: true });
+await page.click('#tab-produkte');
+await page.waitForTimeout(600);
+await page.screenshot({ path: '/tmp/home-produkte-tab.png', clip: { x: 700, y: 0, width: 740, height: 780 } });
+await browser.close();
+console.log('done');

@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBox from '../components/CtaBox.astro';
+import { services, type ServiceSlug } from '../content/services';
+import { getLang, l, type Lang } from '../i18n';
+
+interface Props {
+  slug: ServiceSlug;
+}
+const { slug } = Astro.props;
+const lang = getLang(Astro.currentLocale);
+const t = services[slug][lang];
+const backLabel = { en: '← All services', de: '← Alle Leistungen', hr: '← Sve usluge' }[lang];
+---
+
+<Base title={`${t.title} – Mirano Solutions`} description={t.metaDesc}>
+  <PageHero eyebrow={t.eyebrow} title={t.title} lead={t.lead} />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.offerTitle}</span>
+        <h2>{t.offerTitle}</h2>
+      </div>
+      <div class="offer-grid">
+        {
+          t.offer.map((o) => (
+            <div class="card offer reveal">
+              <h3>{o.h}</h3>
+              <p>{o.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-limestone">
+    <div class="container how-grid">
+      <div class="section-head reveal" style="margin-bottom:0">
+        <span class="eyebrow">{t.howTitle}</span>
+        <h2>{t.howTitle}</h2>
+      </div>
+      <ul class="how-list reveal">
+        {t.how.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+    <div class="container back-link">
+      <a href={l(lang, '/services')} class="btn-ghost">{backLabel}</a>
+    </div>
+  </section>
+
+  <CtaBox />
+</Base>
+
+<style>
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .offer {
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .offer h3 {
+    font-size: 1.0625rem;
+  }
+  .offer p {
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+  }
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .how-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .how-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--mirano-slate);
+  }
+  .how-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--mirano-orange);
+  }
+  .back-link {
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 800px) {
+    .how-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

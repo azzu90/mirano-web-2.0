@@ -1,0 +1,161 @@
+/* ==========================================================================
+   Mirano Solutions – Design Tokens v1.0 (08.07.2026)
+   Quelle der Wahrheit: mirano_design_system.md
+   Einbinden in jedes Frontend-Projekt (Astro/Next.js/v0).
+   Fonts: League Spartan (600,700) · Hanken Grotesk (400,500,600)
+          JetBrains Mono (400,500) – via Fontsource oder Google Fonts laden.
+   ========================================================================== */
+
+:root {
+  /* ----- Marke: Akzent & Verlauf ----- */
+  --mirano-orange: #FF6841;        /* Icons, Akzente, solide Sekundär-Verwendung */
+  --mirano-orange-deep: #C2410C;   /* Text-Akzente/Eyebrows auf hellem Grund (AA) */
+  --mirano-orange-light: #FF8A66;  /* Eyebrows/Akzente auf Graphit */
+  --mirano-gradient: linear-gradient(90deg, #FF4A38 0%, #FF7B4D 100%);      /* UI: Primär-CTA, Linien, Stats */
+  --mirano-gradient-logo: linear-gradient(135deg, #FF3131 0%, #FF914D 100%); /* nur Logo/Markenmomente */
+
+  /* ----- Dunkel (bewusst kein Schwarz) ----- */
+  --mirano-graphite: #2C343A;      /* Footer, max. 1 Kontrast-Sektion/Seite */
+  --mirano-graphite-soft: #3A434A; /* Cards/Hover auf Graphit */
+
+  /* ----- Text ----- */
+  --mirano-ink: #22282C;           /* Headlines hell */
+  --mirano-slate: #4A5258;         /* Fließtext hell */
+  --mirano-muted: #7A8288;         /* Captions, Meta */
+  --mirano-text-on-dark: #FFFFFF;         /* Headlines auf Graphit */
+  --mirano-text-on-dark-body: #AEB6BC;    /* Fließtext auf Graphit */
+
+  /* ----- Flächen & Linien ----- */
+  --mirano-porcelain: #FDFCFA;     /* Seitenhintergrund */
+  --mirano-limestone: #F6F4F0;     /* Wechsel-Sektionen, Cards */
+  --mirano-white: #FFFFFF;
+  --mirano-border: #E7E3DC;
+
+  /* ----- Status (nur funktional) ----- */
+  --mirano-success: #2E7D4F;
+  --mirano-warning: #B7791F;
+  --mirano-error: #C0392B;
+
+  /* ----- Typografie ----- */
+  --font-display: 'League Spartan', system-ui, sans-serif;   /* H1/H2, weight 600 */
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;      /* Body 400, H3-H6 600 */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;    /* Utility: Labels, Zahlen */
+
+  --text-h1: clamp(2.4rem, 5vw, 3.75rem);
+  --text-h2: clamp(1.9rem, 3.5vw, 2.5rem);
+  --text-h3: 1.375rem;
+  --text-h4: 1.125rem;
+  --text-body: 1.0625rem;
+  --text-small: 0.875rem;
+  --text-eyebrow: 0.75rem;
+
+  --leading-tight: 1.15;   /* Display */
+  --leading-body: 1.65;
+  --tracking-display: -0.01em;
+  --tracking-eyebrow: 0.1em; /* Uppercase-Mono immer mit Spacing */
+
+  /* ----- Layout ----- */
+  --radius-control: 8px;
+  --radius-card: 14px;
+  --radius-feature: 24px;
+  --container-max: 1240px;
+  --section-y-desktop: 7rem;   /* 112px */
+  --section-y-mobile: 4rem;
+
+  /* ----- Motion ----- */
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ----- Basis-Anwendung ----- */
+body {
+  background: var(--mirano-porcelain);
+  color: var(--mirano-slate);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--mirano-ink);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+}
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+
+h3, h4, h5, h6 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--mirano-ink);
+}
+h3 { font-size: var(--text-h3); }
+h4 { font-size: var(--text-h4); }
+
+/* Eyebrow: das wiederkehrende Präzisions-Signal */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--mirano-orange-deep);
+}
+.section-dark .eyebrow { color: var(--mirano-orange-light); }
+
+/* Primär-CTA: einzige großflächige Verlaufs-Anwendung */
+.btn-primary {
+  background: var(--mirano-gradient);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-control);
+  padding: 0.75rem 1.5rem;
+  transition: filter var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.btn-primary:hover { filter: brightness(1.06); }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--mirano-ink);
+  font-weight: 500;
+  border: 1px solid var(--mirano-border);
+  border-radius: var(--radius-control);
+  padding: 0.75rem 1.5rem;
+}
+
+/* Verlaufs-Akzentlinie (2-3px), z.B. über Section-Titeln */
+.accent-line {
+  height: 3px;
+  width: 56px;
+  background: var(--mirano-gradient);
+  border-radius: 2px;
+}
+
+/* Dunkle Kontrast-Sektion (max. 1x pro Seite + Footer) */
+.section-dark {
+  background: var(--mirano-graphite);
+  color: var(--mirano-text-on-dark-body);
+}
+.section-dark h1, .section-dark h2, .section-dark h3, .section-dark h4 {
+  color: var(--mirano-text-on-dark);
+}
+
+/* Stat-Zahl mit Verlauf (Case Studies) */
+.stat-number {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  background: var(--mirano-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

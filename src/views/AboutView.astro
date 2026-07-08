@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBox from '../components/CtaBox.astro';
+import { getLang, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+
+const copy: Record<Lang, any> = {
+  en: {
+    title: 'About us – Mirano Solutions',
+    desc: 'Founder-led engineering partner from Zagreb: 15+ years in IT, buildup of a 100-person organization, founded 2025. Max. 40 experts, quality over growth.',
+    eyebrow: 'About us',
+    h1: 'Founder-led, by design',
+    lead: 'Mirano Solutions was founded in 2025 in Zagreb – built on 15+ years of IT experience and one conviction: senior quality and direct communication beat scale.',
+    storyEyebrow: 'The founder story',
+    storyTitle: 'From systems integration to building organizations',
+    story: [
+      'Armin Zalihic has worked in IT since 2008 – from systems integration and network security to SAP test management and UX-certified project leadership (CPUX-F).',
+      'Over three years he co-led the buildup of the Croatian branch of a German IT group – the first year from the German headquarters, then on the ground in Zagreb. The team grew to over 100 employees.',
+      'In 2025 he founded Mirano Solutions to offer that model in a focused form: senior software teams from the EU for the DACH market, combined with own product development. Deliberately capped at 40 experts – because quality does not scale like headcount.',
+    ],
+    milestonesLabel: 'The path',
+    milestones: [
+      ['2008', 'Start in IT: systems integration & network security'],
+      ['2014+', 'SAP test management & UX-certified project leadership (CPUX-F)'],
+      ['2022–2025', 'Co-led buildup of a German IT group\u2019s Croatian branch to 100+ employees'],
+      ['2025', 'Founded Mirano Solutions d.o.o. in Zagreb'],
+      ['2026', 'PLIMA live · engagement at a Munich insurance group · team growing'],
+    ],
+    principlesEyebrow: 'Principles',
+    principlesTitle: 'What we hold ourselves to',
+    principles: [
+      ['Max. 40 experts', 'We cap the pool on purpose. Every profile is known personally – no CV databases, no body leasing.'],
+      ['Quality over growth', 'We would rather decline a project than staff it below our standard.'],
+      ['Direct communication', 'You talk to the founder and to the engineers doing the work. No account layer.'],
+      ['Own products keep us honest', 'We ship and operate our own SaaS – so we know what delivery really costs.'],
+    ],
+    photoNote: 'Photo coming soon',
+  },
+  de: {
+    title: 'Über uns – Mirano Solutions',
+    desc: 'Founder-led Engineering-Partner aus Zagreb: 15+ Jahre IT, Aufbau einer 100-Personen-Organisation, gegründet 2025. Max. 40 Experten, Qualität vor Wachstum.',
+    eyebrow: 'Über uns',
+    h1: 'Founder-led, aus Überzeugung',
+    lead: 'Mirano Solutions wurde 2025 in Zagreb gegründet – auf Basis von über 15 Jahren IT-Erfahrung und einer Überzeugung: Senior-Qualität und direkte Wege schlagen Größe.',
+    storyEyebrow: 'Die Founder-Story',
+    storyTitle: 'Vom Systemintegrator zum Organisationsaufbau',
+    story: [
+      'Armin Zalihic arbeitet seit 2008 in der IT – vom Systemintegrator über Netzwerk-Security bis zu SAP-Testmanagement und UX-zertifizierter Projektleitung (CPUX-F).',
+      'Über drei Jahre hat er den Aufbau der kroatischen Niederlassung einer deutschen IT-Gruppe mitgestaltet – das erste Jahr aus der deutschen Zentrale, danach vor Ort in Zagreb. Das Team wuchs auf über 100 Mitarbeitende.',
+      '2025 gründete er Mirano Solutions, um dieses Modell fokussiert anzubieten: Senior-Software-Teams aus der EU für den DACH-Markt, kombiniert mit eigener Produktentwicklung. Bewusst auf 40 Experten begrenzt – weil Qualität nicht wie Headcount skaliert.',
+    ],
+    milestonesLabel: 'Der Weg',
+    milestones: [
+      ['2008', 'Start in der IT: Systemintegration & Netzwerk-Security'],
+      ['2014+', 'SAP-Testmanagement & UX-zertifizierte Projektleitung (CPUX-F)'],
+      ['2022–2025', 'Aufbau der kroatischen Niederlassung einer deutschen IT-Gruppe auf 100+ Mitarbeitende mitgestaltet'],
+      ['2025', 'Gründung Mirano Solutions d.o.o. in Zagreb'],
+      ['2026', 'PLIMA live · Engagement bei Münchner Versicherungskonzern · Team wächst'],
+    ],
+    principlesEyebrow: 'Prinzipien',
+    principlesTitle: 'Woran wir uns messen lassen',
+    principles: [
+      ['Max. 40 Experten', 'Wir begrenzen den Pool bewusst. Jedes Profil ist persönlich bekannt – keine CV-Datenbanken, kein Body-Leasing.'],
+      ['Qualität vor Wachstum', 'Wir lehnen ein Projekt lieber ab, als es unter unserem Standard zu besetzen.'],
+      ['Direkte Wege', 'Sie sprechen mit dem Gründer und den Engineers, die die Arbeit machen. Keine Account-Schicht.'],
+      ['Eigene Produkte halten uns ehrlich', 'Wir shippen und betreiben eigene SaaS – deshalb wissen wir, was Lieferung wirklich kostet.'],
+    ],
+    photoNote: 'Foto folgt in Kürze',
+  },
+  hr: {
+    title: 'O nama – Mirano Solutions',
+    desc: 'Founder-led inženjerski partner iz Zagreba: 15+ godina u IT-u, izgradnja organizacije od 100 ljudi, osnovano 2025. Maks. 40 stručnjaka.',
+    eyebrow: 'O nama',
+    h1: 'Founder-led, iz uvjerenja',
+    lead: 'Mirano Solutions osnovan je 2025. u Zagrebu – na temelju više od 15 godina iskustva u IT-u i jednog uvjerenja: senior kvaliteta i izravna komunikacija pobjeđuju veličinu.',
+    storyEyebrow: 'Priča osnivača',
+    storyTitle: 'Od sistemske integracije do izgradnje organizacija',
+    story: [
+      'Armin Zalihić u IT-u radi od 2008. – od sistemske integracije i mrežne sigurnosti do SAP test managementa i UX-certificiranog vođenja projekata (CPUX-F).',
+      'Tri godine sudjelovao je u izgradnji hrvatske podružnice njemačke IT grupe – prvu godinu iz njemačke centrale, zatim u Zagrebu. Tim je narastao na više od 100 zaposlenih.',
+      '2025. osnovao je Mirano Solutions kako bi taj model ponudio fokusirano: senior softverski timovi iz EU za DACH tržište, u kombinaciji s razvojem vlastitih proizvoda. Svjesno ograničeno na 40 stručnjaka – jer kvaliteta ne skalira kao broj ljudi.',
+    ],
+    milestonesLabel: 'Put',
+    milestones: [
+      ['2008', 'Početak u IT-u: sistemska integracija i mrežna sigurnost'],
+      ['2014+', 'SAP test management i UX-certificirano vođenje projekata (CPUX-F)'],
+      ['2022–2025', 'Suizgradnja hrvatske podružnice njemačke IT grupe na 100+ zaposlenih'],
+      ['2025', 'Osnivanje Mirano Solutions d.o.o. u Zagrebu'],
+      ['2026', 'PLIMA live · angažman kod minhenskog osiguravajućeg koncerna · tim raste'],
+    ],
+    principlesEyebrow: 'Načela',
+    principlesTitle: 'Po čemu se mjerimo',
+    principles: [
+      ['Maks. 40 stručnjaka', 'Pool svjesno ograničavamo. Svaki profil poznajemo osobno – bez CV baza, bez body leasinga.'],
+      ['Kvaliteta ispred rasta', 'Radije odbijemo projekt nego da ga popunimo ispod svog standarda.'],
+      ['Izravna komunikacija', 'Razgovarate s osnivačem i inženjerima koji rade posao. Bez posrednika.'],
+      ['Vlastiti proizvodi drže nas iskrenima', 'Isporučujemo i održavamo vlastiti SaaS – zato znamo što isporuka stvarno košta.'],
+    ],
+    photoNote: 'Fotografija uskoro',
+  },
+};
+const t = copy[lang];
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+
+  <section class="section">
+    <div class="container story-grid">
+      <div class="reveal">
+        <span class="eyebrow" style="display:block;margin-bottom:1rem">{t.storyEyebrow}</span>
+        <h2 style="margin-bottom:1.25rem">{t.storyTitle}</h2>
+        {t.story.map((p: string) => <p class="story-p">{p}</p>)}
+      </div>
+      <div class="founder-side reveal">
+        <div class="founder-photo-lg" aria-hidden="true">
+          <!-- TODO: Founder-Porträt einsetzen -->
+          <span>AZ</span>
+          <small>{t.photoNote}</small>
+        </div>
+        <ol class="milestones">
+          <span class="milestones-label">{t.milestonesLabel}</span>
+          {
+            t.milestones.map(([year, text]: [string, string]) => (
+              <li>
+                <span class="ms-year">{year}</span>
+                <span class="ms-text">{text}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-limestone">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.principlesEyebrow}</span>
+        <h2>{t.principlesTitle}</h2>
+      </div>
+      <div class="principles-grid">
+        {
+          t.principles.map(([h, d]: [string, string]) => (
+            <div class="card principle reveal">
+              <h3>{h}</h3>
+              <p>{d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBox />
+</Base>
+
+<style>
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .story-p {
+    color: var(--mirano-slate);
+    margin-bottom: 1.1rem;
+  }
+  .founder-side {
+    display: grid;
+    gap: 2rem;
+  }
+  .founder-photo-lg {
+    aspect-ratio: 4 / 3;
+    border: 1px dashed var(--mirano-border);
+    border-radius: var(--radius-card);
+    background: var(--mirano-limestone);
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.5rem;
+    color: var(--mirano-muted);
+  }
+  .founder-photo-lg span {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--mirano-orange-deep);
+  }
+  .founder-photo-lg small {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .milestones {
+    list-style: none;
+    padding: 1.75rem;
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+    background: var(--mirano-white);
+    border: 1px solid var(--mirano-border);
+    border-radius: var(--radius-card);
+  }
+  .milestones-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-orange-deep);
+    margin-bottom: 0.25rem;
+  }
+  .milestones li {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    font-size: 0.9375rem;
+  }
+  .ms-year {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--mirano-ink);
+  }
+  .ms-text {
+    color: var(--mirano-slate);
+  }
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .principle {
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .principle h3 {
+    font-size: 1.0625rem;
+  }
+  .principle p {
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+  }
+  @media (max-width: 900px) {
+    .story-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .principles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

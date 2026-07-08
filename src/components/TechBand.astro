@@ -1,0 +1,184 @@
+---
+// Tech-Stack-Band. Abgeglichen mit alter Website (React, Angular, Vue, Java, Node.js,
+// AWS/Azure/GCP, Docker, K8s, GitHub/GitLab/Jenkins, Terraform) + Armin-Updates:
+// Claude & Cursor rein, TensorFlow raus, Vercel + Hostinger (Hosting DE) ergänzt.
+import * as icons from 'simple-icons';
+import { getLang, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+
+type Tech = { label: string; icon?: string };
+
+const groups: { name: string; items: Tech[] }[] = [
+  {
+    name: 'Frontend',
+    items: [
+      { label: 'React', icon: 'siReact' },
+      { label: 'Next.js', icon: 'siNextdotjs' },
+      { label: 'Angular', icon: 'siAngular' },
+      { label: 'Vue', icon: 'siVuedotjs' },
+      { label: 'TypeScript', icon: 'siTypescript' },
+    ],
+  },
+  {
+    name: 'Backend',
+    items: [
+      { label: 'Node.js', icon: 'siNodedotjs' },
+      { label: 'Java / Spring', icon: 'siSpringboot' },
+      { label: 'Python', icon: 'siPython' },
+      { label: 'PostgreSQL', icon: 'siPostgresql' },
+      { label: 'GraphQL', icon: 'siGraphql' },
+    ],
+  },
+  {
+    name: 'Cloud & DevOps',
+    items: [
+      { label: 'AWS' },
+      { label: 'Azure' },
+      { label: 'Google Cloud', icon: 'siGooglecloud' },
+      { label: 'Docker', icon: 'siDocker' },
+      { label: 'Kubernetes', icon: 'siKubernetes' },
+      { label: 'Terraform', icon: 'siTerraform' },
+      { label: 'Vercel', icon: 'siVercel' },
+      { label: 'Hostinger (EU)', icon: 'siHostinger' },
+    ],
+  },
+  {
+    name: 'QA & Testing',
+    items: [
+      { label: 'Cypress', icon: 'siCypress' },
+      { label: 'Playwright' },
+      { label: 'Selenium', icon: 'siSelenium' },
+      { label: 'JMeter', icon: 'siApachejmeter' },
+    ],
+  },
+  {
+    name: 'SAP',
+    items: [{ label: 'SAP', icon: 'siSap' }, { label: 'SAP Test Management' }],
+  },
+  {
+    name: 'AI',
+    items: [
+      { label: 'Claude', icon: 'siClaude' },
+      { label: 'Cursor' },
+      { label: 'LLM Integration' },
+    ],
+  },
+];
+
+const iconSvg = (name?: string): string | null => {
+  if (!name) return null;
+  const icon = (icons as Record<string, { svg: string } | undefined>)[name];
+  return icon?.svg ?? null;
+};
+
+const copy: Record<Lang, { eyebrow: string; h2: string }> = {
+  en: { eyebrow: 'Technologies', h2: 'The stack of our expert pool' },
+  de: { eyebrow: 'Technologien', h2: 'Der Stack unseres Experten-Pools' },
+  hr: { eyebrow: 'Tehnologije', h2: 'Tehnološki stack našeg tima' },
+};
+const t = copy[lang];
+---
+
+<section class="section techband section-limestone" aria-labelledby="tech-heading">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">{t.eyebrow}</span>
+      <h2 id="tech-heading">{t.h2}</h2>
+    </div>
+
+    <div class="tech-groups reveal">
+      {
+        groups.map((group) => (
+          <div class="tech-group">
+            <span class="tech-group-name">{group.name}</span>
+            <ul>
+              {group.items.map((tech) => {
+                const svg = iconSvg(tech.icon);
+                return (
+                  <li class="tech-chip">
+                    {svg && <span class="tech-icon" set:html={svg} />}
+                    {tech.label}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .techband {
+    padding-block: 5rem;
+  }
+  .tech-groups {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .tech-group {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  .tech-group:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .tech-group-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-orange-deep);
+    padding-top: 0.45rem;
+  }
+  .tech-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .tech-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--mirano-slate);
+    background: var(--mirano-white);
+    border: 1px solid var(--mirano-border);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .tech-chip:hover {
+    border-color: color-mix(in srgb, var(--mirano-orange) 45%, var(--mirano-border));
+    color: var(--mirano-ink);
+  }
+  .tech-icon :global(svg) {
+    width: 15px;
+    height: 15px;
+    fill: var(--mirano-muted);
+  }
+  .tech-chip:hover .tech-icon :global(svg) {
+    fill: var(--mirano-orange);
+  }
+
+  @media (max-width: 700px) {
+    .tech-group {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .tech-group-name {
+      padding-top: 0;
+    }
+  }
+</style>

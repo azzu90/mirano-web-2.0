@@ -1,0 +1,243 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBox from '../components/CtaBox.astro';
+import { getLang, type Lang } from '../i18n';
+import fs from 'node:fs';
+const lang = getLang(Astro.currentLocale);
+// Screenshot automatisch einbinden, sobald die Datei existiert (public/images/plima-dashboard.png)
+const hasPlimaShot = fs.existsSync(new URL('../../public/images/plima-dashboard.png', import.meta.url));
+
+const copy: Record<Lang, any> = {
+  en: {
+    title: 'Products – Mirano Solutions',
+    desc: 'PLIMA HR software and further SaaS products – designed, built and operated by Mirano Solutions.',
+    eyebrow: 'Products',
+    h1: 'Software we build and run ourselves',
+    lead: 'Our second pillar: own SaaS products. They prove what our teams can do – architecture, quality, ownership – and they keep us honest about what shipping really takes.',
+    plima: {
+      badge: 'Live · in production',
+      name: 'PLIMA',
+      kind: 'HR software for small and mid-sized companies',
+      text: 'From idea to launch in 3 months: 12 HR modules, one price, data hosted in the EU. PLIMA has been running in production with its first customer since 2026 – built, launched and operated by Mirano.',
+      cta: 'Visit plima.cloud →',
+      by: 'Developed by Mirano Solutions',
+      shots: 'Product screenshots coming soon',
+    },
+    next: {
+      eyebrow: 'In the pipeline',
+      items: [
+        { name: 'Product launch, late summer 2026', text: 'A new SaaS product is in final preparation. Details follow at launch.', tag: 'Q3/2026' },
+        { name: 'Next vertical SaaS product', text: 'Development starts in autumn 2026 with a dedicated team of 4–5.', tag: 'Autumn 2026' },
+      ],
+    },
+  },
+  de: {
+    title: 'Produkte – Mirano Solutions',
+    desc: 'PLIMA HR-Software und weitere SaaS-Produkte – konzipiert, gebaut und betrieben von Mirano Solutions.',
+    eyebrow: 'Produkte',
+    h1: 'Software, die wir selbst bauen und betreiben',
+    lead: 'Unsere zweite Säule: eigene SaaS-Produkte. Sie beweisen, was unsere Teams können – Architektur, Qualität, Ownership – und halten uns ehrlich darin, was Liefern wirklich bedeutet.',
+    plima: {
+      badge: 'Live · produktiv',
+      name: 'PLIMA',
+      kind: 'HR-Software für kleine und mittlere Unternehmen',
+      text: 'Von der Idee zum Launch in 3 Monaten: 12 HR-Module, ein Preis, Daten in der EU gehostet. PLIMA läuft seit 2026 produktiv beim ersten Kunden – gebaut, gelauncht und betrieben von Mirano.',
+      cta: 'plima.cloud besuchen →',
+      by: 'Entwickelt von Mirano Solutions',
+      shots: 'Produkt-Screenshots folgen in Kürze',
+    },
+    next: {
+      eyebrow: 'In der Pipeline',
+      items: [
+        { name: 'Produkt-Launch Spätsommer 2026', text: 'Ein neues SaaS-Produkt ist in finaler Vorbereitung. Details folgen zum Launch.', tag: 'Q3/2026' },
+        { name: 'Nächstes vertikales SaaS-Produkt', text: 'Entwicklung startet im Herbst 2026 mit einem dedizierten Team von 4–5 Personen.', tag: 'Herbst 2026' },
+      ],
+    },
+  },
+  hr: {
+    title: 'Proizvodi – Mirano Solutions',
+    desc: 'PLIMA HR softver i daljnji SaaS proizvodi – osmišljeni, izgrađeni i održavani od Mirano Solutionsa.',
+    eyebrow: 'Proizvodi',
+    h1: 'Softver koji sami gradimo i održavamo',
+    lead: 'Naš drugi stup: vlastiti SaaS proizvodi. Oni dokazuju što naši timovi mogu – arhitektura, kvaliteta, odgovornost – i drže nas iskrenima o tome što isporuka stvarno znači.',
+    plima: {
+      badge: 'Live · u produkciji',
+      name: 'PLIMA',
+      kind: 'HR softver za mala i srednja poduzeća',
+      text: 'Od ideje do lansiranja u 3 mjeseca: 12 HR modula, jedna cijena, podaci u EU. PLIMA od 2026. radi u produkciji kod prvog klijenta – izgrađena, lansirana i održavana od Mirana.',
+      cta: 'Posjetite plima.cloud →',
+      by: 'Razvio Mirano Solutions',
+      shots: 'Snimke zaslona proizvoda uskoro',
+    },
+    next: {
+      eyebrow: 'U pripremi',
+      items: [
+        { name: 'Lansiranje proizvoda, kasno ljeto 2026.', text: 'Novi SaaS proizvod u završnoj je pripremi. Detalji slijede pri lansiranju.', tag: 'Q3/2026' },
+        { name: 'Sljedeći vertikalni SaaS proizvod', text: 'Razvoj počinje u jesen 2026. s posvećenim timom od 4–5 ljudi.', tag: 'Jesen 2026.' },
+      ],
+    },
+  },
+};
+const t = copy[lang];
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+
+  <section class="section">
+    <div class="container">
+      <div class="card plima reveal">
+        <div class="plima-accent" aria-hidden="true"></div>
+        <div class="plima-copy">
+          <span class="plima-badge">{t.plima.badge}</span>
+          <h2>{t.plima.name}</h2>
+          <p class="plima-kind">{t.plima.kind}</p>
+          <p>{t.plima.text}</p>
+          <div class="plima-actions">
+            <a href="https://plima.cloud" rel="noopener" class="btn-primary">{t.plima.cta}</a>
+          </div>
+          <p class="plima-by">{t.plima.by}</p>
+        </div>
+        <div class="plima-visual">
+          {
+            hasPlimaShot ? (
+              <img src="/images/plima-dashboard.png" alt="PLIMA HR dashboard" loading="lazy" class="plima-shot" />
+            ) : (
+              <div class="shot-placeholder" aria-hidden="true"><span>{t.plima.shots}</span></div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-limestone">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.next.eyebrow}</span>
+        <h2>{t.next.eyebrow}</h2>
+      </div>
+      <div class="pipeline">
+        {
+          t.next.items.map((p: any) => (
+            <div class="card pipe reveal">
+              <span class="pipe-tag">{p.tag}</span>
+              <h3>{p.name}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBox />
+</Base>
+
+<style>
+  .plima {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    padding: 3rem;
+    overflow: hidden;
+  }
+  .plima-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--mirano-gradient);
+  }
+  .plima-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mirano-orange-deep);
+    border: 1px solid color-mix(in srgb, var(--mirano-orange) 45%, transparent);
+    background: color-mix(in srgb, var(--mirano-orange) 8%, transparent);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    margin-bottom: 1.25rem;
+  }
+  .plima h2 {
+    margin-bottom: 0.4rem;
+  }
+  .plima-kind {
+    font-weight: 600;
+    color: var(--mirano-ink);
+    margin-bottom: 1rem;
+  }
+  .plima-copy > p {
+    color: var(--mirano-slate);
+  }
+  .plima-actions {
+    margin-top: 1.75rem;
+  }
+  .plima-by {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--mirano-muted);
+    margin-top: 1rem;
+  }
+  .plima-shot {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+    border: 1px solid var(--mirano-border);
+    border-radius: var(--radius-card);
+  }
+  .shot-placeholder {
+    height: 100%;
+    min-height: 280px;
+    border: 1px dashed var(--mirano-border);
+    border-radius: var(--radius-card);
+    background: var(--mirano-limestone);
+    display: grid;
+    place-items: center;
+    color: var(--mirano-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+  .pipeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .pipe {
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .pipe-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--mirano-orange-deep);
+  }
+  .pipe h3 {
+    font-size: 1.0625rem;
+  }
+  .pipe p {
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+  }
+  @media (max-width: 900px) {
+    .plima {
+      grid-template-columns: 1fr;
+      padding: 2rem;
+    }
+    .pipeline {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import CtaBox from '../components/CtaBox.astro';
+import { getLang, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+
+const copy: Record<Lang, any> = {
+  en: {
+    title: 'Services – Mirano Solutions',
+    desc: 'Software engineering, team extension, QA, managed services and AI – senior teams from the EU, founder-led.',
+    eyebrow: 'Services',
+    h1: 'Engineering that also builds its own products',
+    lead: 'Five ways to work with us – all delivered by the same curated pool of max. 40 senior experts that builds and runs our own SaaS products.',
+    modelsTitle: 'Delivery models',
+    models: [
+      ['Project', 'Defined scope, fixed price or T&M – we take responsibility for the result.'],
+      ['Managed team', 'A dedicated team with a lead, working on your roadmap – you steer priorities, we deliver.'],
+      ['Team extension', 'Individual experts embedded in your team, processes and tools.'],
+      ['Managed services', 'Operations and support under a clear SLA, at a fixed monthly rate.'],
+    ],
+  },
+  de: {
+    title: 'Leistungen – Mirano Solutions',
+    desc: 'Software Engineering, Team Extension, QA, Managed Services und AI – Senior-Teams aus der EU, founder-led.',
+    eyebrow: 'Leistungen',
+    h1: 'Engineering, das auch eigene Produkte baut',
+    lead: 'Fünf Wege, mit uns zu arbeiten – alle geliefert vom selben kuratierten Pool aus max. 40 Senior-Experten, der auch unsere eigenen SaaS-Produkte baut und betreibt.',
+    modelsTitle: 'Delivery-Modelle',
+    models: [
+      ['Projekt', 'Definierter Scope, Festpreis oder T&M – wir übernehmen Verantwortung fürs Ergebnis.'],
+      ['Managed Team', 'Ein dediziertes Team mit Lead an Ihrer Roadmap – Sie steuern Prioritäten, wir liefern.'],
+      ['Team Extension', 'Einzelne Experten, eingebettet in Ihr Team, Ihre Prozesse und Tools.'],
+      ['Managed Services', 'Betrieb und Support unter klarem SLA, zum festen Monatspreis.'],
+    ],
+  },
+  hr: {
+    title: 'Usluge – Mirano Solutions',
+    desc: 'Razvoj softvera, proširenje tima, QA, managed services i AI – senior timovi iz EU.',
+    eyebrow: 'Usluge',
+    h1: 'Inženjering koji gradi i vlastite proizvode',
+    lead: 'Pet načina suradnje s nama – sve isporučuje isti kurirani pool od maks. 40 senior stručnjaka koji gradi i održava naše SaaS proizvode.',
+    modelsTitle: 'Modeli suradnje',
+    models: [
+      ['Projekt', 'Definiran opseg, fiksna cijena ili T&M – preuzimamo odgovornost za rezultat.'],
+      ['Managed team', 'Posvećen tim s voditeljem na vašoj roadmapi – vi upravljate prioritetima, mi isporučujemo.'],
+      ['Proširenje tima', 'Pojedinačni stručnjaci uklopljeni u vaš tim, procese i alate.'],
+      ['Managed services', 'Rad i podrška uz jasan SLA, po fiksnoj mjesečnoj cijeni.'],
+    ],
+  },
+};
+const t = copy[lang];
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+  <ServicesGrid />
+  <section class="section section-limestone">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.modelsTitle}</span>
+        <h2>{t.modelsTitle}</h2>
+      </div>
+      <div class="models">
+        {
+          t.models.map(([h, d]: [string, string], i: number) => (
+            <div class="card model reveal">
+              <span class="model-num">0{i + 1}</span>
+              <h3>{h}</h3>
+              <p>{d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  <CtaBox />
+</Base>
+
+<style>
+  .models {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+  .model {
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .model-num {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--mirano-orange-deep);
+    letter-spacing: 0.06em;
+  }
+  .model h3 {
+    font-size: 1.0625rem;
+  }
+  .model p {
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+  }
+  @media (max-width: 1000px) {
+    .models {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .models {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

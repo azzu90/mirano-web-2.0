@@ -1,0 +1,20 @@
+{
+  "redirects": [
+    { "source": "/about/", "destination": "/about", "permanent": true },
+    { "source": "/services/", "destination": "/services", "permanent": true },
+    { "source": "/services/consulting/", "destination": "/services/team-extension", "permanent": true },
+    { "source": "/services/consulting", "destination": "/services/team-extension", "permanent": true },
+    { "source": "/services/software-engineering/", "destination": "/services/software-engineering", "permanent": true },
+    { "source": "/services/artificial-intelligence/", "destination": "/services/ai-automation", "permanent": true },
+    { "source": "/services/artificial-intelligence", "destination": "/services/ai-automation", "permanent": true },
+    { "source": "/services/quality-assurance/", "destination": "/services/qa-testing", "permanent": true },
+    { "source": "/services/quality-assurance", "destination": "/services/qa-testing", "permanent": true },
+    { "source": "/services/it-support/", "destination": "/services/managed-services", "permanent": true },
+    { "source": "/services/it-support", "destination": "/services/managed-services", "permanent": true },
+    { "source": "/contact/", "destination": "/contact", "permanent": true },
+    { "source": "/legal-notice/", "destination": "/legal-notice", "permanent": true },
+    { "source": "/privacy-policy/", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/terms-conditions/", "destination": "/legal-notice", "permanent": true },
+    { "source": "/cookie-richtlinie-eu/", "destination": "/privacy-policy", "permanent": true }
+  ]
+}

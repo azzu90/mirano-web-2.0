@@ -1,0 +1,513 @@
+---
+import { getLang, l, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+
+const copy: Record<Lang, any> = {
+  en: {
+    h1: 'We build our own products – and bring the same teams into your projects.',
+    lead: 'Mirano Solutions is an engineering partner for the DACH market and a product company at the same time. Senior teams from Zagreb, EU contracts, same time zone – and you talk to the founder, not an account manager.',
+    ctaPrimary: 'Talk to the founder',
+    ctaSecondary: 'See our references',
+    trust: 'EU CONTRACTS · GDPR-NATIVE · MAX. 40 EXPERTS',
+    tabs: ['Projects', 'Products'],
+    tablist: 'The two pillars of Mirano',
+    ledger: [
+      { name: 'PLIMA', kind: 'HR SaaS · our own product', metric: 'Idea → launch: 3 months', status: 'Live', state: 'live' },
+      { name: 'Insurance group, Munich', kind: 'Test management & QA', metric: 'Engaged since 2026 · scaling Q3', status: 'Active', state: 'live' },
+      { name: 'Your project?', kind: 'Software, QA or AI', metric: 'Kickoff in 5–10 business days', status: 'Open slot', state: 'slot', slot: true },
+    ],
+    ledgerFoot: 'Excerpt from current engagements',
+    ledgerLink: 'All references →',
+    products: [
+      { name: 'PLIMA', kind: 'HR software for SMEs', metric: 'plima.cloud · in production since 2026', status: 'Live', state: 'live', href: 'https://plima.cloud' },
+      { name: 'Product launch, late summer', kind: 'New SaaS product', metric: 'Launch: Q3/2026', status: 'In progress', state: 'pipeline' },
+      { name: 'Next product in development', kind: 'Vertical SaaS solution', metric: 'Start: autumn 2026', status: 'Planned', state: 'pipeline' },
+    ],
+    productsFoot: 'Software we run ourselves',
+    productsLink: 'All products →',
+  },
+  de: {
+    h1: 'Wir bauen eigene Produkte – und bringen dieselben Teams in Ihre Projekte.',
+    lead: 'Mirano Solutions ist Engineering-Partner für den DACH-Markt und Produktfirma zugleich. Senior-Teams aus Zagreb, EU-Verträge, gleiche Zeitzone – und Sie sprechen mit dem Gründer, nicht mit einem Account Manager.',
+    ctaPrimary: 'Mit dem Gründer sprechen',
+    ctaSecondary: 'Referenzen ansehen',
+    trust: 'EU-VERTRÄGE · DSGVO-NATIV · MAX. 40 EXPERTEN',
+    tabs: ['Projekte', 'Produkte'],
+    tablist: 'Zwei Säulen von Mirano',
+    ledger: [
+      { name: 'PLIMA', kind: 'HR-SaaS · eigenes Produkt', metric: 'Idee → Launch: 3 Monate', status: 'Live', state: 'live' },
+      { name: 'Versicherungskonzern, München', kind: 'Testmanagement & QA', metric: 'Im Einsatz seit 2026 · Ausbau Q3', status: 'Aktiv', state: 'live' },
+      { name: 'Ihr Projekt?', kind: 'Software, QA oder AI', metric: 'Kickoff in 5–10 Werktagen', status: 'Freier Slot', state: 'slot', slot: true },
+    ],
+    ledgerFoot: 'Auszug aus laufenden Engagements',
+    ledgerLink: 'Alle Referenzen →',
+    products: [
+      { name: 'PLIMA', kind: 'HR-Software für den Mittelstand', metric: 'plima.cloud · seit 2026 produktiv', status: 'Live', state: 'live', href: 'https://plima.cloud' },
+      { name: 'Produkt-Launch Spätsommer', kind: 'Neues SaaS-Produkt', metric: 'Launch: Q3/2026', status: 'In Arbeit', state: 'pipeline' },
+      { name: 'Weiteres Produkt in Entwicklung', kind: 'Vertikale SaaS-Lösung', metric: 'Start: Herbst 2026', status: 'Geplant', state: 'pipeline' },
+    ],
+    ledgerFootDe: '',
+    productsFoot: 'Software, die wir selbst betreiben',
+    productsLink: 'Alle Produkte →',
+  },
+  hr: {
+    h1: 'Gradimo vlastite proizvode – i dovodimo iste timove u vaše projekte.',
+    lead: 'Mirano Solutions je inženjerski partner za DACH tržište i istovremeno produktna tvrtka. Senior timovi iz Zagreba, EU ugovori, ista vremenska zona – i razgovarate izravno s osnivačem, ne s account managerom.',
+    ctaPrimary: 'Razgovarajte s osnivačem',
+    ctaSecondary: 'Pogledajte reference',
+    trust: 'EU UGOVORI · GDPR · MAKS. 40 STRUČNJAKA',
+    tabs: ['Projekti', 'Proizvodi'],
+    tablist: 'Dva stupa Mirana',
+    ledger: [
+      { name: 'PLIMA', kind: 'HR SaaS · vlastiti proizvod', metric: 'Ideja → lansiranje: 3 mjeseca', status: 'Live', state: 'live' },
+      { name: 'Osiguravajući koncern, München', kind: 'Test management i QA', metric: 'U tijeku od 2026. · proširenje Q3', status: 'Aktivno', state: 'live' },
+      { name: 'Vaš projekt?', kind: 'Softver, QA ili AI', metric: 'Kickoff za 5–10 radnih dana', status: 'Slobodan slot', state: 'slot', slot: true },
+    ],
+    ledgerFoot: 'Izvadak iz tekućih angažmana',
+    ledgerLink: 'Sve reference →',
+    products: [
+      { name: 'PLIMA', kind: 'HR softver za mala i srednja poduzeća', metric: 'plima.cloud · u produkciji od 2026.', status: 'Live', state: 'live', href: 'https://plima.cloud' },
+      { name: 'Lansiranje proizvoda, kasno ljeto', kind: 'Novi SaaS proizvod', metric: 'Lansiranje: Q3/2026', status: 'U izradi', state: 'pipeline' },
+      { name: 'Sljedeći proizvod u razvoju', kind: 'Vertikalno SaaS rješenje', metric: 'Početak: jesen 2026.', status: 'Planirano', state: 'pipeline' },
+    ],
+    ledgerFoot2: '',
+    productsFoot: 'Softver koji sami razvijamo i održavamo',
+    productsLink: 'Svi proizvodi →',
+  },
+};
+const t = copy[lang];
+---
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Empower your business. Instantly.</p>
+      <h1>{t.h1}</h1>
+      <p class="lead">{t.lead}</p>
+      <div class="hero-actions">
+        <a href={l(lang, '/contact')} class="btn-primary">{t.ctaPrimary}</a>
+        <a href={l(lang, '/references')} class="btn-secondary">{t.ctaSecondary}</a>
+      </div>
+      <p class="hero-trust">{t.trust}</p>
+    </div>
+
+    <div class="switcher card" id="pillar-switcher">
+      <div class="ledger-accent" aria-hidden="true"></div>
+
+      <div class="switcher-tabs" role="tablist" aria-label={t.tablist}>
+        <button role="tab" id="tab-projects" aria-selected="true" aria-controls="panel-projects">
+          {t.tabs[0]}
+        </button>
+        <button role="tab" id="tab-products" aria-selected="false" aria-controls="panel-products">
+          {t.tabs[1]}
+        </button>
+        <span class="switcher-year" aria-hidden="true">2026</span>
+      </div>
+
+      <div class="switcher-panels">
+        <div class="switcher-panel is-active" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects">
+          <ol class="ledger-rows">
+            {
+              t.ledger.map((row: any) => (
+                <li class={`ledger-row${row.slot ? ' ledger-slot' : ''}`}>
+                  <span class={`dot dot-${row.state}`} aria-hidden="true" />
+                  <div class="ledger-main">
+                    <span class="ledger-name">
+                      {row.slot ? <a href={l(lang, '/contact')}>{row.name}</a> : row.name}
+                    </span>
+                    <span class="ledger-kind">{row.kind}</span>
+                  </div>
+                  <div class="ledger-side">
+                    <span class="ledger-metric">{row.metric}</span>
+                    <span class={`ledger-status status-${row.state}`}>{row.status}</span>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+          <div class="ledger-foot">
+            <span>{t.ledgerFoot}</span>
+            <a href={l(lang, '/references')}>{t.ledgerLink}</a>
+          </div>
+        </div>
+
+        <div class="switcher-panel" id="panel-products" role="tabpanel" aria-labelledby="tab-products" hidden>
+          <ol class="ledger-rows">
+            {
+              t.products.map((row: any) => (
+                <li class="ledger-row">
+                  <span class={`dot dot-${row.state}`} aria-hidden="true" />
+                  <div class="ledger-main">
+                    <span class="ledger-name">
+                      {row.href ? <a href={row.href} rel="noopener">{row.name}</a> : row.name}
+                    </span>
+                    <span class="ledger-kind">{row.kind}</span>
+                  </div>
+                  <div class="ledger-side">
+                    <span class="ledger-metric">{row.metric}</span>
+                    <span class={`ledger-status status-${row.state}`}>{row.status}</span>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+          <div class="ledger-foot">
+            <span>{t.productsFoot}</span>
+            <a href={l(lang, '/products')}>{t.productsLink}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="switcher-progress" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: 5.5rem 6.5rem;
+    background:
+      radial-gradient(
+        1100px 520px at 88% -10%,
+        color-mix(in srgb, var(--mirano-orange) 7%, transparent),
+        transparent 70%
+      ),
+      var(--mirano-porcelain);
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 4.5rem;
+    align-items: center;
+  }
+  .hero-copy .eyebrow {
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+  h1 {
+    margin-bottom: 1.5rem;
+    max-width: 26ch;
+  }
+  .lead {
+    max-width: 34rem;
+    margin-bottom: 2.25rem;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+  }
+  .hero-trust {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--mirano-muted);
+  }
+
+  .switcher {
+    position: relative;
+    padding: 1.5rem 1.75rem 0.9rem;
+    box-shadow: 0 24px 48px -32px rgba(34, 40, 44, 0.18);
+    overflow: hidden;
+  }
+  .ledger-accent {
+    position: absolute;
+    top: 0;
+    left: 1.75rem;
+    right: 1.75rem;
+    height: 3px;
+    background: var(--mirano-gradient);
+    border-radius: 0 0 2px 2px;
+  }
+  .switcher-tabs {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  .switcher-tabs [role='tab'] {
+    background: none;
+    border: none;
+    padding: 0.25rem 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-muted);
+    border-bottom: 2px solid transparent;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .switcher-tabs [role='tab'][aria-selected='true'] {
+    color: var(--mirano-ink);
+    border-bottom-color: var(--mirano-orange);
+  }
+  .switcher-tabs [role='tab']:hover {
+    color: var(--mirano-ink);
+  }
+  .switcher-year {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--mirano-muted);
+  }
+
+  .switcher-panel {
+    opacity: 1;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .switcher-panel.is-leaving,
+  .switcher-panel.is-entering {
+    opacity: 0;
+  }
+
+  .ledger-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .ledger-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+  .dot-live {
+    background: var(--mirano-orange);
+  }
+  .dot-pipeline {
+    background: transparent;
+    border: 2px solid var(--mirano-orange);
+  }
+  .dot-slot {
+    background: transparent;
+    border: 2px dashed var(--mirano-muted);
+  }
+  .ledger-slot .ledger-name a {
+    color: var(--mirano-slate);
+  }
+  .ledger-slot .ledger-name a:hover {
+    color: var(--mirano-orange-deep);
+  }
+  .status-slot {
+    color: var(--mirano-muted);
+    border-style: dashed;
+    background: transparent;
+  }
+  .ledger-main {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+  .ledger-name {
+    font-weight: 600;
+    color: var(--mirano-ink);
+    font-size: 0.9375rem;
+    line-height: 1.35;
+  }
+  .ledger-name a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .ledger-name a:hover {
+    color: var(--mirano-orange-deep);
+  }
+  .ledger-kind {
+    font-size: 0.8125rem;
+    color: var(--mirano-muted);
+  }
+  .ledger-side {
+    margin-left: auto;
+    display: grid;
+    gap: 0.3rem;
+    justify-items: end;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .ledger-metric {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--mirano-slate);
+    line-height: 1.4;
+  }
+  .ledger-status {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--mirano-border);
+  }
+  .status-live {
+    color: var(--mirano-orange-deep);
+    border-color: color-mix(in srgb, var(--mirano-orange) 45%, transparent);
+    background: color-mix(in srgb, var(--mirano-orange) 8%, transparent);
+  }
+  .status-pipeline {
+    color: var(--mirano-muted);
+    background: var(--mirano-limestone);
+  }
+  .ledger-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.1rem;
+    font-size: 0.8125rem;
+    color: var(--mirano-muted);
+  }
+  .ledger-foot a {
+    font-weight: 600;
+    color: var(--mirano-orange-deep);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ledger-foot a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .switcher-progress {
+    height: 2px;
+    background: var(--mirano-limestone);
+    border-radius: 1px;
+    overflow: hidden;
+    margin-bottom: 0.35rem;
+  }
+  .switcher-progress span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--mirano-border);
+  }
+  .switcher-progress span.is-running {
+    animation: switch-progress 7s linear forwards;
+  }
+  @keyframes switch-progress {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .switcher-progress {
+      visibility: hidden;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .hero {
+      padding-block: 3.5rem 4rem;
+    }
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    h1 {
+      max-width: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .switcher {
+      padding: 1.25rem 1.25rem 0.75rem;
+    }
+    .ledger-accent {
+      left: 1.25rem;
+      right: 1.25rem;
+    }
+    .ledger-row {
+      flex-wrap: wrap;
+    }
+    .ledger-side {
+      margin-left: 1.375rem;
+      justify-items: start;
+      text-align: left;
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  const root = document.getElementById('pillar-switcher');
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+    const progress = root.querySelector<HTMLElement>('.switcher-progress span');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let active = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let switching = false;
+
+    const show = (idx: number) => {
+      if (idx === active || switching) return;
+      switching = true;
+      const from = panels[active];
+      const to = panels[idx];
+      tabs.forEach((t, i) => t.setAttribute('aria-selected', String(i === idx)));
+      from.classList.add('is-leaving');
+      window.setTimeout(() => {
+        from.hidden = true;
+        from.classList.remove('is-leaving', 'is-active');
+        to.hidden = false;
+        to.classList.add('is-entering');
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            to.classList.remove('is-entering');
+            to.classList.add('is-active');
+            switching = false;
+          })
+        );
+        active = idx;
+      }, reduced ? 0 : 220);
+    };
+
+    const stopAuto = () => {
+      if (timer) clearTimeout(timer);
+      timer = null;
+      progress?.classList.remove('is-running');
+      if (progress) progress.style.display = 'none';
+    };
+
+    const scheduleAuto = () => {
+      if (reduced) return;
+      progress?.classList.remove('is-running');
+      void progress?.offsetWidth;
+      progress?.classList.add('is-running');
+      timer = window.setTimeout(() => {
+        show((active + 1) % panels.length);
+        scheduleAuto();
+      }, 7000);
+    };
+
+    tabs.forEach((tab, i) =>
+      tab.addEventListener('click', () => {
+        stopAuto();
+        show(i);
+      })
+    );
+    root.addEventListener('pointerenter', () => {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+        progress?.classList.remove('is-running');
+      }
+    });
+    root.addEventListener('pointerleave', () => {
+      if (!timer && progress?.style.display !== 'none') scheduleAuto();
+    });
+
+    scheduleAuto();
+  }
+</script>

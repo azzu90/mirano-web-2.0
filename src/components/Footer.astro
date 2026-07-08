@@ -1,0 +1,206 @@
+---
+import { getLang, l, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+const year = new Date().getFullYear();
+
+const copy: Record<Lang, any> = {
+  en: {
+    loc: 'ZAGREB · REMOTE-FIRST · EU',
+    services: 'Services',
+    servicesList: [
+      ['/services/software-engineering', 'Software Engineering'],
+      ['/services/team-extension', 'Experts & Team Extension'],
+      ['/services/qa-testing', 'QA & Testing'],
+      ['/services/managed-services', 'Managed Services'],
+      ['/services/ai-automation', 'AI & Automation'],
+    ],
+    company: 'Company',
+    companyList: [
+      ['/products', 'Products'],
+      ['/references', 'References'],
+      ['/about', 'About us'],
+      ['/contact', 'Contact'],
+    ],
+    contact: 'Contact',
+    bottom: `© ${year} Mirano Solutions d.o.o. · EU contracts · GDPR-native`,
+    legal: [
+      ['/legal-notice', 'Legal notice'],
+      ['/privacy-policy', 'Privacy policy'],
+    ],
+  },
+  de: {
+    loc: 'ZAGREB · REMOTE-FIRST · EU',
+    services: 'Leistungen',
+    servicesList: [
+      ['/services/software-engineering', 'Software Engineering'],
+      ['/services/team-extension', 'Experten & Team Extension'],
+      ['/services/qa-testing', 'QA & Testing'],
+      ['/services/managed-services', 'Managed Services'],
+      ['/services/ai-automation', 'AI & Automatisierung'],
+    ],
+    company: 'Unternehmen',
+    companyList: [
+      ['/products', 'Produkte'],
+      ['/references', 'Referenzen'],
+      ['/about', 'Über uns'],
+      ['/contact', 'Kontakt'],
+    ],
+    contact: 'Kontakt',
+    bottom: `© ${year} Mirano Solutions d.o.o. · EU-Verträge · DSGVO-nativ`,
+    legal: [
+      ['/legal-notice', 'Impressum'],
+      ['/privacy-policy', 'Datenschutz'],
+    ],
+  },
+  hr: {
+    loc: 'ZAGREB · REMOTE-FIRST · EU',
+    services: 'Usluge',
+    servicesList: [
+      ['/services/software-engineering', 'Razvoj softvera'],
+      ['/services/team-extension', 'Stručnjaci i proširenje tima'],
+      ['/services/qa-testing', 'QA i testiranje'],
+      ['/services/managed-services', 'Managed Services'],
+      ['/services/ai-automation', 'AI i automatizacija'],
+    ],
+    company: 'Tvrtka',
+    companyList: [
+      ['/products', 'Proizvodi'],
+      ['/references', 'Reference'],
+      ['/about', 'O nama'],
+      ['/contact', 'Kontakt'],
+    ],
+    contact: 'Kontakt',
+    bottom: `© ${year} Mirano Solutions d.o.o. · EU ugovori · GDPR`,
+    legal: [
+      ['/legal-notice', 'Impresum'],
+      ['/privacy-policy', 'Politika privatnosti'],
+    ],
+  },
+};
+const t = copy[lang];
+---
+
+<footer class="site-footer section-dark">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/logo/mirano-white.svg" alt="Mirano Solutions" width="142" height="67" loading="lazy" />
+        <p class="tagline">Empower your business. Instantly.</p>
+        <p class="mono-loc">{t.loc}</p>
+      </div>
+
+      <nav aria-label={`Footer – ${t.services}`}>
+        <h3>{t.services}</h3>
+        <ul>
+          {t.servicesList.map(([href, label]: [string, string]) => (
+            <li><a href={l(lang, href)}>{label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav aria-label={`Footer – ${t.company}`}>
+        <h3>{t.company}</h3>
+        <ul>
+          {t.companyList.map(([href, label]: [string, string]) => (
+            <li><a href={l(lang, href)}>{label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div>
+        <h3>{t.contact}</h3>
+        <ul>
+          <li><a href="mailto:info@mirano-solutions.com">info@mirano-solutions.com</a></li>
+          <li><a href="tel:+385976795944">(+385) 9 767 959 44</a></li>
+          <li>Ograjska ulica 1C<br />10000 Zagreb, {lang === 'hr' ? 'Hrvatska' : lang === 'de' ? 'Kroatien' : 'Croatia'}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>{t.bottom}</p>
+      <ul>
+        {t.legal.map(([href, label]: [string, string]) => (
+          <li><a href={l(lang, href)}>{label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: 4.5rem 2rem;
+    font-size: 0.9375rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1.1fr 1fr 1.2fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #3d474f;
+  }
+  .footer-brand img {
+    height: 44px;
+    width: auto;
+    margin-bottom: 1.25rem;
+  }
+  .tagline {
+    color: var(--mirano-text-on-dark);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .mono-loc {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--mirano-orange-light);
+  }
+  h3 {
+    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-orange-light);
+    margin-bottom: 1.25rem;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.625rem;
+  }
+  a {
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  a:hover {
+    color: var(--mirano-text-on-dark);
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-top: 2rem;
+    font-size: 0.8125rem;
+  }
+  .footer-bottom ul {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+    }
+  }
+</style>

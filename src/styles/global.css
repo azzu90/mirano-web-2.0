@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Mirano Solutions – Global Styles
+   Baut auf tokens.css auf. Utilities & Basiskomponenten.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ----- Fokus sichtbar, markenkonform ----- */
+:focus-visible {
+  outline: 2px solid var(--mirano-orange-deep);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.section-dark :focus-visible {
+  outline-color: var(--mirano-orange-light);
+}
+
+::selection {
+  background: var(--mirano-orange);
+  color: #fff;
+}
+
+/* ----- Layout-Utilities ----- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.section {
+  padding-block: var(--section-y-desktop);
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-block: var(--section-y-mobile);
+  }
+}
+
+.section-limestone {
+  background: var(--mirano-limestone);
+}
+
+/* ----- Typo-Utilities ----- */
+.lead {
+  font-size: 1.1875rem;
+  line-height: 1.6;
+}
+
+.text-muted {
+  color: var(--mirano-muted);
+}
+
+.mono-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--mirano-muted);
+}
+
+/* ----- Section-Header-Pattern: Eyebrow + Headline + optionale Akzentlinie ----- */
+.section-head {
+  max-width: 46rem;
+  margin-bottom: 3.5rem;
+}
+.section-head .eyebrow {
+  display: block;
+  margin-bottom: 1rem;
+}
+.section-head h2 {
+  margin-bottom: 1rem;
+}
+.section-head p {
+  color: var(--mirano-slate);
+}
+.section-dark .section-head p {
+  color: var(--mirano-text-on-dark-body);
+}
+
+/* ----- Buttons (erweitert tokens.css) ----- */
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.btn-secondary {
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.btn-secondary:hover {
+  border-color: var(--mirano-ink);
+}
+.section-dark .btn-secondary {
+  color: var(--mirano-text-on-dark);
+  border-color: #4a545c;
+}
+.section-dark .btn-secondary:hover {
+  border-color: var(--mirano-text-on-dark);
+}
+.btn-ghost {
+  color: var(--mirano-orange-deep);
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0.75rem 0;
+}
+.btn-ghost:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ----- Cards ----- */
+.card {
+  background: var(--mirano-white);
+  border: 1px solid var(--mirano-border);
+  border-radius: var(--radius-card);
+}
+
+/* ----- Scroll-Reveal (einmalig, dezent) ----- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ----- Skip-Link ----- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--mirano-ink);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 var(--radius-control) 0;
+}
+.skip-link:focus {
+  left: 0;
+}

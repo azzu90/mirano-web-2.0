@@ -1,0 +1,179 @@
+---
+// Kontrast-Sektion (Graphit): Remote-first-Story + Founder + Prinzipien.
+// KEINE Vor-Ort-Behauptung – Team arbeitet aus Kroatien, vor Ort nur auf Anfrage.
+import { getLang, l, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+
+const copy: Record<Lang, any> = {
+  en: {
+    eyebrow: 'Nearshore, not offshore',
+    h2: 'Zagreb. Remote-first. EU.',
+    text: 'Our engineers work from Croatia – EU, eurozone, the same time zone as Germany. We deliver remote-first with clear structures and documented results; on-site workshops and visits are available on request.',
+    principles: [
+      ['40', 'experts maximum – quality over growth, by design.'],
+      ['01', 'point of contact: the founder. No account management in between.'],
+      ['EU', 'contracts under EU law, communication in German and English.'],
+    ],
+    quote: '“Over three years I helped build a 100-person IT organization in Zagreb. Mirano is that model – focused on what really matters: senior quality and direct communication.”',
+    name: 'Armin Zalihic',
+    role: 'Founder & Managing Director · in IT since 2008',
+    cta: 'Read the founder story',
+  },
+  de: {
+    eyebrow: 'Nearshore, nicht Offshore',
+    h2: 'Zagreb. Remote-first. EU.',
+    text: 'Unsere Engineers arbeiten aus Kroatien – EU, Eurozone, dieselbe Zeitzone wie Deutschland. Wir liefern remote-first mit klaren Strukturen und dokumentierten Ergebnissen; Vor-Ort-Workshops und Besuche sind auf Anfrage möglich.',
+    principles: [
+      ['40', 'Experten maximal – Qualität schlägt Wachstum, bewusst.'],
+      ['01', 'Ansprechpartner: der Gründer. Kein Account-Management dazwischen.'],
+      ['EU', 'Verträge nach EU-Recht, Kommunikation auf Deutsch und Englisch.'],
+    ],
+    quote: '„Ich habe über drei Jahre den Aufbau einer 100-Personen-IT-Organisation in Zagreb mitgestaltet. Mirano ist dieses Modell – fokussiert auf das, was wirklich zählt: Senior-Qualität und direkte Wege.“',
+    name: 'Armin Zalihic',
+    role: 'Gründer & Geschäftsführer · seit 2008 in der IT',
+    cta: 'Founder-Story lesen',
+  },
+  hr: {
+    eyebrow: 'Nearshore, ne offshore',
+    h2: 'Zagreb. Remote-first. EU.',
+    text: 'Naši inženjeri rade iz Hrvatske – EU, eurozona, ista vremenska zona kao Njemačka. Radimo remote-first, s jasnim strukturama i dokumentiranim rezultatima; radionice i posjete uživo moguće su na upit.',
+    principles: [
+      ['40', 'stručnjaka maksimalno – kvaliteta ispred rasta, svjesno.'],
+      ['01', 'kontakt osoba: osnivač. Bez account managementa između.'],
+      ['EU', 'ugovori po pravu EU, komunikacija na njemačkom i engleskom.'],
+    ],
+    quote: '„Tri godine sudjelovao sam u izgradnji IT organizacije od 100 ljudi u Zagrebu. Mirano je taj model – fokusiran na ono što je stvarno važno: senior kvalitetu i izravnu komunikaciju.“',
+    name: 'Armin Zalihić',
+    role: 'Osnivač i direktor · u IT-u od 2008.',
+    cta: 'Pročitajte priču osnivača',
+  },
+};
+const t = copy[lang];
+---
+
+<section class="section section-dark locations">
+  <div class="container">
+    <div class="loc-grid">
+      <div class="loc-copy reveal">
+        <span class="eyebrow">{t.eyebrow}</span>
+        <h2>{t.h2}</h2>
+        <p>{t.text}</p>
+
+        <ul class="principles">
+          {
+            t.principles.map(([num, text]: [string, string]) => (
+              <li>
+                <span class="principle-num">{num}</span>
+                <span>{text}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="founder card-dark reveal">
+        <div class="founder-photo" aria-hidden="true">
+          <!-- TODO: Founder-Porträt einsetzen (Platzhalter) -->
+          <span>AZ</span>
+        </div>
+        <blockquote>{t.quote}</blockquote>
+        <div class="founder-meta">
+          <span class="founder-name">{t.name}</span>
+          <span class="founder-role">{t.role}</span>
+        </div>
+        <a href={l(lang, '/about')} class="btn-secondary">{t.cta}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .loc-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .loc-copy .eyebrow {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .loc-copy h2 {
+    margin-bottom: 1.25rem;
+  }
+  .loc-copy > p {
+    max-width: 32rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .principles {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .principles li {
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+    font-size: 0.9375rem;
+  }
+  .principle-num {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--mirano-orange-light);
+    min-width: 2.4rem;
+  }
+
+  .founder {
+    background: var(--mirano-graphite-soft);
+    border: 1px solid #454f57;
+    border-radius: var(--radius-card);
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .founder-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--mirano-graphite);
+    border: 1px solid #4a545c;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--mirano-orange-light);
+    letter-spacing: 0.06em;
+  }
+  blockquote {
+    font-weight: 500;
+    font-style: italic;
+    color: var(--mirano-text-on-dark);
+    line-height: 1.55;
+  }
+  .founder-meta {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .founder-name {
+    color: var(--mirano-text-on-dark);
+    font-weight: 600;
+  }
+  .founder-role {
+    font-size: 0.8125rem;
+  }
+  .founder .btn-secondary {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 900px) {
+    .loc-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

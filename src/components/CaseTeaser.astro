@@ -1,0 +1,219 @@
+---
+// Referenz-Teaser. SHOW_HEADSQUARE: Nennung schnell entfernbar (Freigabe ausstehend).
+import { getLang, l, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+const SHOW_HEADSQUARE = true;
+
+const copy: Record<Lang, any> = {
+  en: {
+    eyebrow: 'References',
+    h2: 'Proven, not promised',
+    more: 'Read the case study →',
+    cases: [
+      {
+        href: '/references#plima',
+        eyebrow: 'Our own product · HR SaaS',
+        title: 'PLIMA: from idea to launch',
+        text: 'HR software for SMEs – designed, built and taken to production. The first customer works with it daily.',
+        stat: '3', statUnit: 'months', statLabel: 'idea → launch',
+      },
+      {
+        href: '/references#insurance',
+        eyebrow: SHOW_HEADSQUARE ? 'For Headsquare · insurance group, Munich' : 'Munich IT consultancy · insurance group',
+        title: 'Test management in live operations',
+        text: 'Quality assurance in a regulated project environment – engaged since 2026, scaling by two QA experts in Q3.',
+        stat: '2', statUnit: 'QA experts', statLabel: 'joining in Q3/2026',
+      },
+    ],
+  },
+  de: {
+    eyebrow: 'Referenzen',
+    h2: 'Belegt, nicht behauptet',
+    more: 'Case Study lesen →',
+    cases: [
+      {
+        href: '/references#plima',
+        eyebrow: 'Eigenes Produkt · HR-SaaS',
+        title: 'PLIMA: Von der Idee zum Launch',
+        text: 'HR-Software für den Mittelstand – konzipiert, entwickelt und produktiv gesetzt. Der erste Kunde arbeitet täglich damit.',
+        stat: '3', statUnit: 'Monate', statLabel: 'Idee → Launch',
+      },
+      {
+        href: '/references#insurance',
+        eyebrow: SHOW_HEADSQUARE ? 'Für Headsquare · Versicherungskonzern, München' : 'Münchner IT-Beratung · Versicherungskonzern',
+        title: 'Testmanagement im laufenden Betrieb',
+        text: 'Qualitätssicherung in einem regulierten Projektumfeld – im Einsatz seit 2026, Team-Ausbau um zwei QA-Experten ab Q3.',
+        stat: '2', statUnit: 'QA-Experten', statLabel: 'Team-Ausbau ab Q3/2026',
+      },
+    ],
+  },
+  hr: {
+    eyebrow: 'Reference',
+    h2: 'Dokazano, ne obećano',
+    more: 'Pročitajte case study →',
+    cases: [
+      {
+        href: '/references#plima',
+        eyebrow: 'Vlastiti proizvod · HR SaaS',
+        title: 'PLIMA: od ideje do lansiranja',
+        text: 'HR softver za mala i srednja poduzeća – osmišljen, razvijen i pušten u produkciju. Prvi klijent s njim radi svakodnevno.',
+        stat: '3', statUnit: 'mjeseca', statLabel: 'ideja → lansiranje',
+      },
+      {
+        href: '/references#insurance',
+        eyebrow: SHOW_HEADSQUARE ? 'Za Headsquare · osiguravajući koncern, München' : 'Minhenska IT tvrtka · osiguravajući koncern',
+        title: 'Test management u produkciji',
+        text: 'Osiguranje kvalitete u reguliranom projektnom okruženju – u tijeku od 2026., proširenje za dva QA stručnjaka u Q3.',
+        stat: '2', statUnit: 'QA stručnjaka', statLabel: 'proširenje u Q3/2026',
+      },
+    ],
+  },
+};
+const t = copy[lang];
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">{t.eyebrow}</span>
+      <h2>{t.h2}</h2>
+    </div>
+
+    <div class="cases">
+      {
+        t.cases.map((c: any) => (
+          <a href={l(lang, c.href.split('#')[0]) + '#' + c.href.split('#')[1]} class="card case reveal">
+            <div class="case-stat">
+              <span class="stat-number" data-countup={c.stat}>{c.stat}</span>
+              <span class="case-stat-unit">{c.statUnit}</span>
+              <span class="case-stat-label">{c.statLabel}</span>
+            </div>
+            <div class="case-body">
+              <span class="case-eyebrow">{c.eyebrow}</span>
+              <h3>{c.title}</h3>
+              <p>{c.text}</p>
+              <span class="case-more" aria-hidden="true">{t.more}</span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .cases {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .case {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 1.75rem;
+    padding: 2.25rem;
+    text-decoration: none;
+    transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out);
+  }
+  .case:hover {
+    border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
+    transform: translateY(-3px);
+  }
+  .case-stat {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--mirano-border);
+    padding-right: 1.5rem;
+  }
+  .case .stat-number {
+    font-size: 3.25rem;
+    line-height: 1;
+  }
+  .case-stat-unit {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--mirano-ink);
+    margin-top: 0.35rem;
+  }
+  .case-stat-label {
+    font-size: 0.75rem;
+    color: var(--mirano-muted);
+    margin-top: 0.35rem;
+    line-height: 1.4;
+  }
+  .case-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .case-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mirano-muted);
+  }
+  .case h3 {
+    font-size: 1.25rem;
+  }
+  .case p {
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+  }
+  .case-more {
+    margin-top: auto;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--mirano-orange-deep);
+  }
+
+  @media (max-width: 900px) {
+    .cases {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .case {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      padding: 1.75rem;
+    }
+    .case-stat {
+      border-right: none;
+      border-bottom: 1px solid var(--mirano-border);
+      padding-right: 0;
+      padding-bottom: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nums = document.querySelectorAll<HTMLElement>('[data-countup]');
+  if (!reduced && nums.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const el = e.target as HTMLElement;
+          io.unobserve(el);
+          const target = parseInt(el.dataset.countup || '0', 10);
+          const start = performance.now();
+          const dur = 900;
+          const tick = (now: number) => {
+            const p = Math.min((now - start) / dur, 1);
+            el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    nums.forEach((n) => io.observe(n));
+  }
+</script>

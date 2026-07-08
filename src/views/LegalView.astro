@@ -1,0 +1,113 @@
+---
+// Impressum / Legal Notice / Impresum – Pflichtangaben nach kroatischem Recht
+// (Zakon o trgovačkim društvima, čl. 21): Firma, Sitz, Registergericht, MBS, OIB,
+// Stammkapital, Geschäftsführung, Bank. IBAN: TODO (liefert Armin).
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { getLang, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+const IBAN = 'HR__ ____ ____ ____ ____ _'; // TODO: IBAN Erste & Steiermärkische Bank eintragen
+
+const copy: Record<Lang, any> = {
+  en: { title: 'Legal notice – Mirano Solutions', desc: 'Legal notice and mandatory company information of Mirano Solutions d.o.o., Zagreb.', eyebrow: 'Legal', h1: 'Legal notice' },
+  de: { title: 'Impressum – Mirano Solutions', desc: 'Impressum und gesetzliche Pflichtangaben der Mirano Solutions d.o.o., Zagreb.', eyebrow: 'Rechtliches', h1: 'Impressum' },
+  hr: { title: 'Impresum – Mirano Solutions', desc: 'Impresum i zakonom propisani podaci tvrtke Mirano Solutions d.o.o., Zagreb.', eyebrow: 'Pravno', h1: 'Impresum' },
+};
+const t = copy[lang];
+
+const rows: Record<Lang, [string, string][]> = {
+  en: [
+    ['Company', 'Mirano Solutions d.o.o. za usluge (abbreviated: Mirano Solutions d.o.o.)'],
+    ['Registered seat', 'Ograjska ulica 1C, 10000 Zagreb, Croatia'],
+    ['Court of registration', 'Commercial Court in Zagreb (Trgovački sud u Zagrebu)'],
+    ['Company registration number (MBS)', '081648838'],
+    ['Tax ID (OIB)', '45013422590'],
+    ['EUID', 'HRSR.081648838'],
+    ['Share capital', 'EUR 2,500.00, paid in full'],
+    ['Managing director', 'Armin Zalihić (represents the company individually)'],
+    ['Bank', `Erste & Steiermärkische Bank d.d. · IBAN: ${IBAN}`],
+    ['Email', 'info@mirano-solutions.com'],
+    ['Phone', '(+385) 9 767 959 44'],
+    ['Principal activity', 'NACE 62.20 – Computer consultancy and computer facilities management'],
+  ],
+  de: [
+    ['Firma', 'Mirano Solutions d.o.o. za usluge (kurz: Mirano Solutions d.o.o.)'],
+    ['Sitz', 'Ograjska ulica 1C, 10000 Zagreb, Kroatien'],
+    ['Registergericht', 'Handelsgericht Zagreb (Trgovački sud u Zagrebu)'],
+    ['Registernummer (MBS)', '081648838'],
+    ['Steuernummer (OIB)', '45013422590'],
+    ['EUID', 'HRSR.081648838'],
+    ['Stammkapital', '2.500,00 EUR, vollständig eingezahlt'],
+    ['Geschäftsführer', 'Armin Zalihić (vertritt einzeln und selbständig)'],
+    ['Bankverbindung', `Erste & Steiermärkische Bank d.d. · IBAN: ${IBAN}`],
+    ['E-Mail', 'info@mirano-solutions.com'],
+    ['Telefon', '(+385) 9 767 959 44'],
+    ['Haupttätigkeit', 'NACE 62.20 – IT-Beratung und Management von IT-Systemen'],
+  ],
+  hr: [
+    ['Tvrtka', 'Mirano Solutions d.o.o. za usluge (skraćeno: Mirano Solutions d.o.o.)'],
+    ['Sjedište', 'Ograjska ulica 1C, 10000 Zagreb, Hrvatska'],
+    ['Registarski sud', 'Trgovački sud u Zagrebu'],
+    ['MBS', '081648838'],
+    ['OIB', '45013422590'],
+    ['EUID', 'HRSR.081648838'],
+    ['Temeljni kapital', '2.500,00 EUR, uplaćen u cijelosti'],
+    ['Direktor', 'Armin Zalihić (zastupa samostalno i pojedinačno)'],
+    ['Banka', `Erste & Steiermärkische Bank d.d. · IBAN: ${IBAN}`],
+    ['E-mail', 'info@mirano-solutions.com'],
+    ['Telefon', '(+385) 9 767 959 44'],
+    ['Pretežita djelatnost', 'NKD 62.20 – Računalno savjetovanje i djelatnosti upravljanja računalnom opremom'],
+  ],
+};
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.eyebrow} title={t.h1} />
+  <section class="section">
+    <div class="container">
+      <dl class="legal-list">
+        {
+          rows[lang].map(([k, v]) => (
+            <div class="legal-row">
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal-list {
+    max-width: 46rem;
+    margin: 0;
+    display: grid;
+  }
+  .legal-row {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  dt {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--mirano-muted);
+    letter-spacing: 0.03em;
+    padding-top: 0.1rem;
+  }
+  dd {
+    margin: 0;
+    color: var(--mirano-ink);
+  }
+  @media (max-width: 600px) {
+    .legal-row {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

@@ -1,0 +1,153 @@
+---
+import { getLang, l, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+
+const copy: Record<Lang, any> = {
+  en: {
+    eyebrow: 'Two pillars',
+    h2: 'A partner that builds for itself',
+    intro: 'Most nearshoring providers sell hours. We develop and operate our own software – and exactly these teams work in your projects. Architecture, quality, ownership: not promised, but proven daily in our own products.',
+    p1: {
+      idx: 'Pillar 01', title: 'Engineering partner',
+      text: 'Software engineering, QA and managed services for SMEs in the DACH region – as a project, managed team or team extension. High senior share, a pool deliberately capped at 40 experts.',
+      items: ['Projects at fixed price or T&M', 'Team extension, remote-first', 'EU contracts, GDPR without standard contractual clauses'],
+      link: 'See services →',
+    },
+    p2: {
+      idx: 'Pillar 02', title: 'Product company',
+      text: 'We build scalable SaaS products – from idea to operations. PLIMA, our HR software, went from idea to launch in 3 months and runs in production with its first customer.',
+      items: ['PLIMA · HR software (live)', 'Next product launch: late summer 2026', 'Another vertical SaaS solution in development'],
+      link: 'See products →',
+    },
+  },
+  de: {
+    eyebrow: 'Zwei Säulen',
+    h2: 'Ein Partner, der selbst baut',
+    intro: 'Die meisten Nearshoring-Anbieter vermitteln Stunden. Wir entwickeln und betreiben eigene Software – und genau diese Teams arbeiten in Ihren Projekten. Architektur, Qualität, Ownership: nicht versprochen, sondern täglich im eigenen Produkt bewiesen.',
+    p1: {
+      idx: 'Säule 01', title: 'Engineering-Partner',
+      text: 'Software Engineering, QA und Managed Services für den DACH-Mittelstand – als Projekt, Managed Team oder Team-Erweiterung. Hoher Senior-Anteil, Pool bewusst auf 40 Experten begrenzt.',
+      items: ['Projekte mit Festpreis oder T&M', 'Team Extension, remote-first', 'EU-Verträge, DSGVO ohne Standardvertragsklauseln'],
+      link: 'Leistungen ansehen →',
+    },
+    p2: {
+      idx: 'Säule 02', title: 'Produktfirma',
+      text: 'Wir bauen skalierbare SaaS-Produkte – von der Idee bis zum Betrieb. PLIMA, unsere HR-Software, ging in 3 Monaten von der Idee zum Launch und läuft produktiv beim ersten Kunden.',
+      items: ['PLIMA · HR-Software (live)', 'Nächster Produkt-Launch: Spätsommer 2026', 'Weitere vertikale SaaS-Lösung in Entwicklung'],
+      link: 'Produkte ansehen →',
+    },
+  },
+  hr: {
+    eyebrow: 'Dva stupa',
+    h2: 'Partner koji gradi i za sebe',
+    intro: 'Većina nearshoring tvrtki prodaje sate. Mi razvijamo i održavamo vlastiti softver – i upravo ti timovi rade na vašim projektima. Arhitektura, kvaliteta, odgovornost: ne obećano, nego svakodnevno dokazano u vlastitim proizvodima.',
+    p1: {
+      idx: 'Stup 01', title: 'Inženjerski partner',
+      text: 'Razvoj softvera, QA i managed services za mala i srednja poduzeća DACH regije – kao projekt, managed team ili proširenje tima. Visok udio seniora, pool svjesno ograničen na 40 stručnjaka.',
+      items: ['Projekti po fiksnoj cijeni ili T&M', 'Proširenje tima, remote-first', 'EU ugovori, GDPR bez dodatnih klauzula'],
+      link: 'Pogledajte usluge →',
+    },
+    p2: {
+      idx: 'Stup 02', title: 'Produktna tvrtka',
+      text: 'Gradimo skalabilne SaaS proizvode – od ideje do produkcije. PLIMA, naš HR softver, od ideje do lansiranja u 3 mjeseca i u produkciji kod prvog klijenta.',
+      items: ['PLIMA · HR softver (live)', 'Sljedeće lansiranje: kasno ljeto 2026.', 'Još jedno vertikalno SaaS rješenje u razvoju'],
+      link: 'Pogledajte proizvode →',
+    },
+  },
+};
+const t = copy[lang];
+---
+
+<section class="section section-limestone">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">{t.eyebrow}</span>
+      <h2>{t.h2}</h2>
+      <p>{t.intro}</p>
+    </div>
+
+    <div class="pillars">
+      {
+        [
+          { ...t.p1, href: '/services' },
+          { ...t.p2, href: '/products' },
+        ].map((p) => (
+          <article class="card pillar reveal">
+            <span class="pillar-index" aria-hidden="true">{p.idx}</span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+            <ul>
+              {p.items.map((item: string) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <a href={l(lang, p.href)} class="btn-ghost">{p.link}</a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .pillar {
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out);
+  }
+  .pillar:hover {
+    border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
+    transform: translateY(-3px);
+  }
+  .pillar-index {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-orange-deep);
+  }
+  .pillar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.55rem;
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+  }
+  .pillar ul li {
+    padding-left: 1.15rem;
+    position: relative;
+  }
+  .pillar ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--mirano-orange);
+  }
+  .pillar .btn-ghost {
+    margin-top: auto;
+    padding-bottom: 0;
+  }
+
+  @media (max-width: 800px) {
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+    .pillar {
+      padding: 1.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,282 @@
+---
+import { getLang, l, stripLang, langs, type Lang } from '../i18n';
+
+const lang = getLang(Astro.currentLocale);
+const basePath = stripLang(Astro.url.pathname).replace(/\/$/, '') || '/';
+
+const copy: Record<Lang, { nav: { href: string; label: string }[]; cta: string; menuOpen: string; menuClose: string }> = {
+  en: {
+    nav: [
+      { href: '/services', label: 'Services' },
+      { href: '/products', label: 'Products' },
+      { href: '/references', label: 'References' },
+      { href: '/about', label: 'About' },
+    ],
+    cta: 'Talk to the founder',
+    menuOpen: 'Open menu',
+    menuClose: 'Close menu',
+  },
+  de: {
+    nav: [
+      { href: '/services', label: 'Leistungen' },
+      { href: '/products', label: 'Produkte' },
+      { href: '/references', label: 'Referenzen' },
+      { href: '/about', label: 'Über uns' },
+    ],
+    cta: 'Mit dem Gründer sprechen',
+    menuOpen: 'Menü öffnen',
+    menuClose: 'Menü schließen',
+  },
+  hr: {
+    nav: [
+      { href: '/services', label: 'Usluge' },
+      { href: '/products', label: 'Proizvodi' },
+      { href: '/references', label: 'Reference' },
+      { href: '/about', label: 'O nama' },
+    ],
+    cta: 'Razgovarajte s osnivačem',
+    menuOpen: 'Otvori izbornik',
+    menuClose: 'Zatvori izbornik',
+  },
+};
+
+const t = copy[lang];
+const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href={l(lang, '/')} class="brand" aria-label="Mirano Solutions – Home">
+      <img src="/logo/mirano-header.svg" alt="Mirano Solutions" width="187" height="88" />
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <ul>
+        {
+          t.nav.map((item) => (
+            <li>
+              <a
+                href={l(lang, item.href)}
+                aria-current={basePath.startsWith(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-right">
+      <nav class="lang-switch" aria-label="Language">
+        {
+          langs.map((lng, i) => (
+            <>
+              {i > 0 && <span aria-hidden="true">/</span>}
+              <a href={l(lng, basePath)} aria-current={lng === lang ? 'true' : undefined}>
+                {lng.toUpperCase()}
+              </a>
+            </>
+          ))
+        }
+      </nav>
+      <a href={l(lang, '/contact')} class="btn-primary header-cta">{t.cta}</a>
+    </div>
+
+    <button
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      aria-label={t.menuOpen}
+      data-label-open={t.menuOpen}
+      data-label-close={t.menuClose}
+    >
+      <span></span><span></span>
+    </button>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden>
+    <ul>
+      {t.nav.map((item) => (
+        <li><a href={l(lang, item.href)}>{item.label}</a></li>
+      ))}
+      <li><a href={l(lang, '/contact')}>{contactLabel}</a></li>
+    </ul>
+    <div class="mobile-lang">
+      {langs.map((lng) => (
+        <a href={l(lng, basePath)} aria-current={lng === lang ? 'true' : undefined}>{lng.toUpperCase()}</a>
+      ))}
+    </div>
+    <a href={l(lang, '/contact')} class="btn-primary">{t.cta}</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--mirano-porcelain) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    height: 84px;
+  }
+  .brand img {
+    height: 56px;
+    width: auto;
+  }
+  .main-nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+  }
+  .main-nav a {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .main-nav a:hover,
+  .main-nav a[aria-current='page'] {
+    color: var(--mirano-ink);
+  }
+  .main-nav a[aria-current='page'] {
+    font-weight: 600;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--mirano-border);
+  }
+  .lang-switch a {
+    text-decoration: none;
+    color: var(--mirano-muted);
+    padding: 0.25rem 0.1rem;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .lang-switch a:hover {
+    color: var(--mirano-ink);
+  }
+  .lang-switch a[aria-current='true'] {
+    color: var(--mirano-orange-deep);
+    font-weight: 500;
+  }
+  .header-cta {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    padding: 10px;
+  }
+  .menu-toggle span {
+    display: block;
+    height: 2px;
+    background: var(--mirano-ink);
+    border-radius: 1px;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .menu-toggle[aria-expanded='true'] span:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded='true'] span:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  .mobile-nav {
+    border-top: 1px solid var(--mirano-border);
+    background: var(--mirano-porcelain);
+    padding: 1.5rem;
+  }
+  .mobile-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+  .mobile-nav ul a {
+    display: block;
+    padding: 0.75rem 0;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--mirano-ink);
+    font-size: 1.125rem;
+  }
+  .mobile-lang {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+  }
+  .mobile-lang a {
+    text-decoration: none;
+    color: var(--mirano-muted);
+  }
+  .mobile-lang a[aria-current='true'] {
+    color: var(--mirano-orange-deep);
+    font-weight: 500;
+  }
+  .mobile-nav .btn-primary {
+    justify-content: center;
+    width: 100%;
+  }
+
+  @media (max-width: 1080px) {
+    .main-nav,
+    .header-right {
+      display: none;
+    }
+    .menu-toggle {
+      display: flex;
+    }
+    .header-inner {
+      height: 72px;
+    }
+    .brand img {
+      height: 46px;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    toggle.setAttribute(
+      'aria-label',
+      open ? toggle.dataset.labelOpen || 'Open menu' : toggle.dataset.labelClose || 'Close menu'
+    );
+    if (mobileNav) mobileNav.hidden = open;
+  });
+</script>

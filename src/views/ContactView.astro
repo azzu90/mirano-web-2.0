@@ -1,0 +1,218 @@
+---
+// Kontakt mit DSGVO-konformer Zwei-Klick-Calendly-Lösung (lädt erst nach Einwilligung).
+// TODO: Calendly-URL eintragen, sobald angelegt (CALENDLY_URL).
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { getLang, type Lang } from '../i18n';
+const lang = getLang(Astro.currentLocale);
+const CALENDLY_URL = ''; // TODO: z. B. https://calendly.com/armin-mirano/30min
+
+const copy: Record<Lang, any> = {
+  en: {
+    title: 'Contact – Mirano Solutions',
+    desc: 'Talk directly to the founder: requirements, matching profiles, realistic timeline. Reply within 24h.',
+    eyebrow: 'Contact',
+    h1: 'Talk to the founder',
+    lead: 'No form marathon, no account manager. Write an email or book 30 minutes – you get a reply within 24 hours.',
+    emailLabel: 'Email',
+    phoneLabel: 'Phone',
+    phoneHours: 'Mon–Fri, 10:00–18:00 CET',
+    addressLabel: 'Address',
+    bookTitle: 'Book 30 minutes',
+    bookText: 'Pick a slot directly in the calendar – no back and forth.',
+    consentText: 'The booking calendar is provided by Calendly LLC (USA). It loads only after you click – until then, no data is transferred. Details in our privacy policy.',
+    consentBtn: 'Load booking calendar',
+    comingSoon: 'Online booking is being set up – in the meantime, email works fastest.',
+    trust: 'EU CONTRACTS · GDPR-NATIVE · REPLY WITHIN 24H',
+  },
+  de: {
+    title: 'Kontakt – Mirano Solutions',
+    desc: 'Direkt mit dem Gründer sprechen: Anforderungen, passende Profile, realistischer Zeitplan. Antwort innerhalb von 24h.',
+    eyebrow: 'Kontakt',
+    h1: 'Mit dem Gründer sprechen',
+    lead: 'Kein Formular-Marathon, kein Account Manager. Schreiben Sie eine E-Mail oder buchen Sie 30 Minuten – Antwort innerhalb von 24 Stunden.',
+    emailLabel: 'E-Mail',
+    phoneLabel: 'Telefon',
+    phoneHours: 'Mo–Fr, 10:00–18:00 Uhr',
+    addressLabel: 'Adresse',
+    bookTitle: '30 Minuten buchen',
+    bookText: 'Wählen Sie direkt im Kalender einen Termin – ohne Hin und Her.',
+    consentText: 'Der Buchungskalender wird von Calendly LLC (USA) bereitgestellt. Er lädt erst nach Ihrem Klick – bis dahin werden keine Daten übertragen. Details in der Datenschutzerklärung.',
+    consentBtn: 'Buchungskalender laden',
+    comingSoon: 'Die Online-Buchung wird gerade eingerichtet – bis dahin geht E-Mail am schnellsten.',
+    trust: 'EU-VERTRÄGE · DSGVO-NATIV · ANTWORT INNERHALB VON 24H',
+  },
+  hr: {
+    title: 'Kontakt – Mirano Solutions',
+    desc: 'Razgovarajte izravno s osnivačem: zahtjevi, odgovarajući profili, realan vremenski plan. Odgovor unutar 24h.',
+    eyebrow: 'Kontakt',
+    h1: 'Razgovarajte s osnivačem',
+    lead: 'Bez maratona obrazaca, bez account managera. Pošaljite e-mail ili rezervirajte 30 minuta – odgovor unutar 24 sata.',
+    emailLabel: 'E-mail',
+    phoneLabel: 'Telefon',
+    phoneHours: 'Pon–pet, 10:00–18:00',
+    addressLabel: 'Adresa',
+    bookTitle: 'Rezervirajte 30 minuta',
+    bookText: 'Odaberite termin izravno u kalendaru – bez natezanja.',
+    consentText: 'Kalendar za rezervacije pruža Calendly LLC (SAD). Učitava se tek nakon vašeg klika – do tada se ne prenose podaci. Detalji u politici privatnosti.',
+    consentBtn: 'Učitaj kalendar',
+    comingSoon: 'Online rezervacija se postavlja – do tada je e-mail najbrži put.',
+    trust: 'EU UGOVORI · GDPR · ODGOVOR UNUTAR 24H',
+  },
+};
+const t = copy[lang];
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="contact-info reveal">
+        <div class="ci-block">
+          <span class="ci-label">{t.emailLabel}</span>
+          <a href="mailto:info@mirano-solutions.com" class="ci-value">info@mirano-solutions.com</a>
+        </div>
+        <div class="ci-block">
+          <span class="ci-label">{t.phoneLabel}</span>
+          <a href="tel:+385976795944" class="ci-value">(+385) 9 767 959 44</a>
+          <span class="ci-meta">{t.phoneHours}</span>
+        </div>
+        <div class="ci-block">
+          <span class="ci-label">{t.addressLabel}</span>
+          <span class="ci-value" style="font-size:1.0625rem">Mirano Solutions d.o.o.<br />Ograjska ulica 1C<br />10000 Zagreb</span>
+        </div>
+        <p class="ci-trust">{t.trust}</p>
+      </div>
+
+      <div class="booking card reveal">
+        <div class="booking-accent" aria-hidden="true"></div>
+        <h2>{t.bookTitle}</h2>
+        <p>{t.bookText}</p>
+        {
+          CALENDLY_URL ? (
+            <div class="consent-box" id="calendly-consent">
+              <p>{t.consentText}</p>
+              <button class="btn-primary" id="load-calendly" data-url={CALENDLY_URL}>
+                {t.consentBtn}
+              </button>
+            </div>
+          ) : (
+            <div class="consent-box">
+              <p>{t.comingSoon}</p>
+              <a href="mailto:info@mirano-solutions.com" class="btn-primary">info@mirano-solutions.com</a>
+            </div>
+          )
+        }
+        <div id="calendly-slot"></div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .contact-info {
+    display: grid;
+    gap: 2rem;
+  }
+  .ci-block {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .ci-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-orange-deep);
+  }
+  .ci-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--mirano-ink);
+    text-decoration: none;
+  }
+  a.ci-value:hover {
+    color: var(--mirano-orange-deep);
+  }
+  .ci-meta {
+    font-size: 0.875rem;
+    color: var(--mirano-muted);
+  }
+  .ci-trust {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.07em;
+    color: var(--mirano-muted);
+  }
+  .booking {
+    position: relative;
+    padding: 2.5rem;
+    overflow: hidden;
+  }
+  .booking-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--mirano-gradient);
+  }
+  .booking h2 {
+    margin-bottom: 0.75rem;
+  }
+  .booking > p {
+    color: var(--mirano-slate);
+    margin-bottom: 1.5rem;
+  }
+  .consent-box {
+    background: var(--mirano-limestone);
+    border: 1px solid var(--mirano-border);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+  .consent-box p {
+    font-size: 0.875rem;
+    color: var(--mirano-slate);
+  }
+  #calendly-slot iframe {
+    width: 100%;
+    min-height: 640px;
+    border: none;
+    border-radius: var(--radius-card);
+    margin-top: 1rem;
+  }
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Zwei-Klick-Lösung: Calendly lädt erst nach aktiver Einwilligung.
+  const btn = document.getElementById('load-calendly');
+  btn?.addEventListener('click', () => {
+    const url = (btn as HTMLElement).dataset.url;
+    if (!url) return;
+    const slot = document.getElementById('calendly-slot');
+    const consent = document.getElementById('calendly-consent');
+    if (slot) {
+      const iframe = document.createElement('iframe');
+      iframe.src = url + '?hide_gdpr_banner=1';
+      iframe.title = 'Calendly booking';
+      slot.appendChild(iframe);
+    }
+    consent?.remove();
+  });
+</script>
