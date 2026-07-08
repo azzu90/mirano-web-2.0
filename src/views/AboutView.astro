@@ -35,7 +35,6 @@ const copy: Record<Lang, any> = {
       ['Direct communication', 'You talk to the founder and to the engineers doing the work. No account layer.'],
       ['Own products keep us honest', 'We ship and operate our own SaaS – so we know what delivery really costs.'],
     ],
-    photoNote: 'Photo coming soon',
   },
   de: {
     title: 'Über uns – Mirano Solutions',
@@ -66,7 +65,6 @@ const copy: Record<Lang, any> = {
       ['Direkte Wege', 'Sie sprechen mit dem Gründer und den Engineers, die die Arbeit machen. Keine Account-Schicht.'],
       ['Eigene Produkte halten uns ehrlich', 'Wir shippen und betreiben eigene SaaS – deshalb wissen wir, was Lieferung wirklich kostet.'],
     ],
-    photoNote: 'Foto folgt in Kürze',
   },
   hr: {
     title: 'O nama – Mirano Solutions',
@@ -97,7 +95,6 @@ const copy: Record<Lang, any> = {
       ['Izravna komunikacija', 'Razgovarate s osnivačem i inženjerima koji rade posao. Bez posrednika.'],
       ['Vlastiti proizvodi drže nas iskrenima', 'Isporučujemo i održavamo vlastiti SaaS – zato znamo što isporuka stvarno košta.'],
     ],
-    photoNote: 'Fotografija uskoro',
   },
 };
 const t = copy[lang];
@@ -114,10 +111,8 @@ const t = copy[lang];
         {t.story.map((p: string) => <p class="story-p">{p}</p>)}
       </div>
       <div class="founder-side reveal">
-        <div class="founder-photo-lg" aria-hidden="true">
-          <!-- TODO: Founder-Porträt einsetzen -->
-          <span>AZ</span>
-          <small>{t.photoNote}</small>
+        <div class="founder-photo-lg">
+          <img src="/images/armin.jpg" alt="Armin Zalihic, Gründer von Mirano Solutions" width="800" height="600" />
         </div>
         <ol class="milestones">
           <span class="milestones-label">{t.milestonesLabel}</span>
@@ -173,24 +168,14 @@ const t = copy[lang];
   }
   .founder-photo-lg {
     aspect-ratio: 4 / 3;
-    border: 1px dashed var(--mirano-border);
     border-radius: var(--radius-card);
-    background: var(--mirano-limestone);
-    display: grid;
-    place-items: center;
-    align-content: center;
-    gap: 0.5rem;
-    color: var(--mirano-muted);
+    overflow: hidden;
   }
-  .founder-photo-lg span {
-    font-family: var(--font-mono);
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--mirano-orange-deep);
-  }
-  .founder-photo-lg small {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+  .founder-photo-lg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 10%;
   }
   .milestones {
     list-style: none;

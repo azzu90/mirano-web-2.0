@@ -72,9 +72,8 @@ const t = copy[lang];
       </div>
 
       <div class="founder card-dark reveal">
-        <div class="founder-photo" aria-hidden="true">
-          <!-- TODO: Founder-Porträt einsetzen (Platzhalter) -->
-          <span>AZ</span>
+        <div class="founder-photo">
+          <img src="/images/armin.jpg" alt="Armin Zalihic, Gründer von Mirano Solutions" width="72" height="72" />
         </div>
         <blockquote>{t.quote}</blockquote>
         <div class="founder-meta">
@@ -142,12 +141,13 @@ const t = copy[lang];
     border-radius: 50%;
     background: var(--mirano-graphite);
     border: 1px solid #4a545c;
-    display: grid;
-    place-items: center;
-    font-family: var(--font-mono);
-    font-weight: 500;
-    color: var(--mirano-orange-light);
-    letter-spacing: 0.06em;
+    overflow: hidden;
+  }
+  .founder-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
   }
   blockquote {
     font-weight: 500;

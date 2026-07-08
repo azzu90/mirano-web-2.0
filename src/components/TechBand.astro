@@ -6,7 +6,12 @@ import * as icons from 'simple-icons';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
 
-type Tech = { label: string; icon?: string };
+type Tech = { label: string; icon?: string; svg?: string };
+
+// Generisches Sparkle-Icon für Chips ohne Marken-Icon; Größe/Farbe kommen wie
+// bei den simple-icons aus .tech-icon :global(svg).
+const sparkleSvg =
+  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><title>LLM Integration</title><path d="M10 4c.75 4.05 3.2 6.5 7.25 7.25v1.5C13.2 13.5 10.75 15.95 10 20h-1.5c-.75-4.05-3.2-6.5-7.25-7.25v-1.5C5.3 10.5 7.75 8.05 8.5 4H10Zm9.25-2c.4 2.15 1.6 3.35 3.75 3.75v1.5c-2.15.4-3.35 1.6-3.75 3.75h-1.5c-.4-2.15-1.6-3.35-3.75-3.75v-1.5c2.15-.4 3.35-1.6 3.75-3.75h1.5Z"/></svg>';
 
 const groups: { name: string; items: Tech[] }[] = [
   {
@@ -59,8 +64,8 @@ const groups: { name: string; items: Tech[] }[] = [
     name: 'AI',
     items: [
       { label: 'Claude', icon: 'siClaude' },
-      { label: 'Cursor' },
-      { label: 'LLM Integration' },
+      { label: 'Cursor', icon: 'siCursor' },
+      { label: 'LLM Integration', svg: sparkleSvg },
     ],
   },
 ];
@@ -93,7 +98,7 @@ const t = copy[lang];
             <span class="tech-group-name">{group.name}</span>
             <ul>
               {group.items.map((tech) => {
-                const svg = iconSvg(tech.icon);
+                const svg = tech.svg ?? iconSvg(tech.icon);
                 return (
                   <li class="tech-chip">
                     {svg && <span class="tech-icon" set:html={svg} />}
