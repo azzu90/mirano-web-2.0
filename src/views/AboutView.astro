@@ -14,6 +14,7 @@ const copy: Record<Lang, any> = {
     lead: 'Mirano Solutions was founded in 2025 in Zagreb – built on 15+ years of IT experience and one conviction: senior quality and direct communication beat scale.',
     storyEyebrow: 'The founder story',
     storyTitle: 'From systems integration to building organizations',
+    zagrebAlt: 'Zagreb, Croatia',
     story: [
       'Raised in Munich, Armin Zalihic has worked in IT since 2008 – from systems integration and network security to SAP test management (2018) and UX-certified project leadership (CPUX-F, 2020).',
       'For three years he was on the ground in Zagreb, involved in building the Croatian branch of a German IT group – the first year as part of a nearshore project through PROCON IT (a CONET company), then two years employed directly by the holding. The team grew to over 100 employees.',
@@ -49,6 +50,7 @@ const copy: Record<Lang, any> = {
     lead: 'Mirano Solutions wurde 2025 in Zagreb gegründet – auf Basis von über 15 Jahren IT-Erfahrung und einer Überzeugung: Senior-Qualität und direkte Wege schlagen Größe.',
     storyEyebrow: 'Die Founder-Story',
     storyTitle: 'Vom Systemintegrator zum Organisationsaufbau',
+    zagrebAlt: 'Zagreb, Kroatien',
     story: [
       'Aufgewachsen in München, arbeitet Armin Zalihic seit 2008 in der IT – vom Systemintegrator über Netzwerk-Security bis zu SAP-Testmanagement (2018) und UX-zertifizierter Projektleitung (CPUX-F, 2020).',
       'Drei Jahre war er vor Ort in Zagreb am Aufbau der kroatischen Niederlassung einer deutschen IT-Gruppe beteiligt – das erste Jahr im Rahmen eines Nearshore-Projekts über PROCON IT (ein CONET-Unternehmen), anschließend zwei Jahre direkt bei der Holding angestellt. Das Team wuchs auf über 100 Mitarbeitende.',
@@ -84,6 +86,7 @@ const copy: Record<Lang, any> = {
     lead: 'Mirano Solutions osnovan je 2025. u Zagrebu – na temelju više od 15 godina iskustva u IT-u i jednog uvjerenja: senior kvaliteta i izravna komunikacija pobjeđuju veličinu.',
     storyEyebrow: 'Priča osnivača',
     storyTitle: 'Od sistemske integracije do izgradnje organizacija',
+    zagrebAlt: 'Zagreb, Hrvatska',
     story: [
       'Odrastao u Münchenu, Armin Zalihić u IT-u radi od 2008. – od sistemske integracije i mrežne sigurnosti do SAP test managementa (2018.) i UX-certificiranog vođenja projekata (CPUX-F, 2020.).',
       'Tri godine bio je u Zagrebu, uključen u izgradnju hrvatske podružnice njemačke IT grupe – prvu godinu u okviru nearshore projekta preko PROCON IT-a (tvrtke iz CONET grupe), zatim dvije godine izravno zaposlen u holdingu. Tim je narastao na više od 100 zaposlenih.',
@@ -123,7 +126,11 @@ const t = copy[lang];
       <div class="reveal">
         <span class="eyebrow" style="display:block;margin-bottom:1rem">{t.storyEyebrow}</span>
         <h2 style="margin-bottom:1.25rem">{t.storyTitle}</h2>
-        {t.story.map((p: string) => <p class="story-p">{p}</p>)}
+        <p class="story-p">{t.story[0]}</p>
+        <figure class="zagreb-figure">
+          <img src="/images/zagreb-atmosphere.jpg" alt={t.zagrebAlt} width="770" height="900" loading="lazy" />
+        </figure>
+        {t.story.slice(1).map((p: string) => <p class="story-p">{p}</p>)}
         <a class="linkedin-link" href={t.linkedinUrl} target="_blank" rel="noopener">{t.linkedinLabel}</a>
       </div>
       <div class="founder-side reveal">
@@ -196,6 +203,22 @@ const t = copy[lang];
   }
   .linkedin-link:hover {
     text-decoration: underline;
+  }
+  .zagreb-figure {
+    float: right;
+    width: 42%;
+    max-width: 220px;
+    aspect-ratio: 3 / 4;
+    margin: 0.25rem 0 1.5rem 1.75rem;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    border: 1px solid var(--mirano-border);
+  }
+  .zagreb-figure img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .founder-side {
     display: grid;
@@ -305,6 +328,19 @@ const t = copy[lang];
     }
     .principles-grid {
       grid-template-columns: 1fr;
+    }
+    .zagreb-figure {
+      width: 55%;
+      max-width: 240px;
+      margin: 0.25rem 0 1.25rem 1.25rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .zagreb-figure {
+      float: none;
+      width: 60%;
+      max-width: 220px;
+      margin: 0 auto 1.5rem;
     }
   }
   @media (max-width: 560px) {
