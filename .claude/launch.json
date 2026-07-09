@@ -5,7 +5,8 @@
       "name": "astro-preview",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["astro", "preview"],
-      "port": 4321
+      "port": 4321,
+      "autoPort": true
     }
   ]
 }

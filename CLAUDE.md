@@ -12,6 +12,11 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 - Ausnahme: Die PLIMA-Feature-Card auf /products trägt PLIMA-Markenfarben (--plima-primary #6B3FE4, Verlauf #9A84F4→#6B3FE4, Grün #40AF74 / Text #1E7A4C), strikt auf diese Card begrenzt.
 
+## Inhaltliche Festlegungen
+
+- Headsquare: Nennung entfernt (SHOW_HEADSQUARE=false in src/components/CaseTeaser.astro und src/views/ReferencesView.astro).
+- [x] IBAN im Impressum eingetragen (HR4724020061101287518, Erste & Steiermärkische Bank d.d.).
+
 ## Documentation
 
 Full documentation: https://docs.astro.build

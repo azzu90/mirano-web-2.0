@@ -105,7 +105,7 @@ const t = copy[lang];
       </div>
 
       <div class="switcher-panels">
-        <div class="switcher-panel is-active" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects">
+        <div class="switcher-panel is-active" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects" aria-hidden="false">
           <ol class="ledger-rows">
             {
               t.ledger.map((row: any) => (
@@ -131,7 +131,7 @@ const t = copy[lang];
           </div>
         </div>
 
-        <div class="switcher-panel" id="panel-products" role="tabpanel" aria-labelledby="tab-products" hidden>
+        <div class="switcher-panel" id="panel-products" role="tabpanel" aria-labelledby="tab-products" aria-hidden="true">
           <ol class="ledger-rows">
             {
               t.products.map((row: any) => (
@@ -296,13 +296,21 @@ const t = copy[lang];
     color: var(--mirano-muted);
   }
 
-  .switcher-panel {
-    opacity: 1;
-    transition: opacity var(--dur-base) var(--ease-out);
+  /* Beide Panels liegen in derselben Grid-Zelle: Höhe = höchstes Panel, konstant */
+  .switcher-panels {
+    display: grid;
   }
-  .switcher-panel.is-leaving,
-  .switcher-panel.is-entering {
+  .switcher-panel {
+    grid-area: 1 / 1;
     opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      visibility var(--dur-base) linear;
+  }
+  .switcher-panel.is-active {
+    opacity: 1;
+    visibility: visible;
   }
 
   .ledger-rows {
@@ -488,29 +496,17 @@ const t = copy[lang];
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let active = 0;
     let timer: ReturnType<typeof setTimeout> | null = null;
-    let switching = false;
 
     const show = (idx: number) => {
-      if (idx === active || switching) return;
-      switching = true;
+      if (idx === active) return;
       const from = panels[active];
       const to = panels[idx];
       tabs.forEach((t, i) => t.setAttribute('aria-selected', String(i === idx)));
-      from.classList.add('is-leaving');
-      window.setTimeout(() => {
-        from.hidden = true;
-        from.classList.remove('is-leaving', 'is-active');
-        to.hidden = false;
-        to.classList.add('is-entering');
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => {
-            to.classList.remove('is-entering');
-            to.classList.add('is-active');
-            switching = false;
-          })
-        );
-        active = idx;
-      }, reduced ? 0 : 220);
+      from.classList.remove('is-active');
+      from.setAttribute('aria-hidden', 'true');
+      to.classList.add('is-active');
+      to.setAttribute('aria-hidden', 'false');
+      active = idx;
     };
 
     const stopAuto = () => {

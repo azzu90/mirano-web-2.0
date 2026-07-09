@@ -1,12 +1,12 @@
 ---
 // Impressum / Legal Notice / Impresum – Pflichtangaben nach kroatischem Recht
 // (Zakon o trgovačkim društvima, čl. 21): Firma, Sitz, Registergericht, MBS, OIB,
-// Stammkapital, Geschäftsführung, Bank. IBAN: TODO (liefert Armin).
+// Stammkapital, Geschäftsführung, Bank.
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
-const IBAN = 'HR__ ____ ____ ____ ____ _'; // TODO: IBAN Erste & Steiermärkische Bank eintragen
+const IBAN = 'HR4724020061101287518';
 
 const copy: Record<Lang, any> = {
   en: { title: 'Legal notice – Mirano Solutions', desc: 'Legal notice and mandatory company information of Mirano Solutions d.o.o., Zagreb.', eyebrow: 'Legal', h1: 'Legal notice' },
