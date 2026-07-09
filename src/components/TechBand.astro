@@ -13,6 +13,12 @@ type Tech = { label: string; icon?: string; svg?: string };
 const sparkleSvg =
   '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><title>LLM Integration</title><path d="M10 4c.75 4.05 3.2 6.5 7.25 7.25v1.5C13.2 13.5 10.75 15.95 10 20h-1.5c-.75-4.05-3.2-6.5-7.25-7.25v-1.5C5.3 10.5 7.75 8.05 8.5 4H10Zm9.25-2c.4 2.15 1.6 3.35 3.75 3.75v1.5c-2.15.4-3.35 1.6-3.75 3.75h-1.5c-.4-2.15-1.6-3.35-3.75-3.75v-1.5c2.15-.4 3.35-1.6 3.75-3.75h1.5Z"/></svg>';
 
+// AWS hat kein Marken-Icon in simple-icons (Amazon lässt die Nutzung des
+// Logos nur unter eigener Trademark-Policy zu) – generisches Cloud-Icon
+// als neutraler Platzhalter, im selben Stil wie die anderen Chips.
+const cloudSvg =
+  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><title>AWS</title><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4a7.49 7.49 0 0 0-7.35 6.04A5.5 5.5 0 0 0 6 21h13a5 5 0 0 0 .35-10.96Z"/></svg>';
+
 const groups: { name: string; items: Tech[] }[] = [
   {
     name: 'Frontend',
@@ -37,7 +43,7 @@ const groups: { name: string; items: Tech[] }[] = [
   {
     name: 'Cloud & DevOps',
     items: [
-      { label: 'AWS' },
+      { label: 'AWS', svg: cloudSvg },
       { label: 'Google Cloud', icon: 'siGooglecloud' },
       { label: 'Docker', icon: 'siDocker' },
       { label: 'Kubernetes', icon: 'siKubernetes' },
