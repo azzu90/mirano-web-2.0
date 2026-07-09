@@ -119,6 +119,12 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     background: color-mix(in srgb, var(--mirano-porcelain) 88%, transparent);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--mirano-border);
+    box-shadow: 0 10px 28px -22px rgba(34, 40, 44, 0);
+    transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  .site-header.is-scrolled {
+    background: color-mix(in srgb, var(--mirano-porcelain) 97%, transparent);
+    box-shadow: 0 10px 28px -22px rgba(34, 40, 44, 0.35);
   }
   .header-inner {
     display: flex;
@@ -279,4 +285,24 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     );
     if (mobileNav) mobileNav.hidden = open;
   });
+
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (header) {
+    let ticking = false;
+    const update = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      ticking = false;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+    update();
+  }
 </script>

@@ -82,15 +82,26 @@ const skipLabel = { en: 'Skip to content', de: 'Zum Inhalt springen', hr: 'Presk
     <Footer />
     <script>
       const els = document.querySelectorAll('.reveal');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if ('IntersectionObserver' in window && els.length) {
         const io = new IntersectionObserver(
           (entries) => {
-            for (const e of entries) {
-              if (e.isIntersecting) {
-                e.target.classList.add('is-visible');
-                io.unobserve(e.target);
+            // Gleichzeitig eintretende Elemente in DOM-Reihenfolge staffeln (einmalig).
+            const hits = entries
+              .filter((e) => e.isIntersecting)
+              .map((e) => e.target as HTMLElement)
+              .sort((a, b) =>
+                a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
+              );
+            hits.forEach((el, i) => {
+              io.unobserve(el);
+              const delay = reduced ? 0 : Math.min(i, 8) * 75;
+              if (delay) {
+                el.style.transitionDelay = `${delay}ms`;
+                window.setTimeout(() => el.style.removeProperty('transition-delay'), delay + 450);
               }
-            }
+              el.classList.add('is-visible');
+            });
           },
           { threshold: 0.15 }
         );

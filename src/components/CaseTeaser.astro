@@ -113,7 +113,7 @@ const t = copy[lang];
     gap: 1.75rem;
     padding: 2.25rem;
     text-decoration: none;
-    transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out);
+    transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
   .case:hover {
     border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
@@ -192,28 +192,5 @@ const t = copy[lang];
 </style>
 
 <script>
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const nums = document.querySelectorAll<HTMLElement>('[data-countup]');
-  if (!reduced && nums.length && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          const el = e.target as HTMLElement;
-          io.unobserve(el);
-          const target = parseInt(el.dataset.countup || '0', 10);
-          const start = performance.now();
-          const dur = 900;
-          const tick = (now: number) => {
-            const p = Math.min((now - start) / dur, 1);
-            el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.4 }
-    );
-    nums.forEach((n) => io.observe(n));
-  }
+  import '../scripts/countup';
 </script>
