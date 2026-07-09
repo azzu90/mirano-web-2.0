@@ -17,6 +17,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 - Headsquare: Nennung entfernt (SHOW_HEADSQUARE=false in src/components/CaseTeaser.astro und src/views/ReferencesView.astro).
 - [x] IBAN im Impressum eingetragen (HR4724020061101287518, Erste & Steiermärkische Bank d.d.).
 - Medizin-SaaS: nur als "vertikales SaaS für den Medizinbereich, kroatischer Markt, Q1/2027" beschreiben – nie Produktname oder Details.
+- Das Wort "Body-Leasing" (DE/EN/HR) wird auf der Website nicht verwendet. Die Haltung dahinter bleibt: persönlich bekannte Profile statt CV-Datenbanken, eigene Produkte als Beweis für Delivery-Qualität.
 
 ## Documentation
 

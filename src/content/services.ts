@@ -26,7 +26,7 @@ export const services: Record<ServiceSlug, Record<Lang, ServiceContent>> = {
   'software-engineering': {
     en: {
       title: 'Software Engineering',
-      metaDesc: 'Web applications, platforms and integrations from senior EU teams – from architecture to operations. Fixed price or T&M.',
+      metaDesc: 'Web applications, platforms and integrations from senior-led EU teams – from architecture to operations. Fixed price or T&M.',
       eyebrow: 'Service · Engineering',
       lead: 'We design, build and operate modern web and enterprise software – robust, scalable and documented. The same engineers who build our own products work in your project.',
       offerTitle: 'What we build',
@@ -47,7 +47,7 @@ export const services: Record<ServiceSlug, Record<Lang, ServiceContent>> = {
     },
     de: {
       title: 'Software Engineering',
-      metaDesc: 'Web-Anwendungen, Plattformen und Integrationen von Senior-Teams aus der EU – von Architektur bis Betrieb. Festpreis oder T&M.',
+      metaDesc: 'Web-Anwendungen, Plattformen und Integrationen von Senior-geführten Teams aus der EU – von Architektur bis Betrieb. Festpreis oder T&M.',
       eyebrow: 'Leistung · Engineering',
       lead: 'Wir konzipieren, bauen und betreiben moderne Web- und Enterprise-Software – robust, skalierbar und dokumentiert. Dieselben Engineers, die unsere eigenen Produkte bauen, arbeiten in Ihrem Projekt.',
       offerTitle: 'Was wir bauen',
@@ -68,7 +68,7 @@ export const services: Record<ServiceSlug, Record<Lang, ServiceContent>> = {
     },
     hr: {
       title: 'Razvoj softvera',
-      metaDesc: 'Web aplikacije, platforme i integracije senior timova iz EU – od arhitekture do produkcije. Fiksna cijena ili T&M.',
+      metaDesc: 'Web aplikacije, platforme i integracije timova vođenih seniorima iz EU – od arhitekture do produkcije. Fiksna cijena ili T&M.',
       eyebrow: 'Usluga · Engineering',
       lead: 'Osmišljavamo, gradimo i održavamo moderan web i enterprise softver – robustan, skalabilan i dokumentiran. Isti inženjeri koji grade naše proizvode rade na vašem projektu.',
       offerTitle: 'Što gradimo',
