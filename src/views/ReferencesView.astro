@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBox from '../components/CtaBox.astro';
+import PlimaTechStack from '../components/PlimaTechStack.astro';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
 const SHOW_HEADSQUARE = false;
@@ -182,7 +183,7 @@ const t = copy[lang];
               ))}
             </ol>
           </div>
-          <!-- TODO: Tech-Logos je Case Study ergänzen, sobald Stack-Liste vorliegt -->
+          {c.id === 'plima' && <PlimaTechStack lang={lang} />}
         </div>
       </section>
     ))
@@ -361,6 +362,9 @@ const t = copy[lang];
     font-size: 0.875rem;
     color: var(--mirano-slate);
     margin-top: 0.3rem;
+  }
+  .container :global(.plima-tech) {
+    margin-top: 2.5rem;
   }
   .ref-note {
     padding-block: 0 1rem;

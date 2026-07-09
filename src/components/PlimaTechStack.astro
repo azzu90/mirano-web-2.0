@@ -1,0 +1,87 @@
+---
+// Kompakte Tech-Stack-Chip-Zeile speziell für PLIMA (nicht das allgemeine
+// Technologie-Band – siehe TechBand.astro). Nur bestätigte Technologien.
+import * as icons from 'simple-icons';
+import { type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const items = [
+  { label: 'Java', icon: 'siOpenjdk' },
+  { label: 'Spring Boot', icon: 'siSpringboot' },
+  { label: 'Vaadin', icon: 'siVaadin' },
+];
+
+const iconSvg = (name: string): string | null => {
+  const icon = (icons as Record<string, { svg: string } | undefined>)[name];
+  return icon?.svg ?? null;
+};
+
+const labels: Record<Lang, string> = {
+  en: 'Tech Stack',
+  de: 'Tech-Stack',
+  hr: 'Tehnologije',
+};
+---
+
+<div class="plima-tech">
+  <span class="plima-tech-label">{labels[lang]}</span>
+  <ul class="plima-tech-list">
+    {
+      items.map((tech) => {
+        const svg = iconSvg(tech.icon);
+        return (
+          <li class="plima-tech-chip">
+            {svg && <span class="plima-tech-icon" set:html={svg} />}
+            {tech.label}
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>
+
+<style>
+  .plima-tech {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .plima-tech-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-muted);
+  }
+  .plima-tech-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .plima-tech-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--mirano-slate);
+    background: var(--mirano-white);
+    border: 1px solid var(--mirano-border);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+  }
+  .plima-tech-icon :global(svg) {
+    width: 15px;
+    height: 15px;
+    fill: var(--mirano-muted);
+  }
+</style>

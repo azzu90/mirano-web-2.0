@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBox from '../components/CtaBox.astro';
+import PlimaTechStack from '../components/PlimaTechStack.astro';
 import { getLang, type Lang } from '../i18n';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -101,6 +102,7 @@ const t = copy[lang];
             <a href="https://plima.cloud" rel="noopener" class="btn-primary">{t.plima.cta}</a>
           </div>
           <p class="plima-by">{t.plima.by}</p>
+          <PlimaTechStack lang={lang} />
         </div>
         <div class="plima-visual">
           {
@@ -200,6 +202,9 @@ const t = copy[lang];
     letter-spacing: 0.06em;
     color: var(--mirano-muted);
     margin-top: 1rem;
+  }
+  .plima-copy :global(.plima-tech) {
+    margin-top: 1.25rem;
   }
   .plima-shot {
     width: 100%;
