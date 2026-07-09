@@ -1,6 +1,8 @@
 ---
 // Kompakte Tech-Stack-Chip-Zeile speziell für PLIMA (nicht das allgemeine
 // Technologie-Band – siehe TechBand.astro). Nur bestätigte Technologien.
+// Hover-Farben nutzen --plima-primary/--plima-highlight, die von der
+// einbindenden Seite (ProductsView/ReferencesView) bereitgestellt werden müssen.
 import * as icons from 'simple-icons';
 import { type Lang } from '../i18n';
 
@@ -79,10 +81,18 @@ const labels: Record<Lang, string> = {
     border: 1px solid var(--mirano-border);
     border-radius: 999px;
     padding: 0.45rem 0.9rem;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .plima-tech-chip:hover {
+    border-color: color-mix(in srgb, var(--plima-primary) 45%, var(--mirano-border));
   }
   .plima-tech-icon :global(svg) {
     width: 15px;
     height: 15px;
     fill: var(--mirano-muted);
+    transition: fill var(--dur-fast) var(--ease-out);
+  }
+  .plima-tech-chip:hover .plima-tech-icon :global(svg) {
+    fill: var(--plima-highlight);
   }
 </style>
