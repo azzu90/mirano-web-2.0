@@ -8,6 +8,7 @@ import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { getLang, l, stripLang, langs } from '../i18n';
@@ -52,6 +53,7 @@ const skipLabel = { en: 'Skip to content', de: 'Zum Inhalt springen', hr: 'Presk
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#FDFCFA" />
+    <Analytics />
     <script
       type="application/ld+json"
       set:html={JSON.stringify({
