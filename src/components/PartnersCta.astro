@@ -7,12 +7,10 @@ const lang = getLang(Astro.currentLocale);
 const partners = [
   { name: 'Headsquare', slug: 'headsquare' },
   { name: 'Serapion', slug: 'serapion' },
-  { name: 'Mirasoles', slug: 'mirasoles' },
-  { name: 'Respekt Engineering', slug: 'respekt-engineering' },
-  { name: 'If-Tech', slug: 'if-tech' },
   { name: 'Visoka Razina', slug: 'visoka-razina' },
   { name: 'Respect-ing', slug: 'respect-ing' },
   { name: 'Mira Solis', slug: 'mira-solis' },
+  { name: 'If-Tech', slug: 'if-tech' },
 ].map((p) => {
   const dir = path.join(process.cwd(), 'public/logo/partners');
   const svgPath = path.join(dir, `${p.slug}.svg`);
@@ -125,7 +123,6 @@ const t = copy[lang];
   .partner-logo {
     display: block;
     height: 32px;
-    max-height: 32px;
     width: auto;
     filter: grayscale(100%);
     opacity: 0.55;
