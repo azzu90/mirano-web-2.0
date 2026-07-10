@@ -183,7 +183,7 @@ const t = copy[lang];
               ))}
             </ol>
           </div>
-          {c.id === 'plima' && <PlimaTechStack lang={lang} />}
+          {c.id === 'plima' && <PlimaTechStack lang={lang} variant="brand" />}
         </div>
       </section>
     ))
@@ -203,11 +203,6 @@ const t = copy[lang];
 </script>
 
 <style>
-  #plima {
-    /* PLIMA-Markenfarben – bewusste Ausnahme, nur für die Tech-Stack-Chips dieses Case */
-    --plima-primary: #6d28d9;
-    --plima-highlight: #8444ee;
-  }
   .case-head {
     max-width: 46rem;
     margin-bottom: 2.5rem;

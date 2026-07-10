@@ -6,9 +6,7 @@ import * as icons from 'simple-icons';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
 
-// noBrandHover: Cursor hat zwar ein simple-icons-Icon, aber laut Vorgabe soll der
-// Hover hier (wie bei den Chips ganz ohne Icon) neutral bleiben.
-type Tech = { label: string; icon?: string; svg?: string; noBrandHover?: boolean };
+type Tech = { label: string; icon?: string; svg?: string };
 
 // Generisches Sparkle-Icon für Chips ohne Marken-Icon; Größe/Farbe kommen wie
 // bei den simple-icons aus .tech-icon :global(svg).
@@ -20,6 +18,11 @@ const sparkleSvg =
 // als neutraler Platzhalter, im selben Stil wie die anderen Chips.
 const cloudSvg =
   '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><title>AWS</title><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4a7.49 7.49 0 0 0-7.35 6.04A5.5 5.5 0 0 0 6 21h13a5 5 0 0 0 .35-10.96Z"/></svg>';
+
+// Playwright hat kein Marken-Icon in simple-icons – generisches Browser/Play-Icon
+// als neutraler Platzhalter, im selben Stil wie die anderen Chips ohne Marken-Icon.
+const playwrightSvg =
+  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><title>Playwright</title><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm0 2h14v3H5V5Zm0 5h14v9H5v-9Zm5 1.5v6l5-3-5-3Z"/></svg>';
 
 const groups: { name: string; items: Tech[] }[] = [
   {
@@ -58,7 +61,7 @@ const groups: { name: string; items: Tech[] }[] = [
     name: 'QA & Testing',
     items: [
       { label: 'Cypress', icon: 'siCypress' },
-      { label: 'Playwright' },
+      { label: 'Playwright', svg: playwrightSvg },
       { label: 'Selenium', icon: 'siSelenium' },
       { label: 'JMeter', icon: 'siApachejmeter' },
     ],
@@ -71,7 +74,7 @@ const groups: { name: string; items: Tech[] }[] = [
     name: 'AI',
     items: [
       { label: 'Claude', icon: 'siClaude' },
-      { label: 'Cursor', icon: 'siCursor', noBrandHover: true },
+      { label: 'Cursor', icon: 'siCursor' },
       { label: 'LLM Integration', svg: sparkleSvg },
     ],
   },
@@ -120,7 +123,7 @@ const t = copy[lang];
             <ul>
               {group.items.map((tech) => {
                 const svg = tech.svg ?? iconSvg(tech.icon);
-                const brandHex = tech.noBrandHover ? null : iconHex(tech.icon);
+                const brandHex = iconHex(tech.icon);
                 const style = brandHex ? `--brand: #${brandHex}` : undefined;
                 return (
                   <li class="tech-chip" style={style}>

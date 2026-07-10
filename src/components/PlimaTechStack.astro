@@ -1,15 +1,18 @@
 ---
 // Kompakte Tech-Stack-Chip-Zeile speziell für PLIMA (nicht das allgemeine
 // Technologie-Band – siehe TechBand.astro). Nur bestätigte Technologien.
-// Hover-Farben nutzen --plima-primary/--plima-highlight, die von der
-// einbindenden Seite (ProductsView/ReferencesView) bereitgestellt werden müssen.
+// variant="plima" (Default, /products): Hover nutzt --plima-primary/--plima-highlight,
+//   die von ProductsView bereitgestellt werden – bewusste Marken-Ausnahme, nur dort.
+// variant="brand" (/references, PLIMA-Case): Hover nutzt die Original-Markenfarbe je
+//   Icon aus simple-icons, gleiche --brand-Technik wie im allgemeinen TechBand.astro.
 import * as icons from 'simple-icons';
 import { type Lang } from '../i18n';
 
 interface Props {
   lang: Lang;
+  variant?: 'plima' | 'brand';
 }
-const { lang } = Astro.props;
+const { lang, variant = 'plima' } = Astro.props;
 
 const items = [
   { label: 'Java', icon: 'siOpenjdk' },
@@ -23,6 +26,11 @@ const iconSvg = (name: string): string | null => {
   return icon?.svg ?? null;
 };
 
+const iconHex = (name: string): string | null => {
+  const icon = (icons as Record<string, { hex: string } | undefined>)[name];
+  return icon?.hex ?? null;
+};
+
 const labels: Record<Lang, string> = {
   en: 'Tech Stack',
   de: 'Tech-Stack',
@@ -30,14 +38,16 @@ const labels: Record<Lang, string> = {
 };
 ---
 
-<div class="plima-tech">
+<div class:list={['plima-tech', variant === 'brand' && 'plima-tech--brand']}>
   <span class="plima-tech-label">{labels[lang]}</span>
   <ul class="plima-tech-list">
     {
       items.map((tech) => {
         const svg = iconSvg(tech.icon);
+        const brandHex = variant === 'brand' ? iconHex(tech.icon) : null;
+        const style = brandHex ? `--brand: #${brandHex}` : undefined;
         return (
-          <li class="plima-tech-chip">
+          <li class="plima-tech-chip" style={style}>
             {svg && <span class="plima-tech-icon" set:html={svg} />}
             {tech.label}
           </li>
@@ -94,5 +104,13 @@ const labels: Record<Lang, string> = {
   }
   .plima-tech-chip:hover .plima-tech-icon :global(svg) {
     fill: var(--plima-highlight);
+  }
+
+  /* variant="brand": Original-Markenfarbe je Icon statt PLIMA-Lila (siehe TechBand.astro) */
+  .plima-tech--brand .plima-tech-chip:hover {
+    border-color: color-mix(in srgb, var(--brand, var(--mirano-orange)) 45%, var(--mirano-border));
+  }
+  .plima-tech--brand .plima-tech-chip:hover .plima-tech-icon :global(svg) {
+    fill: var(--brand, var(--mirano-orange));
   }
 </style>

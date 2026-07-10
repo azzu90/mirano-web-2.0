@@ -10,7 +10,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Design-Regeln
 
-- Ausnahme: Die PLIMA-Feature-Card auf /products sowie der PLIMA-Case auf /references (nur die Tech-Stack-Chips) tragen PLIMA-Markenfarben (--plima-primary #6D28D9, --plima-highlight #8444EE, Verlauf #9A84F4→#6B3FE4 für Accent-Leiste/Badge, Grün #40AF74 / Text #1E7A4C), strikt auf diese Elemente begrenzt. CTA-Button "plima.cloud besuchen" ist Verlauf (--plima-primary → --plima-highlight), nicht mehr flächig.
+- Ausnahme: Die PLIMA-Feature-Card auf /products trägt PLIMA-Markenfarben (--plima-primary #6D28D9, --plima-highlight #8444EE, Verlauf #9A84F4→#6B3FE4 für Accent-Leiste/Badge, Grün #40AF74 / Text #1E7A4C), strikt auf diese Card begrenzt. CTA-Button "plima.cloud besuchen" ist Verlauf (--plima-primary → --plima-highlight), nicht mehr flächig. Die PLIMA-Markenfarben-Ausnahme gilt NUR auf /products, nicht auf /references – der PLIMA-Case dort nutzt für seine Tech-Stack-Chips wie das allgemeine TechBand.astro die Original-Markenfarbe je Icon aus simple-icons (PlimaTechStack.astro, variant="brand").
 
 ## Inhaltliche Festlegungen
 
