@@ -204,11 +204,18 @@ const t = copy[lang];
   .plima-copy :global(.plima-tech) {
     margin-top: 1.25rem;
   }
+  .plima-visual {
+    /* Eigenes Seitenverhältnis statt Grid-Stretch: das Dashboard-Bild hat 1516×843px
+       (~1.8:1) – ohne align-self: start würde die Zelle auf die Höhe der Textspalte
+       gestreckt und object-fit: cover hätte rechts/unten beschnitten. */
+    align-self: start;
+    aspect-ratio: 1516 / 843;
+  }
   .plima-shot {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top left;
+    object-fit: contain;
+    background: var(--mirano-limestone);
     border: 1px solid var(--mirano-border);
     border-radius: var(--radius-card);
   }
