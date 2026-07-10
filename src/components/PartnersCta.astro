@@ -1,7 +1,24 @@
 ---
 import { getLang, l, type Lang } from '../i18n';
+import fs from 'node:fs';
+import path from 'node:path';
 const lang = getLang(Astro.currentLocale);
-const partners = ['Serapion', 'Mirasoles', 'Respekt Engineering', 'If-Tech'];
+
+const partners = [
+  { name: 'Headsquare', slug: 'headsquare' },
+  { name: 'Serapion', slug: 'serapion' },
+  { name: 'Mirasoles', slug: 'mirasoles' },
+  { name: 'Respekt Engineering', slug: 'respekt-engineering' },
+  { name: 'If-Tech', slug: 'if-tech' },
+].map((p) => {
+  const dir = path.join(process.cwd(), 'public/logo/partners');
+  const svgPath = path.join(dir, `${p.slug}.svg`);
+  const pngPath = path.join(dir, `${p.slug}.png`);
+  let logo: string | null = null;
+  if (fs.existsSync(svgPath)) logo = `/logo/partners/${p.slug}.svg`;
+  else if (fs.existsSync(pngPath)) logo = `/logo/partners/${p.slug}.png`;
+  return { ...p, logo };
+});
 
 const copy: Record<Lang, any> = {
   en: {
@@ -41,7 +58,13 @@ const t = copy[lang];
       <span class="partners-label">{t.partnersLabel}</span>
       <ul>
         {partners.map((p) => (
-          <li><!-- TODO: Logo einsetzen, sobald Freigabe vorliegt -->{p}</li>
+          <li>
+            {p.logo ? (
+              <img src={p.logo} alt={`${p.name} – Partner von Mirano Solutions`} class="partner-logo" />
+            ) : (
+              p.name
+            )}
+          </li>
         ))}
       </ul>
     </div>
@@ -95,6 +118,19 @@ const t = copy[lang];
   }
   .partners li:hover {
     color: var(--mirano-slate);
+  }
+  .partner-logo {
+    display: block;
+    height: 32px;
+    max-height: 32px;
+    width: auto;
+    filter: grayscale(100%);
+    opacity: 0.55;
+    transition: filter var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+  }
+  .partner-logo:hover {
+    filter: grayscale(0%);
+    opacity: 1;
   }
 
   .cta {
