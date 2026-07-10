@@ -6,7 +6,9 @@ import * as icons from 'simple-icons';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
 
-type Tech = { label: string; icon?: string; svg?: string };
+// noBrandHover: Cursor hat zwar ein simple-icons-Icon, aber laut Vorgabe soll der
+// Hover hier (wie bei den Chips ganz ohne Icon) neutral bleiben.
+type Tech = { label: string; icon?: string; svg?: string; noBrandHover?: boolean };
 
 // Generisches Sparkle-Icon für Chips ohne Marken-Icon; Größe/Farbe kommen wie
 // bei den simple-icons aus .tech-icon :global(svg).
@@ -69,7 +71,7 @@ const groups: { name: string; items: Tech[] }[] = [
     name: 'AI',
     items: [
       { label: 'Claude', icon: 'siClaude' },
-      { label: 'Cursor', icon: 'siCursor' },
+      { label: 'Cursor', icon: 'siCursor', noBrandHover: true },
       { label: 'LLM Integration', svg: sparkleSvg },
     ],
   },
@@ -86,6 +88,13 @@ const iconSvg = (name?: string): string | null => {
   if (!name) return null;
   const icon = (icons as Record<string, { svg: string } | undefined>)[name];
   return icon?.svg ?? null;
+};
+
+// Offizielle Marken-Farbe (hex) je Icon, für den Hover-Fill je Chip.
+const iconHex = (name?: string): string | null => {
+  if (!name) return null;
+  const icon = (icons as Record<string, { hex: string } | undefined>)[name];
+  return icon?.hex ?? null;
 };
 
 const copy: Record<Lang, { eyebrow: string; h2: string }> = {
@@ -111,8 +120,10 @@ const t = copy[lang];
             <ul>
               {group.items.map((tech) => {
                 const svg = tech.svg ?? iconSvg(tech.icon);
+                const brandHex = tech.noBrandHover ? null : iconHex(tech.icon);
+                const style = brandHex ? `--brand: #${brandHex}` : undefined;
                 return (
-                  <li class="tech-chip">
+                  <li class="tech-chip" style={style}>
                     {svg && <span class="tech-icon" set:html={svg} />}
                     {tech.label}
                   </li>
@@ -177,7 +188,7 @@ const t = copy[lang];
     transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
   .tech-chip:hover {
-    border-color: color-mix(in srgb, var(--mirano-orange) 45%, var(--mirano-border));
+    border-color: color-mix(in srgb, var(--brand, var(--mirano-orange)) 45%, var(--mirano-border));
     color: var(--mirano-ink);
   }
   .tech-icon :global(svg) {
@@ -186,7 +197,7 @@ const t = copy[lang];
     fill: var(--mirano-muted);
   }
   .tech-chip:hover .tech-icon :global(svg) {
-    fill: var(--mirano-orange);
+    fill: var(--brand, var(--mirano-orange));
   }
 
   @media (max-width: 700px) {
