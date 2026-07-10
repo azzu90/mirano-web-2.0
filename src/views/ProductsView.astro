@@ -206,9 +206,11 @@ const t = copy[lang];
   }
   .plima-visual {
     /* Eigenes Seitenverhältnis statt Grid-Stretch: das Dashboard-Bild hat 1516×843px
-       (~1.8:1) – ohne align-self: start würde die Zelle auf die Höhe der Textspalte
-       gestreckt und object-fit: cover hätte rechts/unten beschnitten. */
-    align-self: start;
+       (~1.8:1) – ohne align-self würde die Zelle auf die Höhe der (meist längeren)
+       Textspalte gestreckt und object-fit: cover hätte rechts/unten beschnitten.
+       align-self: center statt start, damit der verbleibende Höhenunterschied zur
+       Textspalte gleichmäßig oben/unten verteilt wird statt als Weißraum nur unten. */
+    align-self: center;
     aspect-ratio: 1516 / 843;
   }
   .plima-shot {
