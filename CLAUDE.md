@@ -18,6 +18,8 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 - [x] IBAN im Impressum eingetragen (HR4724020061101287518, Erste & Steiermärkische Bank d.d.).
 - Medizin-SaaS: nur als "vertikales SaaS für den Medizinbereich, kroatischer Markt, Q1/2027" beschreiben – nie Produktname oder Details.
 - Das Wort "Body-Leasing" (DE/EN/HR) wird auf der Website nicht verwendet. Die Haltung dahinter bleibt: persönlich bekannte Profile statt CV-Datenbanken, eigene Produkte als Beweis für Delivery-Qualität.
+- Founder-Story auf /about: Mirano-zentriert erzählen ("Warum es Mirano gibt"), nicht als Personen-Bio. Bescheidener Ton – kein Selbstlob, keine Zeugnis-Zitate/-Eigenschaftslisten; die Anekdote "am Ende wollten alle Teil davon sein" bleibt draußen. Keine Presse-Links (Lider/Netokracija bewusst weggelassen, Entscheidung Juli 2026). Das Kroatien-Engagement (kleinere kroatische Kunden) wird aktiv erwähnt.
+- Deutsche Navigation/Seitentitel für /about: "Über Mirano" (nicht "Über uns") – in Header, Footer, title-Tag und Eyebrow.
 
 ## Documentation
 
