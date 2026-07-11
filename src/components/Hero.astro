@@ -406,6 +406,11 @@ const t = copy[lang];
     text-align: right;
     flex-shrink: 0;
   }
+  /* Products list has a long PLIMA metric that would otherwise squeeze the kind text into a
+     multi-line wrap; cap this column so the metric wraps instead, keeping row heights aligned. */
+  #panel-products .ledger-side {
+    max-width: 44%;
+  }
   .ledger-metric {
     font-family: var(--font-mono);
     font-size: 0.75rem;
