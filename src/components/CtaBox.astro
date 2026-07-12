@@ -67,6 +67,18 @@ const t = copy[lang];
     right: 0;
     height: 3px;
     background: var(--mirano-gradient);
+    /* Signature-Linie zeichnet sich beim Reveal (wie die Timeline-Segmente auf /references) */
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 600ms var(--ease-out) 150ms;
+  }
+  .cta.is-visible .cta-accent {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-accent {
+      transform: none;
+    }
   }
   .cta .eyebrow {
     display: block;
