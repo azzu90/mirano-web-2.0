@@ -346,13 +346,37 @@ const t = copy[lang];
     grid-area: 1 / 1;
     opacity: 0;
     visibility: hidden;
+    /* Exit schneller als Enter: Panel blendet in 150ms aus, die Zeilen tragen den Eintritt */
     transition:
-      opacity var(--dur-base) var(--ease-out),
-      visibility var(--dur-base) linear;
+      opacity 150ms var(--ease-out),
+      visibility 150ms linear;
   }
   .switcher-panel.is-active {
     opacity: 1;
     visibility: visible;
+  }
+  /* Ledger-Zeilen werden sequenziell "eingetragen": 6px-Rise, 45ms Versatz pro Zeile */
+  .switcher-panel .ledger-row,
+  .switcher-panel .ledger-foot {
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 240ms var(--ease-out),
+      transform 240ms var(--ease-out);
+  }
+  .switcher-panel.is-active .ledger-row,
+  .switcher-panel.is-active .ledger-foot {
+    opacity: 1;
+    transform: none;
+  }
+  .switcher-panel.is-active .ledger-row:nth-child(2) {
+    transition-delay: 45ms;
+  }
+  .switcher-panel.is-active .ledger-row:nth-child(3) {
+    transition-delay: 90ms;
+  }
+  .switcher-panel.is-active .ledger-foot {
+    transition-delay: 135ms;
   }
 
   .ledger-rows {
