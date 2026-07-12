@@ -88,6 +88,7 @@ h1, h2 {
 }
 h1 { font-size: var(--text-h1); }
 h2 { font-size: var(--text-h2); }
+h1, h2, h3 { text-wrap: balance; }
 
 h3, h4, h5, h6 {
   font-family: var(--font-body);
@@ -152,6 +153,7 @@ h4 { font-size: var(--text-h4); }
 .stat-number {
   font-family: var(--font-mono);
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
   background: var(--mirano-gradient);
   -webkit-background-clip: text;
   background-clip: text;

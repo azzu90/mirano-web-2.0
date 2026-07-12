@@ -80,7 +80,8 @@ button {
 /* ----- Typo-Utilities ----- */
 .lead {
   font-size: 1.1875rem;
-  line-height: 1.6;
+  line-height: var(--leading-body);
+  text-wrap: pretty;
 }
 
 .text-muted {
