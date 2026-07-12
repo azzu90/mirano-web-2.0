@@ -120,7 +120,7 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--mirano-border);
     box-shadow: 0 10px 28px -22px color-mix(in srgb, var(--mirano-ink) 0%, transparent);
-    transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    transition: background-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
   }
   .site-header.is-scrolled {
     background: color-mix(in srgb, var(--mirano-porcelain) 97%, transparent);
@@ -200,6 +200,16 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     background: none;
     border: none;
     padding: 10px;
+  }
+  .menu-toggle {
+    border-radius: var(--radius-control);
+    transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .menu-toggle:hover {
+    background: var(--mirano-limestone);
+  }
+  .menu-toggle:active {
+    transform: scale(0.94);
   }
   .menu-toggle span {
     display: block;

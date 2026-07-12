@@ -125,10 +125,13 @@ button {
   white-space: nowrap;
 }
 .btn-secondary {
-  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
 .btn-secondary:hover {
   border-color: var(--mirano-ink);
+}
+.btn-secondary:active {
+  transform: scale(0.98);
 }
 .section-dark .btn-secondary {
   color: var(--mirano-text-on-dark);
@@ -147,6 +150,9 @@ button {
 .btn-ghost:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+.btn-ghost:active {
+  transform: scale(0.98);
 }
 
 /* ----- Cards ----- */

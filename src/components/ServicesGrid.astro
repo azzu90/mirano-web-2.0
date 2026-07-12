@@ -89,6 +89,9 @@ const t = copy[lang];
     border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
     transform: translateY(-3px);
   }
+  .service:active {
+    transform: translateY(-1px);
+  }
   .service h3 {
     font-size: 1.125rem;
   }
@@ -99,7 +102,7 @@ const t = copy[lang];
   .service-more {
     margin-top: auto;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: var(--text-small);
     color: var(--mirano-orange-deep);
   }
 

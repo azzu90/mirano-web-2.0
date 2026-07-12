@@ -132,7 +132,8 @@ const t = copy[lang];
     opacity: 0.55;
     transition: filter var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
-  .partner-logo:hover {
+  .partners li a:hover .partner-logo,
+  .partners li a:focus-visible .partner-logo {
     filter: grayscale(0%);
     opacity: 1;
   }
