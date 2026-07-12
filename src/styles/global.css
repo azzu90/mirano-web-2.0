@@ -163,6 +163,20 @@ button {
   border-radius: var(--radius-card);
 }
 
+/* Kompakte Info-Card: gemeinsames Rezept (Principles, Pipeline, Modelle, Angebote) */
+.info-card {
+  padding: 1.75rem;
+  display: grid;
+  gap: 0.6rem;
+}
+.info-card h3 {
+  font-size: 1.0625rem;
+}
+.info-card p {
+  font-size: 0.9375rem;
+  color: var(--mirano-slate);
+}
+
 /* ----- Scroll-Reveal (einmalig, dezent) ----- */
 .reveal {
   opacity: 0;

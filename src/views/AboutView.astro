@@ -193,7 +193,7 @@ const t = copy[lang];
       <div class="principles-grid">
         {
           t.principles.map(([h, d]: [string, string]) => (
-            <div class="card principle reveal">
+            <div class="card info-card reveal">
               <h3>{h}</h3>
               <p>{d}</p>
             </div>
@@ -461,18 +461,6 @@ const t = copy[lang];
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
-  }
-  .principle {
-    padding: 1.75rem;
-    display: grid;
-    gap: 0.6rem;
-  }
-  .principle h3 {
-    font-size: 1.0625rem;
-  }
-  .principle p {
-    font-size: 0.9375rem;
-    color: var(--mirano-slate);
   }
   @media (max-width: 900px) {
     .story-grid {

@@ -126,7 +126,7 @@ const t = copy[lang];
       <div class="pipeline">
         {
           t.next.items.map((p: any) => (
-            <div class="card pipe reveal">
+            <div class="card info-card pipe reveal">
               <span class="pipe-tag">{p.tag}</span>
               <h3>{p.name}</h3>
               <p>{p.text}</p>
@@ -238,24 +238,12 @@ const t = copy[lang];
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
   }
-  .pipe {
-    padding: 1.75rem;
-    display: grid;
-    gap: 0.6rem;
-  }
   .pipe-tag {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: var(--tracking-meta);
     color: var(--mirano-orange-deep);
-  }
-  .pipe h3 {
-    font-size: 1.0625rem;
-  }
-  .pipe p {
-    font-size: 0.9375rem;
-    color: var(--mirano-slate);
   }
   @media (max-width: 900px) {
     .plima {

@@ -65,7 +65,7 @@ const t = copy[lang];
       <div class="models">
         {
           t.models.map(([h, d]: [string, string], i: number) => (
-            <div class="card model reveal">
+            <div class="card info-card model reveal">
               <span class="model-num">0{i + 1}</span>
               <h3>{h}</h3>
               <p>{d}</p>
@@ -84,24 +84,12 @@ const t = copy[lang];
     grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem;
   }
-  .model {
-    padding: 1.75rem;
-    display: grid;
-    gap: 0.6rem;
-  }
   .model-num {
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     font-weight: 500;
     color: var(--mirano-orange-deep);
     letter-spacing: var(--tracking-meta);
-  }
-  .model h3 {
-    font-size: 1.0625rem;
-  }
-  .model p {
-    font-size: 0.9375rem;
-    color: var(--mirano-slate);
   }
   @media (max-width: 1000px) {
     .models {
