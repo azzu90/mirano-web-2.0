@@ -107,6 +107,7 @@ The system explicitly rejects the generic agency/SaaS template look — stock-ph
 - Flat by default — borders and tonal layering carry structure, not shadows
 - One deliberate dark section per page (graphite) as the sole high-contrast beat
 - A recurring mono-uppercase "eyebrow" as the system's one precision marker, used consistently rather than as decoration
+- Motion as instrumentation: entries are written, lines are drawn — translateY/opacity/scaleX only, one ease-out curve, three duration steps (180/320/550ms), ≤600ms per move, no bounce or loops, everything instant under reduced motion
 
 ## 2. Colors
 
@@ -184,7 +185,7 @@ Mirano is flat by design, and that flatness is deliberate rather than an oversig
 - **Internal Padding:** ~1.75rem for grid cards, up to 3rem for the feature CTA card.
 
 ### The CTA Card (signature component)
-The one place per page allowed a top accent: a 3px solid gradient bar across the top edge (`.cta-accent`), never a side stripe. Paired with a limestone background and a two-column layout (copy left, actions + trust line right). This is the system's single "make it a moment" pattern — everywhere else, restraint holds.
+The one place per page allowed a top accent: a 3px solid gradient bar across the top edge (`.cta-accent`), never a side stripe. Paired with a limestone background and a two-column layout (copy left, actions + trust line right). This is the system's single "make it a moment" pattern — everywhere else, restraint holds. On scroll-reveal, the bar draws itself left-to-right (`scaleX` 0→1, 600ms, origin left) — the same drawn-line mechanic the delivery timeline uses, reserved for the signature element.
 
 ### Navigation
 - **Style:** sticky header, porcelain background at ~88–97% opacity over a 10px backdrop blur, 1px bottom border. 92px height, logo at 67px.
