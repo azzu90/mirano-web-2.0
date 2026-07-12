@@ -230,6 +230,16 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     background: var(--mirano-porcelain);
     padding: 1.5rem;
   }
+  /* Dieselbe Reveal-Geste wie .reveal (translateY + opacity), nur beim Öffnen */
+  .mobile-nav:not([hidden]) {
+    animation: mobile-nav-in var(--dur-fast) var(--ease-out);
+  }
+  @keyframes mobile-nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
   .mobile-nav ul {
     list-style: none;
     padding: 0;
@@ -286,14 +296,23 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
   const mobileNav = document.getElementById('mobile-nav');
-  toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
+  const setMenuOpen = (open: boolean) => {
+    if (!toggle) return;
+    toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute(
       'aria-label',
-      open ? toggle.dataset.labelOpen || 'Open menu' : toggle.dataset.labelClose || 'Close menu'
+      open ? toggle.dataset.labelClose || 'Close menu' : toggle.dataset.labelOpen || 'Open menu'
     );
-    if (mobileNav) mobileNav.hidden = open;
+    if (mobileNav) mobileNav.hidden = !open;
+  };
+  toggle?.addEventListener('click', () => {
+    setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setMenuOpen(false);
+      toggle.focus();
+    }
   });
 
   const header = document.querySelector<HTMLElement>('.site-header');

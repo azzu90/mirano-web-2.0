@@ -95,17 +95,17 @@ const t = copy[lang];
       <div class="ledger-accent" aria-hidden="true"></div>
 
       <div class="switcher-tabs" role="tablist" aria-label={t.tablist}>
-        <button role="tab" id="tab-projects" aria-selected="true" aria-controls="panel-projects">
+        <button role="tab" id="tab-projects" aria-selected="true" aria-controls="panel-projects" tabindex="0">
           {t.tabs[0]}
         </button>
-        <button role="tab" id="tab-products" aria-selected="false" aria-controls="panel-products">
+        <button role="tab" id="tab-products" aria-selected="false" aria-controls="panel-products" tabindex="-1">
           {t.tabs[1]}
         </button>
         <span class="switcher-year" aria-hidden="true">2026</span>
       </div>
 
       <div class="switcher-panels">
-        <div class="switcher-panel is-active" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects" aria-hidden="false">
+        <div class="switcher-panel is-active" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects" aria-hidden="false" tabindex="0">
           <ol class="ledger-rows">
             {
               t.ledger.map((row: any) => (
@@ -131,7 +131,7 @@ const t = copy[lang];
           </div>
         </div>
 
-        <div class="switcher-panel" id="panel-products" role="tabpanel" aria-labelledby="tab-products" aria-hidden="true">
+        <div class="switcher-panel" id="panel-products" role="tabpanel" aria-labelledby="tab-products" aria-hidden="true" tabindex="0">
           <ol class="ledger-rows">
             {
               t.products.map((row: any) => (
@@ -531,7 +531,10 @@ const t = copy[lang];
       if (idx === active) return;
       const from = panels[active];
       const to = panels[idx];
-      tabs.forEach((t, i) => t.setAttribute('aria-selected', String(i === idx)));
+      tabs.forEach((t, i) => {
+        t.setAttribute('aria-selected', String(i === idx));
+        t.tabIndex = i === idx ? 0 : -1;
+      });
       from.classList.remove('is-active');
       from.setAttribute('aria-hidden', 'true');
       to.classList.add('is-active');
@@ -557,21 +560,43 @@ const t = copy[lang];
       }, 7000);
     };
 
-    tabs.forEach((tab, i) =>
-      tab.addEventListener('click', () => {
-        stopAuto();
-        show(i);
-      })
-    );
-    root.addEventListener('pointerenter', () => {
+    // Manuelle Auswahl (Klick/Taste) beendet die Auto-Rotation dauerhaft.
+    const select = (idx: number) => {
+      stopAuto();
+      show(idx);
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        let target: number | null = null;
+        if (e.key === 'ArrowRight') target = (i + 1) % tabs.length;
+        else if (e.key === 'ArrowLeft') target = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') target = 0;
+        else if (e.key === 'End') target = tabs.length - 1;
+        if (target !== null) {
+          e.preventDefault();
+          select(target);
+          tabs[target].focus();
+        }
+      });
+    });
+
+    const pauseAuto = () => {
       if (timer) {
         clearTimeout(timer);
         timer = null;
         progress?.classList.remove('is-running');
       }
-    });
-    root.addEventListener('pointerleave', () => {
+    };
+    const resumeAuto = () => {
       if (!timer && progress?.style.display !== 'none') scheduleAuto();
+    };
+    root.addEventListener('pointerenter', pauseAuto);
+    root.addEventListener('pointerleave', resumeAuto);
+    root.addEventListener('focusin', pauseAuto);
+    root.addEventListener('focusout', (e) => {
+      if (!root.contains(e.relatedTarget as Node)) resumeAuto();
     });
 
     scheduleAuto();
