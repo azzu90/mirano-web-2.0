@@ -188,6 +188,16 @@ button {
   transform: none;
 }
 
+/* Ohne JS (html.js fehlt) bleibt alles sichtbar – Reveal ist reine Verzierung.
+   Gilt auch für gestaffelte Kind-Elemente (Timeline/Milestones) und deren Pseudo-Elemente. */
+html:not(.js) .reveal,
+html:not(.js) .reveal *,
+html:not(.js) .reveal *::before,
+html:not(.js) .reveal *::after {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
