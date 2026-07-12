@@ -1,8 +1,8 @@
 ---
-// Referenz-Teaser. SHOW_HEADSQUARE: Freigabe von Michael Mayr (Headsquare) liegt vor.
+// Referenz-Teaser. SHOW_HEADSQUARE zentral in content/site.ts.
 import { getLang, l, type Lang } from '../i18n';
+import { SHOW_HEADSQUARE } from '../content/site';
 const lang = getLang(Astro.currentLocale);
-const SHOW_HEADSQUARE = true;
 
 const copy: Record<Lang, any> = {
   en: {

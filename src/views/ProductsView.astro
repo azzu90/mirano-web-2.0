@@ -105,7 +105,7 @@ const t = copy[lang];
           <p class="plima-kind">{t.plima.kind}</p>
           <p>{t.plima.text}</p>
           <div class="plima-actions">
-            <a href="https://plima.cloud" rel="noopener" class="btn-primary">{t.plima.cta}</a>
+            <a href="https://plima.cloud" target="_blank" rel="noopener" class="btn-primary">{t.plima.cta}</a>
           </div>
           <p class="plima-by">{t.plima.by}</p>
           <PlimaTechStack lang={lang} />
@@ -113,7 +113,7 @@ const t = copy[lang];
         <div class="plima-visual">
           {
             hasPlimaShot ? (
-              <img src="/images/plima-dashboard.png" alt={t.plima.alt} loading="lazy" class="plima-shot" />
+              <img src="/images/plima-dashboard.png" alt={t.plima.alt} width="1516" height="843" loading="lazy" class="plima-shot" />
             ) : (
               <div class="shot-placeholder" aria-hidden="true"><span>{t.plima.shots}</span></div>
             )

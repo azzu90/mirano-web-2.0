@@ -113,12 +113,14 @@ const t = copy[lang];
 
       <div>
         <h3>{t.contact}</h3>
-        <ul>
-          <li><a href="mailto:info@mirano-solutions.com">info@mirano-solutions.com</a></li>
-          <li><a href="tel:+385976795944">(+385) 9 767 959 44</a></li>
-          <li>Ograjska ulica 1C<br />10000 Zagreb, {lang === 'hr' ? 'Hrvatska' : lang === 'de' ? 'Kroatien' : 'Croatia'}</li>
-          <li><a href="https://www.linkedin.com/company/mirano-solutions/" target="_blank" rel="noopener">LinkedIn</a></li>
-        </ul>
+        <address>
+          <ul>
+            <li><a href="mailto:info@mirano-solutions.com">info@mirano-solutions.com</a></li>
+            <li><a href="tel:+385976795944">(+385) 9 767 959 44</a></li>
+            <li>Ograjska ulica 1C<br />10000 Zagreb, {lang === 'hr' ? 'Hrvatska' : lang === 'de' ? 'Kroatien' : 'Croatia'}</li>
+            <li><a href="https://www.linkedin.com/company/mirano-solutions/" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </address>
       </div>
     </div>
 
@@ -175,6 +177,9 @@ const t = copy[lang];
     padding: 0;
     display: grid;
     gap: 0.625rem;
+  }
+  address {
+    font-style: normal;
   }
   a {
     text-decoration: none;

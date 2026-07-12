@@ -1,13 +1,13 @@
 ---
 // Referenzen mit Delivery-Timeline (wachsende Version des Hero-Ledgers).
-// SHOW_HEADSQUARE: Freigabe von Michael Mayr (Headsquare) liegt vor. Endkunde weiterhin NIE namentlich.
+// SHOW_HEADSQUARE zentral in content/site.ts. Endkunde weiterhin NIE namentlich.
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBox from '../components/CtaBox.astro';
 import PlimaTechStack from '../components/PlimaTechStack.astro';
 import { getLang, type Lang } from '../i18n';
+import { SHOW_HEADSQUARE } from '../content/site';
 const lang = getLang(Astro.currentLocale);
-const SHOW_HEADSQUARE = true;
 
 const copy: Record<Lang, any> = {
   en: {

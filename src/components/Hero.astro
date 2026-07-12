@@ -140,7 +140,7 @@ const t = copy[lang];
                   <span class={`dot dot-${row.state}`} aria-hidden="true" />
                   <div class="ledger-main">
                     <span class="ledger-name">
-                      {row.href ? <a href={row.href} rel="noopener">{row.name}</a> : row.name}
+                      {row.href ? <a href={row.href} target="_blank" rel="noopener">{row.name}</a> : row.name}
                     </span>
                     <span class="ledger-kind">{row.kind}</span>
                   </div>
