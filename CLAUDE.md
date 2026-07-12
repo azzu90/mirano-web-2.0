@@ -20,6 +20,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 - Das Wort "Body-Leasing" (DE/EN/HR) wird auf der Website nicht verwendet. Die Haltung dahinter bleibt: persönlich bekannte Profile statt CV-Datenbanken, eigene Produkte als Beweis für Delivery-Qualität.
 - Founder-Story auf /about: Mirano-zentriert erzählen ("Warum es Mirano gibt"), nicht als Personen-Bio. Bescheidener Ton – kein Selbstlob, keine Zeugnis-Zitate/-Eigenschaftslisten; die Anekdote "am Ende wollten alle Teil davon sein" bleibt draußen. Keine Presse-Links (Lider/Netokracija bewusst weggelassen, Entscheidung Juli 2026). Das Kroatien-Engagement (kleinere kroatische Kunden) wird aktiv erwähnt.
 - Deutsche Navigation/Seitentitel für /about: "Über Mirano" (nicht "Über uns") – in Header, Footer, title-Tag und Eyebrow.
+- Zagreb-Fakten (korrigiert Juli 2026): erste Zagreb-Reise Q1 2021; ~1 Jahr Nearshore über PROCON IT; Direktanstellung CONET Technologies Holding zum 01.04.2022; Ende des Arbeitsverhältnisses Ende März 2025 → insgesamt ca. 4 Jahre Zagreb (nicht 3). SAP-Testmanagement 2018–2020 bei der Premium-Automobilmarke in München; UX-Arbeit ab 2020 als hausinternes Innovationsprojekt, Projektleitung erst später übernommen (nicht von Anfang an).
 
 ## Documentation
 
