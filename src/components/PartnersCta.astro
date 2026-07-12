@@ -23,6 +23,7 @@ const partners = [
 
 const copy: Record<Lang, any> = {
   en: {
+    partnerAltSuffix: 'Mirano Solutions partner',
     partnersLabel: 'Partner network',
     eyebrow: 'Next step',
     h2: 'Tell us about your project',
@@ -32,6 +33,7 @@ const copy: Record<Lang, any> = {
     trust: 'EU CONTRACTS · GDPR-NATIVE · REPLY WITHIN 24H',
   },
   de: {
+    partnerAltSuffix: 'Partner von Mirano Solutions',
     partnersLabel: 'Partnernetzwerk',
     eyebrow: 'Nächster Schritt',
     h2: 'Erzählen Sie uns von Ihrem Projekt',
@@ -41,13 +43,14 @@ const copy: Record<Lang, any> = {
     trust: 'EU-VERTRÄGE · DSGVO-NATIV · ANTWORT INNERHALB VON 24H',
   },
   hr: {
+    partnerAltSuffix: 'partner Mirano Solutionsa',
     partnersLabel: 'Partnerska mreža',
     eyebrow: 'Sljedeći korak',
     h2: 'Recite nam nešto o svom projektu',
     text: '30 minuta, izravno s osnivačem: zahtjevi, odgovarajući profili, realan vremenski plan. Bez obveze – i vrlo konkretno.',
     ctaPrimary: 'Razgovarajte s osnivačem',
     ctaSecondary: 'Zatražite kapacitet tima',
-    trust: 'EU UGOVORI · GDPR · ODGOVOR UNUTAR 24H',
+    trust: 'EU UGOVORI · GDPR-USKLAĐENO · ODGOVOR UNUTAR 24H',
   },
 };
 const t = copy[lang];
@@ -60,7 +63,7 @@ const t = copy[lang];
       <ul>
         {partners.map((p) => {
           const content = p.logo ? (
-            <img src={p.logo} alt={`${p.name} – Partner von Mirano Solutions`} class="partner-logo" />
+            <img src={p.logo} alt={`${p.name} – ${t.partnerAltSuffix}`} class="partner-logo" />
           ) : (
             p.name
           );

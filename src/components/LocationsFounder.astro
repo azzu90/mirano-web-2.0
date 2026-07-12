@@ -15,7 +15,8 @@ const copy: Record<Lang, any> = {
       ['EU', 'contracts under EU law, communication in German and English.'],
     ],
     quote: '“Over four years I helped build a 100-person IT organization in Zagreb. Mirano is that model – focused on what really matters: senior quality and direct communication.”',
-    name: 'Armin Zalihic',
+    founderAlt: 'Armin Zalihić, founder of Mirano Solutions',
+    name: 'Armin Zalihić',
     role: 'Founder & Managing Director · in IT since 2008',
     cta: 'Read the founder story',
   },
@@ -29,7 +30,8 @@ const copy: Record<Lang, any> = {
       ['EU', 'Verträge nach EU-Recht, Kommunikation auf Deutsch und Englisch.'],
     ],
     quote: '„Ich habe vier Jahre lang den Aufbau einer 100-Personen-IT-Organisation in Zagreb mitgestaltet. Mirano ist dieses Modell – fokussiert auf das, was wirklich zählt: Senior-Qualität und direkte Wege.“',
-    name: 'Armin Zalihic',
+    founderAlt: 'Armin Zalihić, Gründer von Mirano Solutions',
+    name: 'Armin Zalihić',
     role: 'Gründer & Geschäftsführer · seit 2008 in der IT',
     cta: 'Founder-Story lesen',
   },
@@ -43,6 +45,7 @@ const copy: Record<Lang, any> = {
       ['EU', 'ugovori po pravu EU, komunikacija na njemačkom i engleskom.'],
     ],
     quote: '„Četiri godine sudjelovao sam u izgradnji IT organizacije od 100 ljudi u Zagrebu. Mirano je taj model – fokusiran na ono što je stvarno važno: senior kvalitetu i izravnu komunikaciju.“',
+    founderAlt: 'Armin Zalihić, osnivač Mirano Solutionsa',
     name: 'Armin Zalihić',
     role: 'Osnivač i direktor · u IT-u od 2008.',
     cta: 'Pročitajte priču osnivača',
@@ -73,7 +76,7 @@ const t = copy[lang];
 
       <div class="founder card-dark reveal">
         <div class="founder-photo">
-          <img src="/images/armin.jpg" alt="Armin Zalihic, Gründer von Mirano Solutions" width="72" height="72" />
+          <img src="/images/armin.jpg" alt={t.founderAlt} width="72" height="72" />
         </div>
         <blockquote>{t.quote}</blockquote>
         <div class="founder-meta">

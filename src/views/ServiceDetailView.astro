@@ -12,6 +12,8 @@ const { slug } = Astro.props;
 const lang = getLang(Astro.currentLocale);
 const t = services[slug][lang];
 const backLabel = { en: '← All services', de: '← Alle Leistungen', hr: '← Sve usluge' }[lang];
+const offerEyebrow = { en: 'Scope', de: 'Leistungsumfang', hr: 'Opseg' }[lang];
+const howEyebrow = { en: 'Approach', de: 'Vorgehen', hr: 'Pristup' }[lang];
 ---
 
 <Base title={`${t.title} – Mirano Solutions`} description={t.metaDesc}>
@@ -20,7 +22,7 @@ const backLabel = { en: '← All services', de: '← Alle Leistungen', hr: '← 
   <section class="section">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">{t.offerTitle}</span>
+        <span class="eyebrow">{offerEyebrow}</span>
         <h2>{t.offerTitle}</h2>
       </div>
       <div class="offer-grid">
@@ -39,7 +41,7 @@ const backLabel = { en: '← All services', de: '← Alle Leistungen', hr: '← 
   <section class="section section-limestone">
     <div class="container how-grid">
       <div class="section-head reveal" style="margin-bottom:0">
-        <span class="eyebrow">{t.howTitle}</span>
+        <span class="eyebrow">{howEyebrow}</span>
         <h2>{t.howTitle}</h2>
       </div>
       <ul class="how-list reveal">

@@ -1,5 +1,6 @@
 ---
 import { getLang, l, type Lang } from '../i18n';
+import { TAGLINE } from '../content/site';
 const lang = getLang(Astro.currentLocale);
 const year = new Date().getFullYear();
 
@@ -73,7 +74,7 @@ const copy: Record<Lang, any> = {
       ['/contact', 'Kontakt'],
     ],
     contact: 'Kontakt',
-    bottom: `© ${year} Mirano Solutions d.o.o. · EU ugovori · GDPR`,
+    bottom: `© ${year} Mirano Solutions d.o.o. · EU ugovori · GDPR-usklađeno`,
     legal: [
       ['/legal-notice', 'Impresum'],
       ['/privacy-policy', 'Politika privatnosti'],
@@ -88,7 +89,7 @@ const t = copy[lang];
     <div class="footer-grid">
       <div class="footer-brand">
         <img src="/logo/mirano-white.svg" alt="Mirano Solutions" width="142" height="67" loading="lazy" />
-        <p class="tagline">Empower your business. Instantly.</p>
+        <p class="tagline">{TAGLINE}</p>
         <p class="mono-loc">{t.loc}</p>
       </div>
 

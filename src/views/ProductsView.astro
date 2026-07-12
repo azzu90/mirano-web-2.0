@@ -25,11 +25,13 @@ const copy: Record<Lang, any> = {
       kind: 'HR software for small and mid-sized companies',
       text: 'From idea to launch in 3 months: 12 HR modules, one price, data hosted in the EU. PLIMA has been running in production since April 2026, and a second customer has been using it since summer 2026 – built, launched and operated by Mirano.',
       cta: 'Visit plima.cloud →',
+      alt: 'PLIMA HR dashboard',
       by: 'Developed by Mirano Solutions',
       shots: 'Product screenshots coming soon',
     },
     next: {
-      eyebrow: 'In the pipeline',
+      eyebrow: 'Roadmap',
+      title: 'In the pipeline',
       items: [
         { name: 'SaaS for freight forwarders', text: 'Digitizes invoices and delivery notes to simplify drivers’ daily work. Aimed at small and mid-sized freight forwarding companies.', tag: 'Autumn 2026' },
         { name: 'Vertical SaaS · Healthcare', text: 'Prototype in place, tailored to the Croatian market.', tag: 'Q1/2027' },
@@ -48,11 +50,13 @@ const copy: Record<Lang, any> = {
       kind: 'HR-Software für kleine und mittlere Unternehmen',
       text: 'Von der Idee zum Launch in 3 Monaten: 12 HR-Module, ein Preis, Daten in der EU gehostet. PLIMA läuft seit April 2026 produktiv, ein zweiter Kunde arbeitet seit Sommer 2026 mit PLIMA – gebaut, gelauncht und betrieben von Mirano.',
       cta: 'plima.cloud besuchen →',
+      alt: 'PLIMA HR-Dashboard',
       by: 'Entwickelt von Mirano Solutions',
       shots: 'Produkt-Screenshots folgen in Kürze',
     },
     next: {
-      eyebrow: 'In der Pipeline',
+      eyebrow: 'Roadmap',
+      title: 'In der Pipeline',
       items: [
         { name: 'SaaS für Speditionen', text: 'Digitalisierung von Rechnungen und Lieferscheinen – vereinfacht die tägliche Arbeit der Fahrer. Zielgruppe: kleine und mittelständische Speditionen.', tag: 'Herbst 2026' },
         { name: 'Vertikales SaaS · Medizin', text: 'Prototyp vorhanden, zugeschnitten auf den kroatischen Markt.', tag: 'Q1/2027' },
@@ -71,11 +75,13 @@ const copy: Record<Lang, any> = {
       kind: 'HR softver za mala i srednja poduzeća',
       text: 'Od ideje do lansiranja u 3 mjeseca: 12 HR modula, jedna cijena, podaci u EU. PLIMA je u produkciji od travnja 2026., a drugi klijent koristi PLIMA-u od ljeta 2026. – izgrađena, lansirana i održavana od Mirana.',
       cta: 'Posjetite plima.cloud →',
+      alt: 'PLIMA HR nadzorna ploča',
       by: 'Razvio Mirano Solutions',
       shots: 'Snimke zaslona proizvoda uskoro',
     },
     next: {
-      eyebrow: 'U pripremi',
+      eyebrow: 'Roadmap',
+      title: 'U pripremi',
       items: [
         { name: 'SaaS za špedicije', text: 'Digitalizacija računa i otpremnica – pojednostavljuje svakodnevni rad vozača. Ciljna skupina: male i srednje špediterske tvrtke.', tag: 'Jesen 2026.' },
         { name: 'Vertikalni SaaS · Medicina', text: 'Prototip postoji, prilagođen hrvatskom tržištu.', tag: 'Q1/2027.' },
@@ -107,7 +113,7 @@ const t = copy[lang];
         <div class="plima-visual">
           {
             hasPlimaShot ? (
-              <img src="/images/plima-dashboard.png" alt="PLIMA HR dashboard" loading="lazy" class="plima-shot" />
+              <img src="/images/plima-dashboard.png" alt={t.plima.alt} loading="lazy" class="plima-shot" />
             ) : (
               <div class="shot-placeholder" aria-hidden="true"><span>{t.plima.shots}</span></div>
             )
@@ -121,7 +127,7 @@ const t = copy[lang];
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">{t.next.eyebrow}</span>
-        <h2>{t.next.eyebrow}</h2>
+        <h2>{t.next.title}</h2>
       </div>
       <div class="pipeline">
         {
