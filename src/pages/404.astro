@@ -1,0 +1,62 @@
+---
+// Statische 404 (Vercel liefert dist/404.html für alle nicht gefundenen Routen).
+// Eine Seite für alle Sprachen: DE führend, EN/HR mit Kurzzeile + Link zur Sprach-Startseite.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Base
+  title="Seite nicht gefunden – Mirano Solutions"
+  description="Diese Seite existiert nicht (mehr). Zur Startseite von Mirano Solutions."
+>
+  <PageHero
+    eyebrow="404"
+    title="Seite nicht gefunden"
+    lead="Diese Seite existiert nicht oder wurde verschoben. Zur Startseite geht es hier entlang – oder direkt zum Gespräch mit dem Gründer."
+  />
+
+  <section class="section nf">
+    <div class="container">
+      <div class="nf-actions">
+        <a href="/de/" class="btn-primary">Zur Startseite</a>
+        <a href="/de/contact" class="btn-ghost">Kontakt aufnehmen →</a>
+      </div>
+      <ul class="nf-langs">
+        <li lang="en">Page not found. <a href="/">Go to the English homepage →</a></li>
+        <li lang="hr">Stranica nije pronađena. <a href="/hr/">Na hrvatsku početnu stranicu →</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: 3.5rem var(--section-y-desktop);
+  }
+  .nf-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+  .nf-langs {
+    list-style: none;
+    padding: 1.5rem 0 0;
+    margin: 0;
+    border-top: 1px solid var(--mirano-border);
+    display: grid;
+    gap: 0.625rem;
+    font-size: 0.9375rem;
+    color: var(--mirano-muted);
+  }
+  .nf-langs a {
+    color: var(--mirano-orange-deep);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .nf-langs a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>
