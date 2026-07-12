@@ -22,6 +22,10 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 - Deutsche Navigation/Seitentitel für /about: "Über Mirano" (nicht "Über uns") – in Header, Footer, title-Tag und Eyebrow.
 - Zagreb-Fakten (korrigiert Juli 2026): erste Zagreb-Reise Q1 2021; ~1 Jahr Nearshore über PROCON IT; Direktanstellung CONET Technologies Holding zum 01.04.2022; Ende des Arbeitsverhältnisses Ende März 2025 → insgesamt ca. 4 Jahre Zagreb (nicht 3). SAP-Testmanagement 2018–2020 bei der Premium-Automobilmarke in München; UX-Arbeit ab 2020 als hausinternes Innovationsprojekt, Projektleitung erst später übernommen (nicht von Anfang an).
 
+## Design Context
+
+Strategic and visual context lives in [PRODUCT.md](PRODUCT.md) (register, users, positioning, brand personality, anti-references) and [DESIGN.md](DESIGN.md) (colors, typography, components, Do's/Don'ts) at the project root, with a machine-readable sidecar at `.impeccable/design.json`. Read these before design/UI work — `/impeccable` commands load them automatically.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
