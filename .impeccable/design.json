@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 2,
+  "title": "Design System: Mirano Solutions",
+  "extensions": {
+    "colorMeta": {
+      "signal-orange": { "role": "primary", "displayName": "Signal Orange", "canonical": "#FF6841", "tonalRamp": ["#3D1A0E", "#5E2814", "#8C3A1C", "#C05226", "#FF6841", "#FF8A66", "#FFB49D", "#FFDDD2"] },
+      "signal-orange-deep": { "role": "primary", "displayName": "Signal Orange Deep", "canonical": "#C2410C", "tonalRamp": ["#2E0F04", "#4A1807", "#77270B", "#9C340E", "#C2410C", "#DB6633", "#EE9B72", "#FBD3C0"] },
+      "signal-orange-light": { "role": "primary", "displayName": "Signal Orange Light", "canonical": "#FF8A66", "tonalRamp": ["#401C10", "#602A18", "#8E3E23", "#C25931", "#FF8A66", "#FFA98D", "#FFC7B3", "#FFE6DC"] },
+      "graphite": { "role": "neutral", "displayName": "Graphite", "canonical": "#2C343A", "tonalRamp": ["#0E1113", "#181D20", "#22282C", "#272F35", "#2C343A", "#3A434A", "#565F66", "#7A8288"] },
+      "graphite-soft": { "role": "neutral", "displayName": "Graphite Soft", "canonical": "#3A434A", "tonalRamp": ["#14171A", "#1F2426", "#2A3033", "#323A3F", "#3A434A", "#4E585F", "#6B7479", "#8E969B"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#22282C", "tonalRamp": ["#0B0D0E", "#141819", "#1D2224", "#22282C", "#2E353A", "#4A5258", "#7A8288", "#AEB6BC"] },
+      "slate": { "role": "neutral", "displayName": "Slate", "canonical": "#4A5258", "tonalRamp": ["#1A1D1F", "#282D30", "#3A4145", "#4A5258", "#5E666C", "#7A8288", "#9CA3A8", "#C6CBCE"] },
+      "muted": { "role": "neutral", "displayName": "Muted", "canonical": "#7A8288", "tonalRamp": ["#2A2E31", "#3C4144", "#525A5E", "#687176", "#7A8288", "#9CA3A7", "#BFC4C7", "#E3E5E6"] },
+      "porcelain": { "role": "neutral", "displayName": "Porcelain", "canonical": "#FDFCFA", "tonalRamp": ["#1C1B18", "#3A3833", "#5C5952", "#8B877E", "#C4C0B6", "#E4E1D9", "#F6F4F0", "#FDFCFA"] },
+      "limestone": { "role": "neutral", "displayName": "Limestone", "canonical": "#F6F4F0", "tonalRamp": ["#1B1A17", "#39362F", "#5A564B", "#8A857A", "#C3BEB3", "#E0DCD3", "#F6F4F0", "#FDFCFA"] },
+      "border": { "role": "neutral", "displayName": "Border", "canonical": "#E7E3DC", "tonalRamp": ["#2C2A25", "#4A473F", "#6E6A5F", "#948E80", "#BDB7A8", "#DAD5CB", "#E7E3DC", "#F5F3EF"] },
+      "on-dark-body": { "role": "neutral", "displayName": "On Dark Body", "canonical": "#AEB6BC", "tonalRamp": ["#3A3F42", "#525A5E", "#6C767B", "#889196", "#AEB6BC", "#C4CACE", "#DBDFE1", "#EFF1F2"] },
+      "success": { "role": "status", "displayName": "Success", "canonical": "#2E7D4F" },
+      "warning": { "role": "status", "displayName": "Warning", "canonical": "#B7791F" },
+      "error": { "role": "status", "displayName": "Error", "canonical": "#C0392B" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero H1 only, one per page." },
+      "headline": { "displayName": "Headline", "purpose": "Section H2 titles." },
+      "title": { "displayName": "Title", "purpose": "Card/subsection H3-H4, set in the body face." },
+      "body": { "displayName": "Body", "purpose": "Running text, ~65-75ch measure." },
+      "body-sm": { "displayName": "Body Small", "purpose": "Card body text and secondary prose (0.9375rem)." },
+      "caption": { "displayName": "Caption", "purpose": "Footer links, stat labels, secondary captions (0.8125rem)." },
+      "micro": { "displayName": "Micro", "purpose": "Trust lines and status badges (0.6875rem mono); never running text." },
+      "label": { "displayName": "Label / Eyebrow", "purpose": "Mono uppercase precision marker: eyebrows, stats, meta captions, dates." }
+    },
+    "shadows": [
+      { "name": "header-scroll", "value": "0 10px 28px -22px rgba(34, 40, 44, 0.35)", "purpose": "Sticky header separation once the page has scrolled; fully transparent at rest." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default easing for all transitions/reveals; exponential ease-out, no bounce." },
+      { "name": "dur-fast", "value": "180ms", "purpose": "Hover/focus micro-transitions (borders, color)." },
+      { "name": "dur-base", "value": "320ms", "purpose": "Reveal-on-scroll and card lift transitions." }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "1000px" },
+      { "name": "mobile", "value": "560px" },
+      { "name": "mobile-nav", "value": "767px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Sole large-surface use of the orange gradient; the main CTA everywhere on the site.",
+      "html": "<a href=\"#\" class=\"ds-btn-primary\">Talk to the founder</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(90deg, #FF4A38 0%, #FF7B4D 100%); color: #fff; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 600; font-size: 1rem; text-decoration: none; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; transition: filter 180ms cubic-bezier(0.22,1,0.36,1), transform 180ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { filter: brightness(1.06); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid #C2410C; outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outline button for secondary actions alongside a primary CTA.",
+      "html": "<a href=\"#\" class=\"ds-btn-secondary\">See our references</a>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; color: #22282C; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 500; font-size: 1rem; text-decoration: none; border: 1px solid #E7E3DC; border-radius: 8px; padding: 0.75rem 1.5rem; transition: border-color 180ms cubic-bezier(0.22,1,0.36,1), color 180ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-secondary:hover { border-color: #22282C; } .ds-btn-secondary:focus-visible { outline: 2px solid #C2410C; outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Low-emphasis inline link, e.g. 'Learn more →' on service cards.",
+      "html": "<a href=\"#\" class=\"ds-btn-ghost\">Learn more →</a>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: none; color: #C2410C; font-weight: 600; font-size: 0.875rem; text-decoration: none; padding: 0.75rem 0; } .ds-btn-ghost:hover { text-decoration: underline; text-underline-offset: 4px; }"
+    },
+    {
+      "name": "Service Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Grid card used across Services, with orange-tinted border on hover and a lift.",
+      "html": "<a href=\"#\" class=\"ds-card\"><h3 class=\"ds-card-title\">Software Engineering</h3><p class=\"ds-card-text\">Web applications, platforms and integrations – from architecture to operations.</p><span class=\"ds-card-more\">Learn more →</span></a>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 0.75rem; background: #FFFFFF; border: 1px solid #E7E3DC; border-radius: 14px; padding: 1.75rem; text-decoration: none; transition: border-color 180ms cubic-bezier(0.22,1,0.36,1), transform 320ms cubic-bezier(0.22,1,0.36,1); } .ds-card:hover { border-color: color-mix(in srgb, #FF6841 40%, #E7E3DC); transform: translateY(-3px); } .ds-card-title { font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 600; font-size: 1.125rem; color: #22282C; margin: 0; } .ds-card-text { font-size: 0.9375rem; color: #4A5258; margin: 0; } .ds-card-more { margin-top: auto; font-weight: 600; font-size: 0.875rem; color: #C2410C; }"
+    },
+    {
+      "name": "CTA Card",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "The system's one signature accent: a 3px top gradient bar over a limestone card, pairing copy with primary/secondary CTAs.",
+      "html": "<div class=\"ds-cta\"><div class=\"ds-cta-accent\"></div><div><span class=\"ds-eyebrow\">Next step</span><h2 class=\"ds-cta-title\">Tell us about your project</h2><p class=\"ds-cta-text\">30 minutes, directly with the founder.</p></div><div class=\"ds-cta-actions\"><a href=\"#\" class=\"ds-btn-primary\">Talk to the founder</a></div></div>",
+      "css": ".ds-cta { position: relative; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; padding: 3rem; background: #F6F4F0; border-radius: 14px; overflow: hidden; } .ds-cta-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #FF4A38 0%, #FF7B4D 100%); } .ds-cta-title { font-family: 'League Spartan', system-ui, sans-serif; font-weight: 600; color: #22282C; margin: 0.9rem 0; } .ds-cta-text { color: #4A5258; max-width: 30rem; margin: 0; }"
+    },
+    {
+      "name": "Eyebrow Label",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "The system's one recurring precision marker: mono, uppercase, tracked.",
+      "html": "<span class=\"ds-eyebrow\">Services</span>",
+      "css": ".ds-eyebrow { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C2410C; }"
+    },
+    {
+      "name": "Sticky Header Nav",
+      "kind": "nav",
+      "description": "Glassy sticky header; the one purposeful glassmorphism instance in the system.",
+      "html": "<header class=\"ds-header\"><nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-link is-active\">Home</a><a href=\"#\" class=\"ds-nav-link\">Services</a><a href=\"#\" class=\"ds-nav-link\">About</a></nav></header>",
+      "css": ".ds-header { display: flex; align-items: center; height: 92px; padding: 0 1.5rem; background: color-mix(in srgb, #FDFCFA 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid #E7E3DC; } .ds-nav { display: flex; gap: 2rem; } .ds-nav-link { text-decoration: none; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 500; font-size: 0.9375rem; color: #4A5258; transition: color 180ms cubic-bezier(0.22,1,0.36,1); } .ds-nav-link:hover, .ds-nav-link.is-active { color: #22282C; } .ds-nav-link.is-active { font-weight: 600; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Engineering Ledger",
+    "overview": "Mirano's interface reads like an audited record, not a sales pitch. Every claim is dated, sourced, and specific: named partners, exact engagement dates, capped team sizes, a live product URL — the same discipline the company applies to the software it ships. The Hero's own copy calls its project/product lists a \"ledger of engagements,\" and that idea sets the tone for the whole system: entries, not slogans. The system explicitly rejects the generic agency/SaaS template look — stock-photo consultancy sites, gradient-hero \"AI startup\" templates, bloated enterprise pages with fake testimonials and inflated team-size claims. Nothing here should read as trying to look bigger or more generic-corporate than Mirano actually is. Confidence comes from specificity, not superlatives; restraint is a feature, not a limitation.",
+    "keyCharacteristics": [
+      "Warm-neutral, quiet surfaces (porcelain/limestone) that never compete with content",
+      "A single signal color (orange) used sparingly and only where it means something",
+      "Flat by default — borders and tonal layering carry structure, not shadows",
+      "One deliberate dark section per page (graphite) as the sole high-contrast beat",
+      "A recurring mono-uppercase eyebrow as the system's one precision marker"
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Signal Orange (and its gradient) is the only saturated color in the system. It appears on icons, the primary CTA, ledger status dots, and the accent line/stat numbers — never as a large background fill, never duplicated as a second brand color.", "section": "colors" },
+      { "name": "The One Dark Section Rule", "body": "Graphite appears at most once per page as a contrast section, plus the footer. It is not a second theme to alternate with light sections; it is a single deliberate beat.", "section": "colors" },
+      { "name": "The PLIMA Exception", "body": "The PLIMA feature card on /products alone carries PLIMA's own brand colors, strictly scoped to that one card, never elsewhere, and never on /references.", "section": "colors" },
+      { "name": "The Data-Face Rule", "body": "JetBrains Mono is reserved for anything that reads as a data point — labels, stats, dates, meta captions. It never appears in headlines or running prose.", "section": "typography" },
+      { "name": "The Flat-by-Default Rule", "body": "Cards, buttons, and sections carry no shadow at rest. Depth, where it exists at all, is a response to state (header on scroll, button hover transform), never a static decoration.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep Signal Orange to icons, the primary CTA, ledger status dots, accent lines, and stat numbers — never a large flat background fill.",
+      "Do use the 3px top gradient bar as the CTA card's one signature accent — top edge only, never a colored side border.",
+      "Do hold graphite to one contrast section per page plus the footer.",
+      "Do keep JetBrains Mono strictly for labels, stats, dates, and the eyebrow — never headlines or prose.",
+      "Do let structure come from borders and background tone shifts, not shadows; reserve shadow for the header's scroll state only.",
+      "Do scope PLIMA's violet/green brand colors strictly to the PLIMA card on /products.",
+      "Do support all three locales (DE/EN/HR) for any new copy or component."
+    ],
+    "donts": [
+      "Don't introduce a second saturated brand color alongside Signal Orange.",
+      "Don't add drop shadows to cards or buttons at rest.",
+      "Don't use border-left/border-right accent stripes on cards or list items.",
+      "Don't reach for gradient text beyond the existing .stat-number pattern.",
+      "Don't build a generic agency/SaaS template look — stock photos, gradient-mesh AI-startup backgrounds, testimonial carousels, or unbacked growth claims.",
+      "Don't default to a cream/sand/beige body background 'for warmth' — Porcelain stays low-chroma.",
+      "Don't apply glassmorphism decoratively elsewhere — the sticky header's blur is the one purposeful instance."
+    ]
+  }
+}

@@ -52,7 +52,7 @@ button {
 
 ::selection {
   background: var(--mirano-orange);
-  color: #fff;
+  color: var(--mirano-white);
 }
 
 /* ----- Layout-Utilities ----- */
@@ -132,7 +132,7 @@ button {
 }
 .section-dark .btn-secondary {
   color: var(--mirano-text-on-dark);
-  border-color: #4a545c;
+  border-color: var(--mirano-border-on-dark);
 }
 .section-dark .btn-secondary:hover {
   border-color: var(--mirano-text-on-dark);
@@ -184,7 +184,7 @@ button {
   top: 0;
   z-index: 100;
   background: var(--mirano-ink);
-  color: #fff;
+  color: var(--mirano-white);
   padding: 0.75rem 1.25rem;
   border-radius: 0 0 var(--radius-control) 0;
 }

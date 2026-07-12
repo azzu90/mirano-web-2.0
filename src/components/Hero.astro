@@ -266,7 +266,7 @@ const t = copy[lang];
   .hero-trust {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    letter-spacing: 0.08em;
+    letter-spacing: var(--tracking-meta);
     color: var(--mirano-muted);
   }
 
@@ -274,7 +274,7 @@ const t = copy[lang];
     position: relative;
     z-index: 1;
     padding: 1.5rem 1.75rem 0.9rem;
-    box-shadow: 0 24px 48px -32px rgba(34, 40, 44, 0.18);
+    box-shadow: 0 24px 48px -32px color-mix(in srgb, var(--mirano-ink) 18%, transparent);
     overflow: hidden;
   }
   .ledger-accent {
@@ -424,7 +424,7 @@ const t = copy[lang];
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 500;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--tracking-meta);
     text-transform: uppercase;
     padding: 0.2rem 0.55rem;
     border-radius: 999px;

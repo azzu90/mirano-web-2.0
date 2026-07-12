@@ -17,11 +17,12 @@
   /* ----- Dunkel (bewusst kein Schwarz) ----- */
   --mirano-graphite: #2C343A;      /* Footer, max. 1 Kontrast-Sektion/Seite */
   --mirano-graphite-soft: #3A434A; /* Cards/Hover auf Graphit */
+  --mirano-border-on-dark: #4A545C; /* Linien/Borders auf Graphit */
 
   /* ----- Text ----- */
   --mirano-ink: #22282C;           /* Headlines hell */
   --mirano-slate: #4A5258;         /* Fließtext hell */
-  --mirano-muted: #7A8288;         /* Captions, Meta */
+  --mirano-muted: #687076;         /* Captions, Meta – AA (≥4.5:1) auf Porcelain/Limestone/Weiß */
   --mirano-text-on-dark: #FFFFFF;         /* Headlines auf Graphit */
   --mirano-text-on-dark-body: #AEB6BC;    /* Fließtext auf Graphit */
 
@@ -53,6 +54,7 @@
   --leading-body: 1.65;
   --tracking-display: -0.01em;
   --tracking-eyebrow: 0.1em; /* Uppercase-Mono immer mit Spacing */
+  --tracking-meta: 0.06em;   /* Kleine Mono-Meta-/Statuszeilen */
 
   /* ----- Layout ----- */
   --radius-control: 8px;
@@ -109,7 +111,7 @@ h4 { font-size: var(--text-h4); }
 /* Primär-CTA: einzige großflächige Verlaufs-Anwendung */
 .btn-primary {
   background: var(--mirano-gradient);
-  color: #fff;
+  color: var(--mirano-white);
   font-family: var(--font-body);
   font-weight: 600;
   border: none;
