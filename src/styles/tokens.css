@@ -67,6 +67,7 @@
   /* ----- Motion ----- */
   --dur-fast: 180ms;
   --dur-base: 320ms;
+  --dur-entrance: 550ms; /* Seiten-/Karten-Eintritte */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
