@@ -12,6 +12,20 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 - Ausnahme: Die PLIMA-Feature-Card auf /products trägt PLIMA-Markenfarben (--plima-primary #6D28D9, --plima-highlight #8444EE, Verlauf #9A84F4→#6B3FE4 für Accent-Leiste/Badge, Grün #40AF74 / Text #1E7A4C), strikt auf diese Card begrenzt. CTA-Button "plima.cloud besuchen" ist Verlauf (--plima-primary → --plima-highlight), nicht mehr flächig. Die PLIMA-Markenfarben-Ausnahme gilt NUR auf /products, nicht auf /references – der PLIMA-Case dort nutzt für seine Tech-Stack-Chips wie das allgemeine TechBand.astro die Original-Markenfarbe je Icon aus simple-icons (PlimaTechStack.astro, variant="brand").
 
+### Tech-Stack-Band (TechBand.astro)
+
+Aktueller Stand (Ergänzung nach Feedback Mislav, Backend-Architekt, 06.08.2026): Datenbank-Auswahl im Backend-Cluster war zu schmal (nur PostgreSQL) und Cloud/DevOps- sowie AI-Gruppe fehlten mehrere real genutzte Tools – auf sein Feedback hin ergänzt:
+
+- **Frontend**: React, Next.js, Angular, Vue, TypeScript, Vaadin (technisch Frontend+Backend, aber laut Mislav hier einsortiert).
+- **Backend**: Node.js, Java / Spring, Python, PostgreSQL, MySQL, MariaDB, MongoDB, GraphQL.
+- **Cloud & DevOps**: AWS, Google Cloud, Docker, Kubernetes, Terraform, Jenkins, JFrog, Vercel, Hostinger (EU).
+- **QA & Testing**: Cypress, Playwright, Selenium, JMeter.
+- **SAP**: SAP, SAP Test Management.
+- **AI**: Claude, Cursor, LangChain, Spring AI (kein eigenes simple-icons-Icon – nutzt siSpringboot mit), Hermes, LLM Integration (generischer Sparkle-Platzhalter).
+- **Workflow**: Linear, GitHub.
+
+Bewusst getrennt von PLIMA-spezifischen Tech-Chips auf /products (PlimaTechStack.astro: Java, Spring Boot, Vaadin, PostgreSQL) – dort ist es der Stack eines einzelnen Produkts, im TechBand der gesamte Expertise-Pool. Überschneidende Icons (Spring Boot, Vaadin, PostgreSQL) sind beabsichtigt und keine Inkonsistenz.
+
 ## Inhaltliche Festlegungen
 
 - Headsquare: Freigegeben, aktiv (SHOW_HEADSQUARE=true in src/components/CaseTeaser.astro und src/views/ReferencesView.astro; schriftliche Freigabe von Michael Mayr liegt vor). Endkunde bleibt weiterhin NIE namentlich genannt.

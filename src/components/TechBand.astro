@@ -2,6 +2,9 @@
 // Tech-Stack-Band. Abgeglichen mit alter Website (React, Angular, Vue, Java, Node.js,
 // AWS/Azure/GCP, Docker, K8s, GitHub/GitLab/Jenkins, Terraform) + Armin-Updates:
 // Claude & Cursor rein, TensorFlow raus, Vercel + Hostinger (Hosting DE) ergänzt.
+// Feedback Mislav (Backend-Architekt), Aug 2026: MySQL/MariaDB/MongoDB (Backend),
+// Vaadin (Frontend – bewusst dort einsortiert, obwohl Frontend+Backend gemischt),
+// Jenkins/JFrog (Cloud & DevOps), LangChain/Spring AI/Hermes (AI) ergänzt.
 import * as icons from 'simple-icons';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
@@ -33,6 +36,7 @@ const groups: { name: string; items: Tech[] }[] = [
       { label: 'Angular', icon: 'siAngular' },
       { label: 'Vue', icon: 'siVuedotjs' },
       { label: 'TypeScript', icon: 'siTypescript' },
+      { label: 'Vaadin', icon: 'siVaadin' },
     ],
   },
   {
@@ -42,6 +46,9 @@ const groups: { name: string; items: Tech[] }[] = [
       { label: 'Java / Spring', icon: 'siSpringboot' },
       { label: 'Python', icon: 'siPython' },
       { label: 'PostgreSQL', icon: 'siPostgresql' },
+      { label: 'MySQL', icon: 'siMysql' },
+      { label: 'MariaDB', icon: 'siMariadb' },
+      { label: 'MongoDB', icon: 'siMongodb' },
       { label: 'GraphQL', icon: 'siGraphql' },
     ],
   },
@@ -53,6 +60,8 @@ const groups: { name: string; items: Tech[] }[] = [
       { label: 'Docker', icon: 'siDocker' },
       { label: 'Kubernetes', icon: 'siKubernetes' },
       { label: 'Terraform', icon: 'siTerraform' },
+      { label: 'Jenkins', icon: 'siJenkins' },
+      { label: 'JFrog', icon: 'siJfrog' },
       { label: 'Vercel', icon: 'siVercel' },
       { label: 'Hostinger (EU)', icon: 'siHostinger' },
     ],
@@ -75,6 +84,9 @@ const groups: { name: string; items: Tech[] }[] = [
     items: [
       { label: 'Claude', icon: 'siClaude' },
       { label: 'Cursor', icon: 'siCursor' },
+      { label: 'LangChain', icon: 'siLangchain' },
+      { label: 'Spring AI', icon: 'siSpringboot' },
+      { label: 'Hermes', icon: 'siHermes' },
       { label: 'LLM Integration', svg: sparkleSvg },
     ],
   },
