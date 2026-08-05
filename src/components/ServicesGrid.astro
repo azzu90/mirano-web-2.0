@@ -87,6 +87,11 @@ const t = copy[lang];
     text-decoration: none;
   }
   .service-surface {
+    /* .service (Grid-Item) wird per Grid-Default (align-items: stretch) auf
+       Zeilenhöhe gebracht – .service-surface muss das explizit übernehmen,
+       sonst schrumpft die sichtbare Karte auf ihre eigene Textlänge und alle
+       Karten einer Zeile werden wieder unterschiedlich hoch. */
+    height: 100%;
     padding: 1.75rem;
     display: flex;
     flex-direction: column;
