@@ -72,9 +72,15 @@ const t = copy[lang];
 </section>
 
 <style>
+  /* Leicht asymmetrische erste Spalte statt repeat(3, 1fr): das 3x2-Raster
+     liest sich dadurch als Komposition statt als Matrix. Der Wert folgt der
+     Asymmetrie-Sprache, die die Site schon spricht (Hero 1.05/0.95,
+     CTA 1.2/0.8, Footer 1.6/1.1/1/1.2) – keine importierte Geste.
+     Beide Zeilen erben dieselbe Aufteilung, die Spaltenkanten bleiben also
+     über die Zeilen hinweg bündig. */
   .services-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.15fr 1fr 1fr;
     gap: 1.5rem;
   }
   .service {

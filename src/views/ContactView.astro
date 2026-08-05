@@ -67,26 +67,26 @@ const t = copy[lang];
 ---
 
 <Base title={t.title} description={t.desc}>
-  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+  <PageHero title={t.h1} lead={t.lead} />
 
   <section class="section">
     <div class="container contact-grid">
       <div class="contact-info reveal">
         <div class="ci-block">
-          <span class="ci-label">{t.emailLabel}</span>
+          <span class="eyebrow">{t.emailLabel}</span>
           <a href="mailto:info@mirano-solutions.com" class="ci-value">info@mirano-solutions.com</a>
         </div>
         <div class="ci-block">
-          <span class="ci-label">{t.phoneLabel}</span>
+          <span class="eyebrow">{t.phoneLabel}</span>
           <a href="tel:+385976795944" class="ci-value">(+385) 9 767 959 44</a>
           <span class="ci-meta">{t.phoneHours}</span>
         </div>
         <div class="ci-block">
-          <span class="ci-label">{t.addressLabel}</span>
+          <span class="eyebrow">{t.addressLabel}</span>
           <span class="ci-value" style="font-size:1.0625rem">Mirano Solutions d.o.o.<br />Ograjska ulica 1C<br />10000 Zagreb</span>
         </div>
         <div class="ci-block">
-          <span class="ci-label">{t.linkedinLabel}</span>
+          <span class="eyebrow">{t.linkedinLabel}</span>
           <a href="https://de.linkedin.com/in/armin-zalihic-53a727201" target="_blank" rel="noopener" class="ci-value">Armin Zalihić →</a>
         </div>
         <p class="ci-trust">{t.trust}</p>
@@ -132,14 +132,7 @@ const t = copy[lang];
     display: grid;
     gap: 0.35rem;
   }
-  .ci-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-orange-deep);
-  }
+  /* Eyebrow-Recipe kommt aus tokens.css (.eyebrow). */
   .ci-value {
     font-size: 1.25rem;
     font-weight: 600;

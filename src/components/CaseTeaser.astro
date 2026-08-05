@@ -89,7 +89,7 @@ const t = copy[lang];
               <span class="case-stat-label">{c.statLabel}</span>
             </div>
             <div class="case-body">
-              <span class="case-eyebrow">{c.eyebrow}</span>
+              <span class="eyebrow eyebrow-muted">{c.eyebrow}</span>
               <h3>{c.title}</h3>
               <p>{c.text}</p>
               <span class="case-more" aria-hidden="true">{t.more}</span>
@@ -157,14 +157,7 @@ const t = copy[lang];
     flex-direction: column;
     gap: 0.6rem;
   }
-  .case-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-muted);
-  }
+  /* Eyebrow-Recipe kommt aus tokens.css (.eyebrow / .eyebrow-muted). */
   .case h3 {
     font-size: 1.25rem;
   }

@@ -189,6 +189,7 @@ Mirano is flat by design, and that flatness is deliberate rather than an oversig
 - **Shadow Strategy:** none at rest — see Elevation. Hover states use a border-color shift and a small `translateY(-3px)` lift instead of shadow.
 - **Border:** 1px solid `--mirano-border`; on hover, service/case cards tint the border toward orange (`color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border))`) rather than adding a shadow.
 - **Internal Padding:** ~1.75rem for grid cards, up to 3rem for the feature CTA card.
+- **Grid Proportion:** card grids are not perfect matrices. The services grid runs `1.15fr 1fr 1fr`, so its 3×2 arrangement reads as a composition rather than a table. This follows the asymmetry the rest of the system already uses — hero `1.05fr / 0.95fr`, CTA card `1.2fr / 0.8fr`, footer `1.6fr 1.1fr 1fr 1.2fr`, locations `1.1fr / 0.9fr`. Both rows inherit the same proportion, so the column edges stay aligned down the page. Below 1000px it collapses to two equal columns and below 560px to one: asymmetry is a desktop-composition device, not something to force into a narrow viewport where it would read as a mistake.
 
 ### The CTA Card (signature component)
 The one place per page allowed a top accent: a 3px solid gradient bar across the top edge (`.cta-accent`), never a side stripe. Paired with a limestone background and a two-column layout (copy left, actions + trust line right). This is the system's single "make it a moment" pattern — everywhere else, restraint holds. On scroll-reveal, the bar draws itself left-to-right (`scaleX` 0→1, 600ms, origin left) — the same drawn-line mechanic the delivery timeline uses, reserved for the signature element.
@@ -201,6 +202,13 @@ The one place per page allowed a top accent: a 3px solid gradient bar across the
 
 ### Eyebrow (signature typographic component)
 Mono, uppercase, 0.75rem, 0.1em tracking, orange-deep on light / orange-light on dark. Appears once per section head, directly above the H2, and inside status/trust lines (e.g. "EU CONTRACTS · GDPR-NATIVE · MAX. 40 EXPERTS"). This is the one recurring "precision marker" in the system — used consistently as a system-wide voice, not as decorative section-scaffolding.
+
+- **One declaration.** `.eyebrow` in `tokens.css` is the only place this recipe is written down. It previously existed as ten hand-rolled copies under private class names (`.case-eyebrow` twice, `.timeline-label`, `.ci-label`, `.milestones-label`, `.certs-label`, `.plima-tech-label`, `.pillar-index`, `.tech-group-name`, `.partners-label`), which is how it drifted into feeling like scaffolding. New contexts compose the class; they do not restate it. Where a context needs its own spacing, scope only the spacing locally (`.case-head .eyebrow { margin-bottom: 1rem }`).
+- **`.eyebrow-muted`** is the one sanctioned modifier: same type treatment, `--mirano-muted` instead of orange. Use it where the label only files something away and should not spend the accent colour — timeline, certificates, tech-stack and partner labels.
+- **The hero's switcher tabs and year, and the footer column headings, keep their own rules.** They share the mono-uppercase look but are not eyebrows: they are controls and headings, at their own sizes and colours.
+
+### The No-Restatement Rule (eyebrow placement)
+An eyebrow must say something the heading below it does not. A label that merely repeats the page's own navigation entry — "Services" above "Engineering that also builds its own products" — is scaffolding, and it is what made every subpage open with the same block. `PageHero`'s `eyebrow` prop is therefore optional and left unset on the content pages. It stays where the label is genuinely additive: the per-service category on `/services/[slug]` ("Service · Engineering"), the case framing on `/references` ("Our own product · HR SaaS"), and the error code on the 404 page.
 
 ## 6. Do's and Don'ts
 

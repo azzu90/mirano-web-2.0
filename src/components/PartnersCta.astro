@@ -59,7 +59,7 @@ const t = copy[lang];
 <section class="section partners-cta">
   <div class="container">
     <div class="partners reveal">
-      <span class="partners-label">{t.partnersLabel}</span>
+      <span class="eyebrow eyebrow-muted">{t.partnersLabel}</span>
       <ul>
         {partners.map((p) => {
           const content = p.logo ? (
@@ -96,14 +96,7 @@ const t = copy[lang];
     flex-wrap: wrap;
     padding-bottom: 4rem;
   }
-  .partners-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-muted);
-  }
+  /* Eyebrow-Recipe kommt aus tokens.css (.eyebrow-muted). */
   .partners ul {
     list-style: none;
     padding: 0;
@@ -121,7 +114,7 @@ const t = copy[lang];
   }
   /* Logos staffeln einzeln beim Reveal (40ms/Logo); Startzustand nur unter html.js.
      transition-delay als Liste, damit der Farb-Hover (1. Property) nie verzögert wird. */
-  :global(.js) .partners.reveal .partners-label,
+  :global(.js) .partners.reveal .eyebrow,
   :global(.js) .partners.reveal li {
     opacity: 0;
     transform: translateY(8px);
@@ -130,7 +123,7 @@ const t = copy[lang];
       opacity var(--dur-base) var(--ease-out),
       transform var(--dur-base) var(--ease-out);
   }
-  :global(.js) .partners.reveal.is-visible .partners-label,
+  :global(.js) .partners.reveal.is-visible .eyebrow,
   :global(.js) .partners.reveal.is-visible li {
     opacity: 1;
     transform: none;
@@ -142,7 +135,7 @@ const t = copy[lang];
   :global(.js) .partners.reveal.is-visible li:nth-child(5) { transition-delay: 0ms, 200ms, 200ms; }
   :global(.js) .partners.reveal.is-visible li:nth-child(6) { transition-delay: 0ms, 240ms, 240ms; }
   @media (prefers-reduced-motion: reduce) {
-    :global(.js) .partners.reveal .partners-label,
+    :global(.js) .partners.reveal .eyebrow,
     :global(.js) .partners.reveal li {
       opacity: 1;
       transform: none;

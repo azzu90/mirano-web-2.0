@@ -1,6 +1,9 @@
 ---
 interface Props {
-  eyebrow: string;
+  /** Optional. Nur setzen, wenn das Label mehr sagt als die H1 – ein Eyebrow,
+      der bloß das Navigationslabel der eigenen Seite wiederholt ("Services"
+      über "Engineering that also builds its own products"), wird weggelassen. */
+  eyebrow?: string;
   title: string;
   lead?: string;
 }
@@ -9,7 +12,7 @@ const { eyebrow, title, lead } = Astro.props;
 
 <section class="page-hero">
   <div class="container">
-    <span class="eyebrow">{eyebrow}</span>
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
     <h1>{title}</h1>
     {lead && <p class="lead">{lead}</p>}
   </div>

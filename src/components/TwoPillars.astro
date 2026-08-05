@@ -73,7 +73,7 @@ const t = copy[lang];
           { ...t.p2, href: '/products' },
         ].map((p) => (
           <article class="card pillar reveal">
-            <span class="pillar-index" aria-hidden="true">{p.idx}</span>
+            <span class="eyebrow" aria-hidden="true">{p.idx}</span>
             <h3>{p.title}</h3>
             <p>{p.text}</p>
             <ul>
@@ -106,14 +106,7 @@ const t = copy[lang];
     border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
     transform: translateY(-3px);
   }
-  .pillar-index {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-orange-deep);
-  }
+  /* Eyebrow-Recipe kommt aus tokens.css (.eyebrow). */
   .pillar ul {
     list-style: none;
     padding: 0;

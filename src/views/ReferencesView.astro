@@ -147,14 +147,14 @@ const t = copy[lang];
 ---
 
 <Base title={t.title} description={t.desc}>
-  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+  <PageHero title={t.h1} lead={t.lead} />
 
   {
     t.cases.map((c: any, idx: number) => (
       <section class={`section ${idx % 2 === 1 ? 'section-limestone' : ''}`} id={c.id}>
         <div class="container">
           <div class="case-head reveal">
-            <span class="case-eyebrow">{c.eyebrow}</span>
+            <span class="eyebrow">{c.eyebrow}</span>
             <h2>{c.title}</h2>
             <p>{c.text}</p>
           </div>
@@ -170,7 +170,7 @@ const t = copy[lang];
           </div>
 
           <div class="timeline reveal">
-            <span class="timeline-label">{t.timelineLabel}</span>
+            <span class="eyebrow eyebrow-muted">{t.timelineLabel}</span>
             <ol>
               {c.timeline.map(([h, d]: [string, string], i: number) => (
                 <li>
@@ -207,14 +207,9 @@ const t = copy[lang];
     max-width: 46rem;
     margin-bottom: 2.5rem;
   }
-  .case-eyebrow {
+  /* Recipe aus tokens.css; hier nur der kontextabhängige Abstand. */
+  .case-head .eyebrow {
     display: block;
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-orange-deep);
     margin-bottom: 1rem;
   }
   .case-head h2 {
@@ -256,14 +251,8 @@ const t = copy[lang];
     margin-top: 0.3rem;
   }
 
-  .timeline-label {
+  .timeline > .eyebrow {
     display: block;
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-muted);
     margin-bottom: 1.5rem;
   }
   .timeline ol {

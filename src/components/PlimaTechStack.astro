@@ -39,7 +39,7 @@ const labels: Record<Lang, string> = {
 ---
 
 <div class:list={['plima-tech', variant === 'brand' && 'plima-tech--brand']}>
-  <span class="plima-tech-label">{labels[lang]}</span>
+  <span class="eyebrow eyebrow-muted">{labels[lang]}</span>
   <ul class="plima-tech-list">
     {
       items.map((tech) => {
@@ -64,14 +64,7 @@ const labels: Record<Lang, string> = {
     flex-wrap: wrap;
     gap: 0.75rem;
   }
-  .plima-tech-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-muted);
-  }
+  /* Eyebrow-Recipe kommt aus tokens.css (.eyebrow-muted). */
   .plima-tech-list {
     list-style: none;
     padding: 0;

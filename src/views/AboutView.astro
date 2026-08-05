@@ -140,7 +140,7 @@ const t = copy[lang];
 ---
 
 <Base title={t.title} description={t.desc}>
-  <PageHero eyebrow={t.eyebrow} title={t.h1} lead={t.lead} />
+  <PageHero title={t.h1} lead={t.lead} />
 
   <section class="section">
     <div class="container story-grid">
@@ -162,7 +162,7 @@ const t = copy[lang];
       </div>
       <aside class="founder-side reveal">
         <div class="path-card">
-          <span class="milestones-label">{t.milestonesLabel}</span>
+          <span class="eyebrow">{t.milestonesLabel}</span>
           <ol class="milestones">
             {
               t.milestones.map(([year, text]: [string, string]) => (
@@ -174,7 +174,7 @@ const t = copy[lang];
             }
           </ol>
           <div class="certs">
-            <span class="certs-label">{t.certsLabel}</span>
+            <span class="eyebrow eyebrow-muted">{t.certsLabel}</span>
             <ul class="certs-list">
               {t.certs.map((c: string) => <li class="cert-chip">{c}</li>)}
             </ul>
@@ -307,14 +307,7 @@ const t = copy[lang];
     display: grid;
     gap: 1.1rem;
   }
-  .milestones-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-orange-deep);
-  }
+  /* Eyebrow-Recipe kommt aus tokens.css (.eyebrow / .eyebrow-muted). */
   .milestones {
     list-style: none;
     padding: 0;
@@ -431,14 +424,6 @@ const t = copy[lang];
     gap: 0.6rem;
     border-top: 1px solid var(--mirano-border);
     padding-top: 1.1rem;
-  }
-  .certs-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    font-weight: 500;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--mirano-muted);
   }
   .certs-list {
     list-style: none;
