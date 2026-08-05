@@ -21,10 +21,14 @@ Aktueller Stand (Ergänzung nach Feedback Mislav, Backend-Architekt, 06.08.2026)
 - **Cloud & DevOps**: AWS, Google Cloud, Docker, Kubernetes, Terraform, Jenkins, JFrog, Vercel, Hostinger (EU).
 - **QA & Testing**: Cypress, Playwright, Selenium, JMeter.
 - **SAP**: SAP, SAP Test Management.
-- **AI**: Claude, Cursor, LangChain, Spring AI (kein eigenes simple-icons-Icon – nutzt siSpringboot mit), Hermes, LLM Integration (generischer Sparkle-Platzhalter).
+- **AI**: Claude, Cursor, LangChain, Spring AI (kein eigenes simple-icons-Icon – nutzt siSpringboot mit), Hermes (kein Icon, reiner Text-Chip – siehe Korrektur unten), LLM Integration (generischer Sparkle-Platzhalter).
 - **Workflow**: Linear, GitHub.
 
 Bewusst getrennt von PLIMA-spezifischen Tech-Chips auf /products (PlimaTechStack.astro: Java, Spring Boot, Vaadin, PostgreSQL) – dort ist es der Stack eines einzelnen Produkts, im TechBand der gesamte Expertise-Pool. Überschneidende Icons (Spring Boot, Vaadin, PostgreSQL) sind beabsichtigt und keine Inkonsistenz.
+
+**Korrektur 06.08.2026**: Das ursprünglich für "Hermes" (KI-Tool) verwendete `siHermes`-Icon aus simple-icons zeigt tatsächlich das Logo des Paketdienstleisters Hermes – Namensgleichheit, aber falsche Marke. Icon-Verweis entfernt, "Hermes" läuft jetzt als reiner Text-Chip ohne Icon (wie AWS/SAP Test Management).
+
+**Wichtig für künftige Icon-Ergänzungen aus simple-icons**: Es reicht NICHT zu prüfen, ob ein Icon-Schlüssel existiert (`icons.siXyz !== undefined`) – der Schlüsselname garantiert nicht, dass das Icon die gemeinte Marke/das gemeinte Tool zeigt. simple-icons enthält viele gleichnamige, aber fachfremde Marken (Beispiel: `siHermes` = Paketdienstleister Hermes, nicht das KI-Tool). Vor jeder neuen Icon-Nutzung zusätzlich das SVG bzw. den Markennamen auf simpleicons.org visuell/inhaltlich verifizieren, dass es wirklich zur gemeinten Marke passt. Im Zweifel: Text-Chip ohne Icon (Muster: AWS, SAP Test Management, Hermes).
 
 ## Inhaltliche Festlegungen
 

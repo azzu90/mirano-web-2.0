@@ -82,17 +82,19 @@ const t = copy[lang];
     <div class="cases">
       {
         t.cases.map((c: any) => (
-          <a href={l(lang, c.href.split('#')[0]) + '#' + c.href.split('#')[1]} class="card case reveal">
-            <div class="case-stat">
-              <span class="stat-number" data-countup={c.stat}>{c.stat}</span>
-              <span class="case-stat-unit">{c.statUnit}</span>
-              <span class="case-stat-label">{c.statLabel}</span>
-            </div>
-            <div class="case-body">
-              <span class="case-eyebrow">{c.eyebrow}</span>
-              <h3>{c.title}</h3>
-              <p>{c.text}</p>
-              <span class="case-more" aria-hidden="true">{t.more}</span>
+          <a href={l(lang, c.href.split('#')[0]) + '#' + c.href.split('#')[1]} class="case reveal">
+            <div class="case-surface card">
+              <div class="case-stat">
+                <span class="stat-number" data-countup={c.stat}>{c.stat}</span>
+                <span class="case-stat-unit">{c.statUnit}</span>
+                <span class="case-stat-label">{c.statLabel}</span>
+              </div>
+              <div class="case-body">
+                <span class="case-eyebrow">{c.eyebrow}</span>
+                <h3>{c.title}</h3>
+                <p>{c.text}</p>
+                <span class="case-more" aria-hidden="true">{t.more}</span>
+              </div>
             </div>
           </a>
         ))
@@ -108,20 +110,26 @@ const t = copy[lang];
     gap: 1.5rem;
   }
   .case {
+    /* Hover-Zustand lebt hier (unbeweglicher Hit-Bereich), damit translateY()
+       auf .case-surface die Hover-Fläche nicht verschiebt und am Kartenrand
+       zittert. Nur .case-surface hebt sich sichtbar. */
+    display: block;
+    text-decoration: none;
+  }
+  .case-surface {
     display: grid;
     grid-template-columns: 130px 1fr;
     gap: 1.75rem;
     padding: 2.25rem;
-    text-decoration: none;
     transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
-  .case:hover {
+  .case:hover .case-surface {
     border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
     transform: translateY(-3px);
     /* Enter schnell (180ms), Exit ruhig über die Basis-Transition (320ms) */
     transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
-  .case:active {
+  .case:active .case-surface {
     transform: translateY(-1px);
   }
   .case:hover .case-more {
@@ -186,7 +194,7 @@ const t = copy[lang];
     }
   }
   @media (max-width: 560px) {
-    .case {
+    .case-surface {
       grid-template-columns: 1fr;
       gap: 1.25rem;
       padding: 1.75rem;

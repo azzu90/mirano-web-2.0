@@ -60,10 +60,12 @@ const t = copy[lang];
     <div class="services-grid">
       {
         t.items.map((s: any) => (
-          <a href={l(lang, s.href)} class="card service reveal">
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-            <span class="service-more" aria-hidden="true">{t.more}</span>
+          <a href={l(lang, s.href)} class="service reveal">
+            <div class="service-surface card">
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+              <span class="service-more" aria-hidden="true">{t.more}</span>
+            </div>
           </a>
         ))
       }
@@ -78,20 +80,26 @@ const t = copy[lang];
     gap: 1.5rem;
   }
   .service {
-    padding: 1.75rem;
+    /* Hover-Zustand lebt hier (unbeweglicher Hit-Bereich), damit translateY()
+       auf .service-surface die Hover-Fläche nicht verschiebt und am Kartenrand
+       zittert. Nur .service-surface hebt sich sichtbar. */
+    display: block;
     text-decoration: none;
+  }
+  .service-surface {
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
-  .service:hover {
+  .service:hover .service-surface {
     border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
     transform: translateY(-3px);
     /* Enter schnell (180ms), Exit ruhig über die Basis-Transition (320ms) */
     transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
-  .service:active {
+  .service:active .service-surface {
     transform: translateY(-1px);
   }
   .service:hover .service-more {

@@ -72,16 +72,18 @@ const t = copy[lang];
           { ...t.p1, href: '/services' },
           { ...t.p2, href: '/products' },
         ].map((p) => (
-          <article class="card pillar reveal">
-            <span class="pillar-index" aria-hidden="true">{p.idx}</span>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-            <ul>
-              {p.items.map((item: string) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-            <a href={l(lang, p.href)} class="btn-ghost">{p.link}</a>
+          <article class="pillar reveal">
+            <div class="pillar-surface card">
+              <span class="pillar-index" aria-hidden="true">{p.idx}</span>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+              <ul>
+                {p.items.map((item: string) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              <a href={l(lang, p.href)} class="btn-ghost">{p.link}</a>
+            </div>
           </article>
         ))
       }
@@ -96,13 +98,19 @@ const t = copy[lang];
     gap: 1.5rem;
   }
   .pillar {
+    /* Hover-Zustand lebt hier (unbeweglicher Hit-Bereich), damit translateY()
+       auf .pillar-surface die Hover-Fläche nicht verschiebt und am Kartenrand
+       zittert. Nur .pillar-surface hebt sich sichtbar. */
+    display: block;
+  }
+  .pillar-surface {
     padding: 2.25rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
-  .pillar:hover {
+  .pillar:hover .pillar-surface {
     border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
     transform: translateY(-3px);
   }
@@ -146,7 +154,7 @@ const t = copy[lang];
     .pillars {
       grid-template-columns: 1fr;
     }
-    .pillar {
+    .pillar-surface {
       padding: 1.75rem;
     }
   }
