@@ -266,7 +266,7 @@ const t = copy[lang];
   }
   .hero-trust {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-eyebrow);
     letter-spacing: var(--tracking-meta);
     color: var(--mirano-muted);
   }
@@ -293,7 +293,7 @@ const t = copy[lang];
     right: 1.75rem;
     height: 3px;
     background: var(--mirano-gradient);
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 var(--radius-accent) var(--radius-accent);
     /* Die Linie zeichnet sich, nachdem die Karte steht (Ledger-Metapher) */
     transform-origin: left;
     animation: accent-draw 500ms var(--ease-out) 500ms both;
@@ -428,7 +428,7 @@ const t = copy[lang];
   .ledger-name {
     font-weight: 600;
     color: var(--mirano-ink);
-    font-size: 0.9375rem;
+    font-size: var(--text-body-sm);
     line-height: 1.35;
   }
   .ledger-name a {
@@ -439,7 +439,7 @@ const t = copy[lang];
     color: var(--mirano-orange-deep);
   }
   .ledger-kind {
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--mirano-muted);
   }
   .ledger-side {
@@ -457,18 +457,18 @@ const t = copy[lang];
   }
   .ledger-metric {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-eyebrow);
     color: var(--mirano-slate);
     line-height: 1.4;
   }
   .ledger-status {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--text-micro);
     font-weight: 500;
     letter-spacing: var(--tracking-meta);
     text-transform: uppercase;
     padding: 0.2rem 0.55rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--mirano-border);
   }
   .status-live {
@@ -486,7 +486,7 @@ const t = copy[lang];
     align-items: center;
     gap: 1rem;
     padding-block: 1rem;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--mirano-muted);
   }
   .ledger-foot a {
@@ -503,7 +503,7 @@ const t = copy[lang];
   .switcher-progress {
     height: 2px;
     background: var(--mirano-limestone);
-    border-radius: 1px;
+    border-radius: var(--radius-hairline);
     overflow: hidden;
     margin-bottom: 0.35rem;
   }

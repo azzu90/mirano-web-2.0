@@ -134,12 +134,12 @@ const t = copy[lang];
     padding-right: 1.5rem;
   }
   .case .stat-number {
-    font-size: 3.25rem;
+    font-size: var(--text-stat-lg);
     line-height: 1;
   }
   .case-stat-unit {
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: var(--tracking-meta);
@@ -147,7 +147,7 @@ const t = copy[lang];
     margin-top: 0.35rem;
   }
   .case-stat-label {
-    font-size: 0.75rem;
+    font-size: var(--text-eyebrow);
     color: var(--mirano-muted);
     margin-top: 0.35rem;
     line-height: 1.4;
@@ -159,10 +159,10 @@ const t = copy[lang];
   }
   /* Eyebrow-Recipe kommt aus tokens.css (.eyebrow / .eyebrow-muted). */
   .case h3 {
-    font-size: 1.25rem;
+    font-size: var(--text-subtitle);
   }
   .case p {
-    font-size: 0.9375rem;
+    font-size: var(--text-body-sm);
     color: var(--mirano-slate);
   }
   .case-more {

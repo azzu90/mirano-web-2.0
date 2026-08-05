@@ -9,7 +9,15 @@ colors:
   graphite-soft: "#3A434A"
   ink: "#22282C"
   slate: "#4A5258"
-  muted: "#7A8288"
+  muted: "#687076"
+  gradient-start: "#FF4A38"
+  gradient-end: "#FF7B4D"
+  plima-primary: "#6D28D9"
+  plima-highlight: "#8444EE"
+  plima-gradient-start: "#9A84F4"
+  plima-gradient-end: "#6B3FE4"
+  plima-green: "#40AF74"
+  plima-green-deep: "#1E7A4C"
   on-dark: "#FFFFFF"
   on-dark-body: "#AEB6BC"
   porcelain: "#FDFCFA"
@@ -20,6 +28,16 @@ colors:
   warning: "#B7791F"
   error: "#C0392B"
 typography:
+  stat-lg:
+    fontFamily: "JetBrains Mono, ui-monospace, monospace"
+    fontSize: "3.25rem"
+    fontWeight: 500
+    lineHeight: 1
+  stat:
+    fontFamily: "JetBrains Mono, ui-monospace, monospace"
+    fontSize: "2.5rem"
+    fontWeight: 500
+    lineHeight: 1.1
   display:
     fontFamily: "League Spartan, system-ui, sans-serif"
     fontSize: "clamp(2.4rem, 5vw, 3.75rem)"
@@ -37,11 +55,31 @@ typography:
     fontSize: "1.375rem"
     fontWeight: 600
     lineHeight: 1.3
+  subtitle:
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 600
+    lineHeight: 1.35
+  lead:
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontSize: "1.1875rem"
+    fontWeight: 400
+    lineHeight: 1.65
+  subheading:
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 600
+    lineHeight: 1.35
   body:
     fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
     lineHeight: 1.65
+  base:
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.5
   body-sm:
     fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "0.9375rem"
@@ -63,9 +101,11 @@ typography:
     fontWeight: 500
     letterSpacing: "0.1em"
 rounded:
+  hairline: "1px"
+  accent: "2px"
   control: "8px"
   card: "14px"
-  feature: "24px"
+  pill: "999px"
 spacing:
   container-max: "1240px"
   container-inline: "1.5rem"

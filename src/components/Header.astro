@@ -146,7 +146,7 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
   .main-nav a {
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9375rem;
+    font-size: var(--text-body-sm);
     color: var(--mirano-slate);
     transition: color var(--dur-fast) var(--ease-out);
   }
@@ -168,7 +168,7 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     align-items: center;
     gap: 0.45rem;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-eyebrow);
     letter-spacing: var(--tracking-meta);
     color: var(--mirano-border);
   }
@@ -187,7 +187,7 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
   }
   .header-cta {
     padding: 0.625rem 1.25rem;
-    font-size: 0.9375rem;
+    font-size: var(--text-body-sm);
   }
 
   .menu-toggle {
@@ -215,7 +215,7 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     display: block;
     height: 2px;
     background: var(--mirano-ink);
-    border-radius: 1px;
+    border-radius: var(--radius-hairline);
     transition: transform var(--dur-fast) var(--ease-out);
   }
   .menu-toggle[aria-expanded='true'] span:first-child {
@@ -253,14 +253,14 @@ const contactLabel = { en: 'Contact', de: 'Kontakt', hr: 'Kontakt' }[lang];
     text-decoration: none;
     font-weight: 600;
     color: var(--mirano-ink);
-    font-size: 1.125rem;
+    font-size: var(--text-h4);
   }
   .mobile-lang {
     display: flex;
     gap: 1.25rem;
     margin-bottom: 1.5rem;
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     letter-spacing: var(--tracking-meta);
   }
   .mobile-lang a {

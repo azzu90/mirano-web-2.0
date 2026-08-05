@@ -44,7 +44,7 @@ button {
 :focus-visible {
   outline: 2px solid var(--mirano-orange-deep);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: var(--radius-accent);
 }
 .section-dark :focus-visible {
   outline-color: var(--mirano-orange-light);
@@ -94,7 +94,7 @@ button {
 
 /* ----- Typo-Utilities ----- */
 .lead {
-  font-size: 1.1875rem;
+  font-size: var(--text-lead);
   line-height: var(--leading-body);
   text-wrap: pretty;
 }
@@ -166,7 +166,7 @@ button {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1;
   white-space: nowrap;
 }
@@ -215,10 +215,10 @@ button {
   gap: 0.6rem;
 }
 .info-card h3 {
-  font-size: 1.0625rem;
+  font-size: var(--text-body);
 }
 .info-card p {
-  font-size: 0.9375rem;
+  font-size: var(--text-body-sm);
   color: var(--mirano-slate);
 }
 
