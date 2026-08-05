@@ -61,8 +61,22 @@
   --radius-card: 14px;
   --radius-feature: 24px;
   --container-max: 1240px;
-  --section-y-desktop: 7rem;   /* 112px */
+
+  /* Sektions-Dichteskala (drei Stufen statt einer).
+     Die Seite soll ungleichmäßig atmen: dichte Sektionen, deren Inhalt schon
+     visuelles Gewicht trägt (Kachelraster, Chip-Bänder), stehen enger;
+     Beleg- und Kontrast-Momente bekommen Luft. Default = der bisherige Wert,
+     d.h. ohne Modifier ändert sich nichts. */
+  --section-y-compact: 5rem;      /* 80px  – Inhalt trägt eigenes Gewicht */
+  --section-y-default: 7rem;      /* 112px – Normalmaß */
+  --section-y-expansive: 9.5rem;  /* 152px – Momente, die Luft brauchen */
+
+  --section-y-mobile-compact: 3.25rem;
   --section-y-mobile: 4rem;
+  --section-y-mobile-expansive: 5.25rem;
+
+  /* Alias: hält bestehende Aufrufe (global.css, 404.astro) gültig. */
+  --section-y-desktop: var(--section-y-default);
 
   /* ----- Motion ----- */
   --dur-fast: 180ms;
@@ -110,9 +124,13 @@ h4 { font-size: var(--text-h4); }
 }
 .section-dark .eyebrow { color: var(--mirano-orange-light); }
 
-/* Primär-CTA: einzige großflächige Verlaufs-Anwendung */
+/* Primär-CTA: flächiges Orange-Deep.
+   Weiß auf #C2410C = 5.18:1 (WCAG AA), im Hover brightness(1.06) noch 4.69:1.
+   brightness NICHT über 1.06 erhöhen – bei 1.10 fällt der Kontrast auf 4.41:1.
+   Der Verlauf bleibt dem System erhalten, aber nur als Linie/Akzent
+   (.cta-accent, .booking-accent, .ledger-accent, .stat-number), nicht als Fläche. */
 .btn-primary {
-  background: var(--mirano-gradient);
+  background: var(--mirano-orange-deep);
   color: var(--mirano-white);
   font-family: var(--font-body);
   font-weight: 600;

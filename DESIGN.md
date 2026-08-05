@@ -69,11 +69,15 @@ rounded:
 spacing:
   container-max: "1240px"
   container-inline: "1.5rem"
-  section-y-desktop: "7rem"
+  section-y-compact: "5rem"
+  section-y-default: "7rem"
+  section-y-expansive: "9.5rem"
+  section-y-mobile-compact: "3.25rem"
   section-y-mobile: "4rem"
+  section-y-mobile-expansive: "5.25rem"
 components:
   button-primary:
-    backgroundColor: "{colors.signal-orange}"
+    backgroundColor: "{colors.signal-orange-deep}"
     textColor: "#FFFFFF"
     rounded: "{rounded.control}"
     padding: "0.75rem 1.5rem"
@@ -114,8 +118,8 @@ The system explicitly rejects the generic agency/SaaS template look — stock-ph
 The palette is warm-neutral and quiet, with exactly one signal color allowed to speak.
 
 ### Primary
-- **Signal Orange** (#FF6841): icons, secondary-solid accents, and the sole color the primary gradient is built from. Used deliberately and sparingly — never as a large flat fill outside the primary CTA.
-- **Signal Orange Deep** (#C2410C): text-level accents on light backgrounds — eyebrows, ghost-button labels. Chosen specifically for AA contrast where the base orange would fail as text.
+- **Signal Orange** (#FF6841): icons, secondary-solid accents, and the sole color the gradient is built from. Used deliberately and sparingly — never as a large flat fill. Note it is 2.80:1 on porcelain, so it never carries text and never carries meaning on its own where 3:1 non-text contrast is required.
+- **Signal Orange Deep** (#C2410C): text-level accents on light backgrounds — eyebrows, ghost-button labels — and the primary CTA's solid fill. Chosen specifically for AA contrast where the base orange would fail: 5.05:1 as text on porcelain, 5.18:1 as a ground under white.
 - **Signal Orange Light** (#FF8A66): the same accent role, recalibrated for the dark graphite section so it still reads at AA against a dark ground.
 
 ### Neutral
@@ -123,7 +127,7 @@ The palette is warm-neutral and quiet, with exactly one signal color allowed to 
 - **Limestone** (#F6F4F0): the alternate section background and default card fill for callouts (CtaBox, etc.) — one step warmer/darker than porcelain, used to separate sections without a hard line.
 - **Ink** (#22282C): headline color on light backgrounds.
 - **Slate** (#4A5258): body text on light backgrounds.
-- **Muted** (#7A8288): captions, meta text, secondary labels.
+- **Muted** (#687076): captions, meta text, secondary labels. Darkened from #7A8288 to clear AA on porcelain, limestone and white (4.59:1 worst case).
 - **Border** (#E7E3DC): the only line color — card borders, header divider, input strokes.
 - **Graphite** (#2C343A): the reserved dark section — footer plus at most one contrast section per page. Deliberately not pure black.
 - **Graphite Soft** (#3A434A): card/hover surfaces on top of graphite.
@@ -133,7 +137,9 @@ The palette is warm-neutral and quiet, with exactly one signal color allowed to 
 - **Success** (#2E7D4F), **Warning** (#B7791F), **Error** (#C0392B): reserved for functional state (form validation, status badges), never decorative.
 
 ### Named Rules
-**The One Signal Rule.** Signal Orange (and its gradient) is the only saturated color in the system. It appears on icons, the primary CTA, ledger status dots, and the accent line/stat numbers — never as a large background fill, never duplicated as a second "brand color."
+**The One Signal Rule.** Signal Orange (and its gradient) is the only saturated color in the system. It appears on icons, ledger status dots, the 3px accent bars and stat numbers; its deep variant carries the primary CTA. Never a large decorative background fill, never duplicated as a second "brand color."
+
+**The Gradient-Is-A-Line Rule.** The orange gradient is a *line*, not a *surface*. It belongs to the 3px accent bars (`.cta-accent`, `.booking-accent`, `.ledger-accent`) and to `.stat-number`. Large surfaces take the solid deep orange instead. This is a contrast constraint before it is an aesthetic one: white text over the gradient's light end reaches only 2.56:1.
 
 **The One Dark Section Rule.** Graphite appears at most once per page as a contrast section, plus the footer. It is not a second theme to alternate with light sections; it is a single deliberate beat.
 
@@ -173,7 +179,7 @@ Mirano is flat by design, and that flatness is deliberate rather than an oversig
 
 ### Buttons
 - **Shape:** 8px radius (`--radius-control`) on all three variants.
-- **Primary:** the single large-surface use of the orange gradient (`linear-gradient(90deg, #FF4A38 0%, #FF7B4D 100%)`), white text, 0.75rem/1.5rem padding. Hover brightens (`filter: brightness(1.06)`); active scales down slightly (`scale(0.98)`) — tactile but restrained, no bounce.
+- **Primary:** solid Signal Orange Deep (`#C2410C`), white text, 0.75rem/1.5rem padding. Hover brightens (`filter: brightness(1.06)`); active scales down slightly (`scale(0.98)`) — tactile but restrained, no bounce. The fill is solid rather than gradient for contrast reasons: white on `#C2410C` is 5.18:1 and stays at 4.69:1 under the hover brightening, where the former gradient fell to 2.56:1 at its light end. Do not raise the hover brightness past `1.06` — at `1.10` the ratio drops to 4.41:1 and fails AA.
 - **Secondary:** transparent fill, 1px `--mirano-border` outline, ink text; hover darkens the border to ink (on dark sections, border shifts from a dim gray to white).
 - **Ghost:** no border or fill, orange-deep text, underline on hover — used for low-emphasis inline links like "Learn more →".
 

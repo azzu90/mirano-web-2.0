@@ -108,7 +108,7 @@ const copy: Record<Lang, { eyebrow: string; h2: string }> = {
 const t = copy[lang];
 ---
 
-<section class="section techband section-limestone" aria-labelledby="tech-heading">
+<section class="section section-compact techband section-limestone" aria-labelledby="tech-heading">
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">{t.eyebrow}</span>
@@ -141,9 +141,8 @@ const t = copy[lang];
 </section>
 
 <style>
-  .techband {
-    padding-block: 5rem;
-  }
+  /* Vertikaler Abstand kommt aus .section-compact (Token-Dichteskala),
+     nicht mehr aus einem lokalen Literal. */
   .tech-groups {
     display: grid;
     gap: 1.75rem;

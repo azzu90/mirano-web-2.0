@@ -64,12 +64,27 @@ button {
 }
 
 .section {
-  padding-block: var(--section-y-desktop);
+  padding-block: var(--section-y-default);
+}
+
+/* Dichte-Modifier. Ohne Modifier bleibt eine Sektion beim Normalmaß,
+   d.h. jede bestehende .section ohne Zusatzklasse ist unverändert. */
+.section-compact {
+  padding-block: var(--section-y-compact);
+}
+.section-expansive {
+  padding-block: var(--section-y-expansive);
 }
 
 @media (max-width: 767px) {
   .section {
     padding-block: var(--section-y-mobile);
+  }
+  .section-compact {
+    padding-block: var(--section-y-mobile-compact);
+  }
+  .section-expansive {
+    padding-block: var(--section-y-mobile-expansive);
   }
 }
 
@@ -98,6 +113,14 @@ button {
 .section-head {
   max-width: 46rem;
   margin-bottom: 3.5rem;
+}
+/* Der Head-zu-Content-Abstand folgt der Dichtestufe der Sektion, damit die
+   Variation nicht nur zwischen, sondern auch innerhalb der Sektionen greift. */
+.section-compact .section-head {
+  margin-bottom: 2.5rem;
+}
+.section-expansive .section-head {
+  margin-bottom: 4.5rem;
 }
 .section-head .eyebrow {
   display: block;

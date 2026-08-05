@@ -10,7 +10,7 @@
       "graphite-soft": { "role": "neutral", "displayName": "Graphite Soft", "canonical": "#3A434A", "tonalRamp": ["#14171A", "#1F2426", "#2A3033", "#323A3F", "#3A434A", "#4E585F", "#6B7479", "#8E969B"] },
       "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#22282C", "tonalRamp": ["#0B0D0E", "#141819", "#1D2224", "#22282C", "#2E353A", "#4A5258", "#7A8288", "#AEB6BC"] },
       "slate": { "role": "neutral", "displayName": "Slate", "canonical": "#4A5258", "tonalRamp": ["#1A1D1F", "#282D30", "#3A4145", "#4A5258", "#5E666C", "#7A8288", "#9CA3A8", "#C6CBCE"] },
-      "muted": { "role": "neutral", "displayName": "Muted", "canonical": "#7A8288", "tonalRamp": ["#2A2E31", "#3C4144", "#525A5E", "#687176", "#7A8288", "#9CA3A7", "#BFC4C7", "#E3E5E6"] },
+      "muted": { "role": "neutral", "displayName": "Muted", "canonical": "#687076", "tonalRamp": ["#2A2E31", "#3C4144", "#525A5E", "#687076", "#7A8288", "#9CA3A7", "#BFC4C7", "#E3E5E6"] },
       "porcelain": { "role": "neutral", "displayName": "Porcelain", "canonical": "#FDFCFA", "tonalRamp": ["#1C1B18", "#3A3833", "#5C5952", "#8B877E", "#C4C0B6", "#E4E1D9", "#F6F4F0", "#FDFCFA"] },
       "limestone": { "role": "neutral", "displayName": "Limestone", "canonical": "#F6F4F0", "tonalRamp": ["#1B1A17", "#39362F", "#5A564B", "#8A857A", "#C3BEB3", "#E0DCD3", "#F6F4F0", "#FDFCFA"] },
       "border": { "role": "neutral", "displayName": "Border", "canonical": "#E7E3DC", "tonalRamp": ["#2C2A25", "#4A473F", "#6E6A5F", "#948E80", "#BDB7A8", "#DAD5CB", "#E7E3DC", "#F5F3EF"] },
@@ -42,6 +42,11 @@
       { "name": "tablet", "value": "1000px" },
       { "name": "mobile", "value": "560px" },
       { "name": "mobile-nav", "value": "767px" }
+    ],
+    "sectionDensity": [
+      { "name": "section-y-compact", "value": "5rem", "mobile": "3.25rem", "purpose": "Sections whose content already carries visual weight: the services tile grid, the tech chip band." },
+      { "name": "section-y-default", "value": "7rem", "mobile": "4rem", "purpose": "Normal measure. A section without a density modifier lands here." },
+      { "name": "section-y-expansive", "value": "9.5rem", "mobile": "5.25rem", "purpose": "Moments that need air: the case-proof section and the one dark contrast section." }
     ]
   },
   "components": [
@@ -49,9 +54,9 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Sole large-surface use of the orange gradient; the main CTA everywhere on the site.",
+      "description": "Solid Signal Orange Deep fill; the main CTA everywhere on the site. Solid rather than gradient so white text clears AA (5.18:1 at rest, 4.69:1 under the hover brightening).",
       "html": "<a href=\"#\" class=\"ds-btn-primary\">Talk to the founder</a>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(90deg, #FF4A38 0%, #FF7B4D 100%); color: #fff; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 600; font-size: 1rem; text-decoration: none; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; transition: filter 180ms cubic-bezier(0.22,1,0.36,1), transform 180ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { filter: brightness(1.06); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid #C2410C; outline-offset: 3px; }"
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: #C2410C; color: #fff; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 600; font-size: 1rem; text-decoration: none; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; transition: filter 180ms cubic-bezier(0.22,1,0.36,1), transform 180ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { filter: brightness(1.06); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid #C2410C; outline-offset: 3px; }"
     },
     {
       "name": "Secondary Button",
