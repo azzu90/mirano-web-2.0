@@ -88,9 +88,14 @@ const t = copy[lang];
   .service:hover {
     border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
     transform: translateY(-3px);
+    /* Enter schnell (180ms), Exit ruhig über die Basis-Transition (320ms) */
+    transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), opacity var(--dur-base) var(--ease-out);
   }
   .service:active {
     transform: translateY(-1px);
+  }
+  .service:hover .service-more {
+    transform: translateX(3px);
   }
   .service h3 {
     font-size: 1.125rem;
@@ -104,6 +109,7 @@ const t = copy[lang];
     font-weight: 600;
     font-size: var(--text-small);
     color: var(--mirano-orange-deep);
+    transition: transform var(--dur-fast) var(--ease-out);
   }
 
   @media (max-width: 1000px) {

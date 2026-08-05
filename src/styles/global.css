@@ -113,6 +113,28 @@ button {
   color: var(--mirano-text-on-dark-body);
 }
 
+/* Mikro-Stagger in Lesereihenfolge (Eyebrow → H2 → Text) innerhalb des Reveals.
+   Versteckte Startzustände nur unter html.js (Progressive Enhancement). */
+.js .section-head.reveal .eyebrow,
+.js .section-head.reveal h2,
+.js .section-head.reveal p {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.js .section-head.reveal.is-visible .eyebrow,
+.js .section-head.reveal.is-visible h2,
+.js .section-head.reveal.is-visible p {
+  opacity: 1;
+  transform: none;
+}
+.js .section-head.reveal.is-visible h2 {
+  transition-delay: 70ms;
+}
+.js .section-head.reveal.is-visible p {
+  transition-delay: 140ms;
+}
+
 /* ----- Buttons (erweitert tokens.css) ----- */
 .btn-primary,
 .btn-secondary,
@@ -203,6 +225,13 @@ html:not(.js) .reveal *::after {
     scroll-behavior: auto;
   }
   .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  /* Gestaffelte Section-Head-Kinder sofort sichtbar (Startzustand liegt unter .js) */
+  .js .section-head.reveal .eyebrow,
+  .js .section-head.reveal h2,
+  .js .section-head.reveal p {
     opacity: 1;
     transform: none;
   }

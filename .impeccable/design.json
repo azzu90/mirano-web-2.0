@@ -34,8 +34,9 @@
     ],
     "motion": [
       { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default easing for all transitions/reveals; exponential ease-out, no bounce." },
-      { "name": "dur-fast", "value": "180ms", "purpose": "Hover/focus micro-transitions (borders, color)." },
-      { "name": "dur-base", "value": "320ms", "purpose": "Reveal-on-scroll and card lift transitions." }
+      { "name": "dur-fast", "value": "180ms", "purpose": "Hover/focus micro-transitions (borders, color, arrow nudge, hover enter)." },
+      { "name": "dur-base", "value": "320ms", "purpose": "Reveal-on-scroll, card lift settle (hover exit), list staggers." },
+      { "name": "dur-entrance", "value": "550ms", "purpose": "Page/card entrances: hero copy stagger and ledger-card rise. Signature accent-draw (scaleX from left, 500-600ms) is the one drawn-line moment per page." }
     ],
     "breakpoints": [
       { "name": "tablet", "value": "1000px" },

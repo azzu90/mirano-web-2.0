@@ -195,7 +195,7 @@ const t = copy[lang];
   }
   /* Copy staffelt beim Laden: Eyebrow → H1 → Lead → CTAs → Trust */
   .hero-copy > * {
-    animation: hero-in 0.55s var(--ease-out) both;
+    animation: hero-in var(--dur-entrance) var(--ease-out) both;
   }
   .hero-copy > :nth-child(2) {
     animation-delay: 80ms;
@@ -277,6 +277,14 @@ const t = copy[lang];
     padding: 1.5rem 1.75rem 1rem;
     box-shadow: 0 24px 48px -32px color-mix(in srgb, var(--mirano-ink) 18%, transparent);
     overflow: hidden;
+    /* Eintritt parallel zur CTA-Zeile der Copy; gleiche Geste wie hero-in */
+    animation: switcher-in var(--dur-entrance) var(--ease-out) 240ms both;
+  }
+  @keyframes switcher-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
   }
   .ledger-accent {
     position: absolute;
@@ -286,6 +294,14 @@ const t = copy[lang];
     height: 3px;
     background: var(--mirano-gradient);
     border-radius: 0 0 2px 2px;
+    /* Die Linie zeichnet sich, nachdem die Karte steht (Ledger-Metapher) */
+    transform-origin: left;
+    animation: accent-draw 500ms var(--ease-out) 500ms both;
+  }
+  @keyframes accent-draw {
+    from {
+      transform: scaleX(0);
+    }
   }
   .switcher-tabs {
     display: flex;
@@ -330,13 +346,37 @@ const t = copy[lang];
     grid-area: 1 / 1;
     opacity: 0;
     visibility: hidden;
+    /* Exit schneller als Enter: Panel blendet in 150ms aus, die Zeilen tragen den Eintritt */
     transition:
-      opacity var(--dur-base) var(--ease-out),
-      visibility var(--dur-base) linear;
+      opacity 150ms var(--ease-out),
+      visibility 150ms linear;
   }
   .switcher-panel.is-active {
     opacity: 1;
     visibility: visible;
+  }
+  /* Ledger-Zeilen werden sequenziell "eingetragen": 6px-Rise, 45ms Versatz pro Zeile */
+  .switcher-panel .ledger-row,
+  .switcher-panel .ledger-foot {
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 240ms var(--ease-out),
+      transform 240ms var(--ease-out);
+  }
+  .switcher-panel.is-active .ledger-row,
+  .switcher-panel.is-active .ledger-foot {
+    opacity: 1;
+    transform: none;
+  }
+  .switcher-panel.is-active .ledger-row:nth-child(2) {
+    transition-delay: 45ms;
+  }
+  .switcher-panel.is-active .ledger-row:nth-child(3) {
+    transition-delay: 90ms;
+  }
+  .switcher-panel.is-active .ledger-foot {
+    transition-delay: 135ms;
   }
 
   .ledger-rows {

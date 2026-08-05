@@ -171,6 +171,18 @@ const t = copy[lang];
     right: 0;
     height: 3px;
     background: var(--mirano-gradient);
+    /* Signature-Linie zeichnet sich beim Reveal */
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 600ms var(--ease-out) 150ms;
+  }
+  .booking.is-visible .booking-accent {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .booking-accent {
+      transform: none;
+    }
   }
   .booking h2 {
     margin-bottom: 0.75rem;
