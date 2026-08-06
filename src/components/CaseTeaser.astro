@@ -21,8 +21,8 @@ const copy: Record<Lang, any> = {
         href: '/references#insurance',
         eyebrow: SHOW_HEADSQUARE ? 'For Headsquare · insurance group, Munich' : 'Munich IT consultancy · insurance group',
         title: 'Test management in live operations',
-        text: 'Quality assurance in a regulated project environment – engaged since 2026, scaling by two QA experts in Q3.',
-        stat: '2', statUnit: 'QA experts', statLabel: 'joining in Q3/2026',
+        text: 'Quality assurance in a regulated project environment – engaged since May 2026, scaling to three QA experts from September 2026.',
+        stat: '1', statUnit: 'QA expert', statLabel: 'engaged since May 2026',
       },
     ],
   },
@@ -42,8 +42,8 @@ const copy: Record<Lang, any> = {
         href: '/references#insurance',
         eyebrow: SHOW_HEADSQUARE ? 'Für Headsquare · Versicherungskonzern, München' : 'Münchner IT-Beratung · Versicherungskonzern',
         title: 'Testmanagement im laufenden Betrieb',
-        text: 'Qualitätssicherung in einem regulierten Projektumfeld – im Einsatz seit 2026, Team-Ausbau um zwei QA-Experten ab Q3.',
-        stat: '2', statUnit: 'QA-Experten', statLabel: 'Team-Ausbau ab Q3/2026',
+        text: 'Qualitätssicherung in einem regulierten Projektumfeld – im Einsatz seit Mai 2026, Ausbau auf drei QA-Experten ab September 2026.',
+        stat: '1', statUnit: 'QA-Experte', statLabel: 'im Einsatz seit Mai 2026',
       },
     ],
   },
@@ -63,8 +63,8 @@ const copy: Record<Lang, any> = {
         href: '/references#insurance',
         eyebrow: SHOW_HEADSQUARE ? 'Za Headsquare · osiguravajući koncern, München' : 'Minhenska IT tvrtka · osiguravajući koncern',
         title: 'Test management u produkciji',
-        text: 'Osiguranje kvalitete u reguliranom projektnom okruženju – u tijeku od 2026., proširenje za dva QA stručnjaka u Q3.',
-        stat: '2', statUnit: 'QA stručnjaka', statLabel: 'proširenje u Q3/2026',
+        text: 'Osiguranje kvalitete u reguliranom projektnom okruženju – u tijeku od svibnja 2026., proširenje na tri QA stručnjaka od rujna 2026.',
+        stat: '1', statUnit: 'QA stručnjak', statLabel: 'u tijeku od svibnja 2026.',
       },
     ],
   },
@@ -117,6 +117,11 @@ const t = copy[lang];
     text-decoration: none;
   }
   .case-surface {
+    /* .case (Grid-Item) wird per Grid-Default (align-items: stretch) auf
+       Zeilenhöhe gebracht – .case-surface muss das explizit übernehmen,
+       sonst bleibt die sichtbare Karte (Border/Background) kürzer als die
+       Nachbarkarte, sobald deren Text mehr Zeilen braucht. */
+    height: 100%;
     display: grid;
     grid-template-columns: 130px 1fr;
     gap: 1.75rem;

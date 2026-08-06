@@ -13,7 +13,7 @@ const copy: Record<Lang, any> = {
     tabs: ['Projects', 'Products'],
     tablist: 'The two pillars of Mirano',
     ledger: [
-      { name: 'Insurance group, Munich', kind: 'Test management & QA', metric: 'Engaged since 2026 · scaling Q3', status: 'Active', state: 'live' },
+      { name: 'Insurance group, Munich', kind: 'Test management & QA', metric: 'Engaged since May 2026 · scaling to 3', status: 'Active', state: 'live', wideMetric: true },
       { name: 'Accounting firm, Croatia', kind: 'DMS & workflows', metric: 'Forms · multi-phase', status: 'In proposal', state: 'pipeline' },
       { name: 'Your project?', kind: 'Software, QA or AI', metric: 'Kickoff in 5–10 business days', status: 'Open slot', state: 'slot', slot: true },
     ],
@@ -36,7 +36,7 @@ const copy: Record<Lang, any> = {
     tabs: ['Projekte', 'Produkte'],
     tablist: 'Zwei Säulen von Mirano',
     ledger: [
-      { name: 'Versicherungskonzern, München', kind: 'Testmanagement & QA', metric: 'Im Einsatz seit 2026 · Ausbau Q3', status: 'Aktiv', state: 'live' },
+      { name: 'Versicherungskonzern, München', kind: 'Testmanagement & QA', metric: 'Im Einsatz seit Mai 2026 · Ausbau auf 3', status: 'Aktiv', state: 'live', wideMetric: true },
       { name: 'Buchhaltungsbüro, Kroatien', kind: 'DMS & Workflows', metric: 'Formulare · mehrphasig', status: 'In Angebot', state: 'pipeline' },
       { name: 'Ihr Projekt?', kind: 'Software, QA oder AI', metric: 'Kickoff in 5–10 Werktagen', status: 'Freier Slot', state: 'slot', slot: true },
     ],
@@ -60,7 +60,7 @@ const copy: Record<Lang, any> = {
     tabs: ['Projekti', 'Proizvodi'],
     tablist: 'Dva stupa Mirana',
     ledger: [
-      { name: 'Osiguravajući koncern, München', kind: 'Test management i QA', metric: 'U tijeku od 2026. · proširenje Q3', status: 'Aktivno', state: 'live' },
+      { name: 'Osiguravajući koncern, München', kind: 'Test management i QA', metric: 'U tijeku od svibnja 2026. · proširenje na 3', status: 'Aktivno', state: 'live', wideMetric: true },
       { name: 'Knjigovodstveni ured, Hrvatska', kind: 'DMS i procesi', metric: 'Obrasci · višefazno', status: 'U ponudi', state: 'pipeline' },
       { name: 'Vaš projekt?', kind: 'Softver, QA ili AI', metric: 'Kickoff za 5–10 radnih dana', status: 'Slobodan slot', state: 'slot', slot: true },
     ],
@@ -110,7 +110,7 @@ const t = copy[lang];
           <ol class="ledger-rows">
             {
               t.ledger.map((row: any) => (
-                <li class={`ledger-row${row.slot ? ' ledger-slot' : ''}`}>
+                <li class={`ledger-row${row.slot ? ' ledger-slot' : ''}${row.wideMetric ? ' ledger-row--wide-metric' : ''}`}>
                   <span class={`dot dot-${row.state}`} aria-hidden="true" />
                   <div class="ledger-main">
                     <span class="ledger-name">
@@ -453,6 +453,12 @@ const t = copy[lang];
   /* Products list has a long PLIMA metric that would otherwise squeeze the kind text into a
      multi-line wrap; cap this column so the metric wraps instead, keeping row heights aligned. */
   #panel-products .ledger-side {
+    max-width: 44%;
+  }
+  /* Same fix, scoped to just the Insurance row (its "May 2026 / scaling to 3"
+     metric is now longer than its siblings') – capping the whole panel would
+     also wrap the shorter "Your project?" metric unnecessarily. */
+  .ledger-row--wide-metric .ledger-side {
     max-width: 44%;
   }
   .ledger-metric {
