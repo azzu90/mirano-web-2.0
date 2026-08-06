@@ -5,6 +5,14 @@ import CtaBox from '../components/CtaBox.astro';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
 
+// LinkedIn fehlt in simple-icons (dort auf Anfrage der Marke entfernt – 3447
+// Icons, kein Treffer) – offizielles "in"-Quadrat daher als handgebautes
+// Inline-SVG, einfarbig über currentColor. Gleiche set:html-Technik wie das
+// Sparkle-Icon in TechBand.astro. Rein dekorativ (aria-hidden), weil der
+// Linktext die Bedeutung schon trägt.
+const linkedinSvg =
+  '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>';
+
 const copy: Record<Lang, any> = {
   en: {
     title: 'About us – Mirano Solutions',
@@ -135,21 +143,30 @@ const t = copy[lang];
 
   <section class="section">
     <div class="container story-grid">
-      <div class="story-head reveal">
-        <span class="eyebrow" style="display:block;margin-bottom:1rem">{t.storyEyebrow}</span>
-        <h2 style="margin-bottom:1.25rem">{t.storyTitle}</h2>
+      <div class="story-intro section-head reveal">
+        <span class="eyebrow">{t.storyEyebrow}</span>
+        <h2>{t.storyTitle}</h2>
+        <p>{t.story[0]}</p>
       </div>
       <div class="story-body reveal">
-        <figure class="founder-figure">
-          <img src="/images/armin.jpg" alt={t.founderAlt} width="653" height="736" loading="lazy" />
-          <figcaption>{t.founderCaption}</figcaption>
-        </figure>
-        {t.story.slice(0, 3).map((p: string) => <p class="story-p">{p}</p>)}
-        <figure class="zagreb-figure">
-          <img src="/images/zagreb-atmosphere.jpg" alt={t.zagrebAlt} width="770" height="900" loading="lazy" />
-        </figure>
-        {t.story.slice(3).map((p: string) => <p class="story-p">{p}</p>)}
-        <a class="linkedin-link" href={t.linkedinUrl} target="_blank" rel="noopener">{t.linkedinLabel}</a>
+        <div class="story-media story-media--portrait">
+          <figure class="founder-figure">
+            <img src="/images/armin.jpg" alt={t.founderAlt} width="653" height="736" loading="lazy" />
+            <figcaption>{t.founderCaption}</figcaption>
+          </figure>
+          <div class="story-media-text"><p class="story-p">{t.story[1]}</p></div>
+        </div>
+        {/* Absätze zwischen Karriere- und Schlussabsatz laufen als normaler Fließtext */}
+        {t.story.slice(2, -1).map((p: string) => <p class="story-p">{p}</p>)}
+        <div class="story-media story-media--zagreb">
+          <figure class="zagreb-figure">
+            <img src="/images/zagreb-atmosphere.jpg" alt={t.zagrebAlt} width="770" height="900" loading="lazy" />
+          </figure>
+          <div class="story-media-text"><p class="story-p">{t.story.at(-1)}</p></div>
+        </div>
+        <a class="linkedin-link" href={t.linkedinUrl} target="_blank" rel="noopener">
+          <span class="li-icon" set:html={linkedinSvg} />{t.linkedinLabel}
+        </a>
       </div>
       <aside class="founder-side reveal">
         <div class="path-card">
@@ -204,12 +221,17 @@ const t = copy[lang];
     gap: 0 3.5rem;
     align-items: start;
   }
-  /* Überschrift nur in der Textspalte (Zeile 1); Text und Path-Box teilen sich
-     Zeile 2 und beginnen dadurch auf gleicher Höhe – die Box schwebt nicht
-     mehr auf Eyebrow-Niveau über dem Text. */
-  .story-head {
-    grid-column: 1;
+  /* Eyebrow, H2 und Auftaktabsatz laufen über beide Spalten (Zeile 1). Text und
+     Path-Box teilen sich Zeile 2 – die Box steigt dadurch weiterhin nicht auf
+     Eyebrow-Niveau, sondern beginnt erst beim Karriere-Absatz.
+     .section-head liefert max-width 46rem und den Eyebrow→H2→Text-Stagger. */
+  .story-intro {
+    grid-column: 1 / -1;
     grid-row: 1;
+    margin-bottom: 2.5rem;
+  }
+  .story-intro p {
+    text-wrap: pretty;
   }
   .story-body {
     grid-column: 1;
@@ -220,6 +242,41 @@ const t = copy[lang];
     margin-bottom: 1.1rem;
     text-wrap: pretty;
   }
+
+  /* Bild + zugehöriger Text als zwei echte Spalten – ersetzt den früheren
+     float-Textumfluss. Die Bildspalte ist fluid (clamp), damit die Textspalte
+     im Bereich 901–1080px nicht zusammengedrückt wird: dort ist das Grid noch
+     zweispaltig, die linke Spalte aber nur ~460px breit. */
+  .story-media {
+    display: grid;
+    gap: 0 1.75rem;
+    align-items: start;
+    margin-bottom: 1.75rem;
+  }
+  .story-media--portrait {
+    grid-template-columns: minmax(0, 1fr) clamp(130px, 30%, 210px);
+  }
+  /* Porträt rechts (wie vorher float:right), Text links – DOM bleibt Bild zuerst,
+     damit auf Mobile das Bild über seinem Text steht. */
+  .story-media--portrait .story-media-text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .story-media--portrait .founder-figure {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  /* Zagreb links (wie vorher float:left), Text rechts. Der Schlussabsatz ist
+     kurz gegen ein 3/4-hohes Bild – zentriert gelesen wirkt das als Paarung,
+     oben angeschlagen bliebe darunter eine Lücke. */
+  .story-media--zagreb {
+    grid-template-columns: clamp(120px, 27%, 190px) minmax(0, 1fr);
+    align-items: center;
+  }
+  .story-media-text > :last-child {
+    margin-bottom: 0;
+  }
+
   .linkedin-link {
     display: inline-flex;
     align-items: center;
@@ -233,11 +290,20 @@ const t = copy[lang];
   .linkedin-link:hover {
     text-decoration: underline;
   }
+  /* Per set:html eingefügtes SVG trägt kein Astro-Scope-Attribut – :global()
+     nötig, genau wie bei .tech-icon in TechBand.astro. */
+  .li-icon {
+    display: inline-flex;
+    flex: none;
+  }
+  .li-icon :global(svg) {
+    display: block;
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+  }
   .founder-figure {
-    float: right;
-    width: 44%;
-    max-width: 230px;
-    margin: 0.25rem 0 1.25rem 1.75rem;
+    margin: 0;
   }
   .founder-figure img {
     display: block;
@@ -258,12 +324,8 @@ const t = copy[lang];
     color: var(--mirano-muted);
   }
   .zagreb-figure {
-    float: left;
-    clear: both;
-    width: 38%;
-    max-width: 200px;
     aspect-ratio: 3 / 4;
-    margin: 0.25rem 1.75rem 1.25rem 0;
+    margin: 0;
     border-radius: var(--radius-card);
     overflow: hidden;
     border: 1px solid var(--mirano-border);
@@ -458,7 +520,7 @@ const t = copy[lang];
       grid-template-columns: 1fr;
       gap: 0;
     }
-    .story-head,
+    .story-intro,
     .story-body,
     .founder-side {
       grid-column: 1;
@@ -472,18 +534,30 @@ const t = copy[lang];
       grid-template-columns: 1fr;
     }
   }
-  @media (max-width: 480px) {
+  /* Bild+Text stapeln erst auf echter Handybreite: bei ≤900px kollabiert das
+     Grid, wodurch die Textspalte wieder volle Containerbreite bekommt – eng
+     wird es erst, wenn der Container selbst schmal ist. */
+  @media (max-width: 560px) {
+    .story-media--portrait,
+    .story-media--zagreb {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .story-media--portrait .story-media-text,
+    .story-media--portrait .founder-figure {
+      grid-column: 1;
+      grid-row: auto;
+    }
     .founder-figure {
-      float: none;
       width: 62%;
       max-width: 230px;
-      margin: 0 auto 1.5rem;
+      margin-inline: auto;
     }
     .zagreb-figure {
-      float: none;
       width: 60%;
       max-width: 220px;
-      margin: 0 auto 1.5rem;
+      margin-inline: auto;
     }
   }
 </style>
