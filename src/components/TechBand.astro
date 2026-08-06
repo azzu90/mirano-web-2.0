@@ -6,7 +6,9 @@
 // Vaadin (Frontend – bewusst dort einsortiert, obwohl Frontend+Backend gemischt),
 // Jenkins/JFrog (Cloud & DevOps), LangChain/Spring AI/Hermes (AI) ergänzt.
 // Korrektur 06.08.2026: siHermes zeigt das Logo des Paketdienstleisters Hermes,
-// nicht das KI-Tool – Icon-Verweis entfernt, "Hermes" bleibt Text-Chip ohne Icon.
+// nicht das KI-Tool – Icon-Verweis entfernt, "Hermes" lief kurzzeitig als
+// Text-Chip ohne Icon. Entfernt (nicht ersetzt) 06.08.2026: kein Workaround-
+// Symbol für ein KI-Tool ohne offizielles Icon – siehe Standing-Regel CLAUDE.md.
 import * as icons from 'simple-icons';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
@@ -88,7 +90,6 @@ const groups: { name: string; items: Tech[] }[] = [
       { label: 'Cursor', icon: 'siCursor' },
       { label: 'LangChain', icon: 'siLangchain' },
       { label: 'Spring AI', icon: 'siSpringboot' },
-      { label: 'Hermes' },
       { label: 'LLM Integration', svg: sparkleSvg },
     ],
   },
