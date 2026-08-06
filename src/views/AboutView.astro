@@ -13,11 +13,14 @@ const lang = getLang(Astro.currentLocale);
 const linkedinSvg =
   '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>';
 
-// Das story-Array ist positionsgebunden und braucht MINDESTENS 4 Absätze je
-// Sprache: [0] Auftakt (volle Zeile oben), [1] neben dem Porträt, [2] neben dem
-// Zagreb-Bild, letzter Eintrag = Schlusssatz über die volle Breite. Zusätzliche
-// Absätze dazwischen laufen als .story-p--measure auf Lesespaltenbreite. Bei nur
-// 3 Absätzen wäre [2] gleichzeitig Zagreb-Text und Schlusssatz.
+// Das story-Array ist positionsgebunden: [0] Auftakt oben, [1] neben dem
+// Porträt, [2] neben dem Zagreb-Bild, alles ab [3] als eigene Absätze darunter
+// (aktuell nur der Schlusssatz). Absätze ohne Bild daneben – also Auftakt und
+// alles ab [3] – laufen auf voller Spaltenbreite; nur der Text direkt neben
+// einem Bild ist schmaler. Mindestens 3 Absätze je Sprache nötig.
+// Im DE-Auftakt bindet ein geschütztes Leerzeichen "Am Anfang" zusammen, damit
+// der Umbruch nach "Nearshoring-Versuchen:" fällt und "Am" nicht allein
+// am Zeilenende hängt.
 const copy: Record<Lang, any> = {
   en: {
     title: 'About us – Mirano Solutions',
@@ -71,7 +74,7 @@ const copy: Record<Lang, any> = {
     founderCaption: 'Armin Zalihić · Gründer',
     zagrebAlt: 'Zagreb, Kroatien',
     story: [
-      'Viele Unternehmen kennen das Muster aus früheren Nearshoring-Versuchen: Am Anfang überzeugend, am Ende ein austauschbares Team ohne echten Ansprechpartner. Mirano ist die bewusste Antwort darauf.',
+      'Viele Unternehmen kennen das Muster aus früheren Nearshoring-Versuchen: Am Anfang überzeugend, am Ende ein austauschbares Team ohne echten Ansprechpartner. Mirano ist die bewusste Antwort darauf.',
       'Armin Zalihić ist seit 2008 in der IT: Systemintegration und Netzwerk-Security, später SAP-Testmanagement für einen Premium-Automobilkonzern, dann UX-zertifizierte Projektleitung. Vier Jahre, 2021 bis 2025, gestaltet er maßgeblich mit – strategische Steuerung inklusive, in enger Abstimmung mit der Geschäftsführung – wie eine deutsche IT-Gruppe mit über 1.900 Mitarbeitenden ihre Zagreb-Niederlassung auf über 100 Mitarbeitende vor Ort aufbaut. Genau dort zeigt sich die Erkenntnis, auf der Mirano beruht: Je größer ein Team wird, desto schwerer wird es, jedes Profil persönlich zu kennen und für jede Besetzung selbst einzustehen.',
       '2025 gründet er deshalb Mirano – bewusst klein: maximal 40 Experten, jedes Profil persönlich bekannt, kein Account-Management zwischen Kunde und Gründer. Eigene Produkte wie PLIMA sorgen dafür, dass Mirano weiß, was Lieferung wirklich kostet – nicht nur behauptet. Ob Versicherungskonzern in München oder Mittelständler in Kroatien: Am Ende zählt dieselbe Frage wie 2008 – läuft es?',
       'Ebenso Teil davon: Mirano begleitet auch kleinere kroatische Unternehmen bei Digitalisierung und Website-Relaunches.',
@@ -167,10 +170,14 @@ const t = copy[lang];
           </figure>
           <div class="story-media-text"><p class="story-p">{t.story[2]}</p></div>
         </div>
-        {/* Reserve: käme ein weiterer Absatz zwischen Zagreb-Block und Schlusssatz,
-            behält er über .story-p--measure die Lesespaltenbreite – sonst entsteht
-            wieder der Breitensprung gegenüber den Textspalten neben den Bildern. */}
-        {t.story.slice(3, -1).map((p: string) => <p class="story-p story-p--measure">{p}</p>)}
+        {/* Restliche Absätze – aktuell der Schlusssatz – stehen als eigener Absatz
+            unter dem Zagreb-Bild auf voller Spaltenbreite, also gleiche Behandlung
+            wie der Auftakt oben. Bewusst NICHT über die volle Seitenbreite: dort
+            schlug der Satz aus der linken Spalte aus. */}
+        {t.story.slice(3).map((p: string) => <p class="story-p">{p}</p>)}
+        <a class="linkedin-link" href={t.linkedinUrl} target="_blank" rel="noopener">
+          <span class="li-icon" set:html={linkedinSvg} />{t.linkedinLabel}
+        </a>
       </div>
       <aside class="founder-side reveal">
         <div class="path-card">
@@ -193,15 +200,6 @@ const t = copy[lang];
           </div>
         </div>
       </aside>
-      {/* Einziges Element im Story-Bereich über die volle Breite (auch über die
-          Sidebar-Spalte hinweg) – bewusster optischer Abschluss, nicht Teil der
-          schmalen Lesespalte. LinkedIn-Link gehört mit dazu. */}
-      <div class="story-outro reveal">
-        <p class="story-p story-outro-p">{t.story.at(-1)}</p>
-        <a class="linkedin-link" href={t.linkedinUrl} target="_blank" rel="noopener">
-          <span class="li-icon" set:html={linkedinSvg} />{t.linkedinLabel}
-        </a>
-      </div>
     </div>
   </section>
 
@@ -263,11 +261,6 @@ const t = copy[lang];
     color: var(--mirano-slate);
     margin-bottom: 1.1rem;
     text-wrap: pretty;
-  }
-  /* Freistehender Absatz (aktuell keiner – s. Reserve-Kommentar im Template)
-     behält die Lesebreite der Textspalten neben den Bildern. */
-  .story-p--measure {
-    max-width: calc(100% - var(--media-col) - var(--media-gap));
   }
 
   /* Bild + zugehöriger Text als zwei echte Spalten – ersetzt den früheren
@@ -378,18 +371,6 @@ const t = copy[lang];
       /* Header ist ab hier nur 78px hoch */
       top: calc(78px + 1.5rem);
     }
-  }
-  /* Zeile 3: einziges Element des Story-Bereichs über die volle Breite – läuft
-     bewusst auch über die Sidebar-Spalte und schließt den Abschnitt als Band ab.
-     Keine max-width: es ist ein einzelner, meist einzeiliger Satz, kein
-     Prosa-Block – die 65–75ch-Regel aus DESIGN.md bleibt davon unberührt. */
-  .story-outro {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    margin-top: 0.5rem;
-  }
-  .story-outro-p {
-    margin-bottom: 0;
   }
   .principles-section {
     padding-top: 2.5rem;
@@ -564,8 +545,7 @@ const t = copy[lang];
     }
     .story-intro,
     .story-body,
-    .founder-side,
-    .story-outro {
+    .founder-side {
       grid-column: 1;
       grid-row: auto;
     }
@@ -600,10 +580,6 @@ const t = copy[lang];
       width: 62%;
       max-width: 230px;
       margin-inline: auto;
-    }
-    /* Einspaltig braucht der Fließtext keine Kappung mehr */
-    .story-p--measure {
-      max-width: none;
     }
   }
 </style>
