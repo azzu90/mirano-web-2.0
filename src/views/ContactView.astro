@@ -1,11 +1,13 @@
 ---
-// Kontakt mit DSGVO-konformer Zwei-Klick-Calendly-Lösung (lädt erst nach Einwilligung).
-// TODO: Calendly-URL eintragen, sobald angelegt (CALENDLY_URL).
+// Kontakt: bewusst kein Selbstbedienungs-Kalender zur eigenständigen
+// Slot-Auswahl, auch nicht als Ankündigung dafür – stattdessen ein klarer
+// Mailto-CTA plus dieselbe Adresse zusätzlich als sichtbarer, kopierbarer
+// Klartext (Fallback, falls der mailto-Klick beim Besucher aus irgendeinem
+// Grund nichts öffnet).
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
-const CALENDLY_URL = ''; // TODO: z. B. https://calendly.com/armin-mirano/30min
 
 const copy: Record<Lang, any> = {
   en: {
@@ -13,17 +15,15 @@ const copy: Record<Lang, any> = {
     desc: 'Talk directly to the founder: requirements, matching profiles, realistic timeline. Reply within 24h.',
     eyebrow: 'Contact',
     h1: 'Talk to the founder',
-    lead: 'No form marathon, no account manager. Write an email or book 30 minutes – you get a reply within 24 hours.',
+    lead: 'No form marathon, no account manager. Write an email – you get a reply within 24 hours.',
     emailLabel: 'Email',
     phoneLabel: 'Phone',
     phoneHours: 'Mon–Fri, 10:00–18:00 CET',
     addressLabel: 'Address',
     linkedinLabel: 'LinkedIn',
-    bookTitle: 'Book 30 minutes',
-    bookText: 'Pick a slot directly in the calendar – no back and forth.',
-    consentText: 'The booking calendar is provided by Calendly LLC (USA). It loads only after you click – until then, no data is transferred. Details in our privacy policy.',
-    consentBtn: 'Load booking calendar',
-    comingSoon: 'Online booking is being set up – in the meantime, email works fastest.',
+    ctaTitle: 'Email us directly',
+    ctaText: 'The fastest way to reach us – you get a reply within 24 hours.',
+    emailFallbackIntro: 'Button not opening your email app? Copy the address directly:',
     trust: 'EU CONTRACTS · GDPR-NATIVE · REPLY WITHIN 24H',
   },
   de: {
@@ -31,17 +31,15 @@ const copy: Record<Lang, any> = {
     desc: 'Direkt mit dem Gründer sprechen: Anforderungen, passende Profile, realistischer Zeitplan. Antwort innerhalb von 24h.',
     eyebrow: 'Kontakt',
     h1: 'Mit dem Gründer sprechen',
-    lead: 'Kein Formular-Marathon, kein Account Manager. Schreiben Sie eine E-Mail oder buchen Sie 30 Minuten – Antwort innerhalb von 24 Stunden.',
+    lead: 'Kein Formular-Marathon, kein Account Manager. Schreiben Sie eine E-Mail – Antwort innerhalb von 24 Stunden.',
     emailLabel: 'E-Mail',
     phoneLabel: 'Telefon',
     phoneHours: 'Mo–Fr, 10:00–18:00 Uhr',
     addressLabel: 'Adresse',
     linkedinLabel: 'LinkedIn',
-    bookTitle: '30 Minuten buchen',
-    bookText: 'Wählen Sie direkt im Kalender einen Termin – ohne Hin und Her.',
-    consentText: 'Der Buchungskalender wird von Calendly LLC (USA) bereitgestellt. Er lädt erst nach Ihrem Klick – bis dahin werden keine Daten übertragen. Details in der Datenschutzerklärung.',
-    consentBtn: 'Buchungskalender laden',
-    comingSoon: 'Die Online-Buchung wird gerade eingerichtet – bis dahin geht E-Mail am schnellsten.',
+    ctaTitle: 'Schreiben Sie uns direkt',
+    ctaText: 'Der schnellste Weg zu uns – Antwort innerhalb von 24 Stunden.',
+    emailFallbackIntro: 'Button öffnet Ihr E-Mail-Programm nicht? Adresse direkt kopieren:',
     trust: 'EU-VERTRÄGE · DSGVO-NATIV · ANTWORT INNERHALB VON 24H',
   },
   hr: {
@@ -49,17 +47,15 @@ const copy: Record<Lang, any> = {
     desc: 'Razgovarajte izravno s osnivačem: zahtjevi, odgovarajući profili, realan vremenski plan. Odgovor unutar 24h.',
     eyebrow: 'Kontakt',
     h1: 'Razgovarajte s osnivačem',
-    lead: 'Bez maratona obrazaca, bez account managera. Pošaljite e-mail ili rezervirajte 30 minuta – odgovor unutar 24 sata.',
+    lead: 'Bez maratona obrazaca, bez account managera. Pošaljite e-mail – odgovor unutar 24 sata.',
     emailLabel: 'E-mail',
     phoneLabel: 'Telefon',
     phoneHours: 'Pon–pet, 10:00–18:00',
     addressLabel: 'Adresa',
     linkedinLabel: 'LinkedIn',
-    bookTitle: 'Rezervirajte 30 minuta',
-    bookText: 'Odaberite termin izravno u kalendaru – bez natezanja.',
-    consentText: 'Kalendar za rezervacije pruža Calendly LLC (SAD). Učitava se tek nakon vašeg klika – do tada se ne prenose podaci. Detalji u politici privatnosti.',
-    consentBtn: 'Učitaj kalendar',
-    comingSoon: 'Online rezervacija se postavlja – do tada je e-mail najbrži put.',
+    ctaTitle: 'Pišite nam izravno',
+    ctaText: 'Najbrži način da nas dosegnete – odgovor unutar 24 sata.',
+    emailFallbackIntro: 'Gumb ne otvara vaš e-mail program? Kopirajte adresu izravno:',
     trust: 'EU UGOVORI · GDPR-USKLAĐENO · ODGOVOR UNUTAR 24H',
   },
 };
@@ -92,26 +88,14 @@ const t = copy[lang];
         <p class="ci-trust">{t.trust}</p>
       </div>
 
-      <div class="booking card reveal">
-        <div class="booking-accent" aria-hidden="true"></div>
-        <h2>{t.bookTitle}</h2>
-        <p>{t.bookText}</p>
-        {
-          CALENDLY_URL ? (
-            <div class="consent-box" id="calendly-consent">
-              <p>{t.consentText}</p>
-              <button class="btn-primary" id="load-calendly" data-url={CALENDLY_URL}>
-                {t.consentBtn}
-              </button>
-            </div>
-          ) : (
-            <div class="consent-box">
-              <p>{t.comingSoon}</p>
-              <a href="mailto:info@mirano-solutions.com" class="btn-primary">info@mirano-solutions.com</a>
-            </div>
-          )
-        }
-        <div id="calendly-slot"></div>
+      <div class="contact-cta card reveal">
+        <div class="contact-cta-accent" aria-hidden="true"></div>
+        <h2>{t.ctaTitle}</h2>
+        <p>{t.ctaText}</p>
+        <a href="mailto:info@mirano-solutions.com" class="btn-primary email-cta">info@mirano-solutions.com</a>
+        <p class="email-fallback">
+          {t.emailFallbackIntro} <span class="email-fallback-address">info@mirano-solutions.com</span>
+        </p>
       </div>
     </div>
   </section>
@@ -159,12 +143,12 @@ const t = copy[lang];
     letter-spacing: var(--tracking-meta);
     color: var(--mirano-muted);
   }
-  .booking {
+  .contact-cta {
     position: relative;
     padding: 2.5rem;
     overflow: hidden;
   }
-  .booking-accent {
+  .contact-cta-accent {
     position: absolute;
     top: 0;
     left: 0;
@@ -176,40 +160,33 @@ const t = copy[lang];
     transform-origin: left;
     transition: transform 600ms var(--ease-out) 150ms;
   }
-  .booking.is-visible .booking-accent {
+  .contact-cta.is-visible .contact-cta-accent {
     transform: scaleX(1);
   }
   @media (prefers-reduced-motion: reduce) {
-    .booking-accent {
+    .contact-cta-accent {
       transform: none;
     }
   }
-  .booking h2 {
+  .contact-cta h2 {
     margin-bottom: 0.75rem;
   }
-  .booking > p {
+  .contact-cta > p {
     color: var(--mirano-slate);
     margin-bottom: 1.5rem;
   }
-  .consent-box {
-    background: var(--mirano-limestone);
-    border: 1px solid var(--mirano-border);
-    border-radius: var(--radius-card);
-    padding: 1.5rem;
-    display: grid;
-    gap: 1rem;
-    justify-items: start;
+  .email-cta {
+    margin-bottom: 1.25rem;
   }
-  .consent-box p {
+  .email-fallback {
     font-size: var(--text-small);
-    color: var(--mirano-slate);
+    color: var(--mirano-muted);
   }
-  #calendly-slot iframe {
-    width: 100%;
-    min-height: 640px;
-    border: none;
-    border-radius: var(--radius-card);
-    margin-top: 1rem;
+  .email-fallback-address {
+    font-family: var(--font-mono);
+    color: var(--mirano-ink);
+    /* Ein Klick markiert die ganze Adresse – erleichtert das Kopieren als Klartext-Fallback */
+    user-select: all;
   }
   @media (max-width: 900px) {
     .contact-grid {
@@ -217,21 +194,3 @@ const t = copy[lang];
     }
   }
 </style>
-
-<script>
-  // Zwei-Klick-Lösung: Calendly lädt erst nach aktiver Einwilligung.
-  const btn = document.getElementById('load-calendly');
-  btn?.addEventListener('click', () => {
-    const url = (btn as HTMLElement).dataset.url;
-    if (!url) return;
-    const slot = document.getElementById('calendly-slot');
-    const consent = document.getElementById('calendly-consent');
-    if (slot) {
-      const iframe = document.createElement('iframe');
-      iframe.src = url + '?hide_gdpr_banner=1';
-      iframe.title = 'Calendly booking';
-      slot.appendChild(iframe);
-    }
-    consent?.remove();
-  });
-</script>
