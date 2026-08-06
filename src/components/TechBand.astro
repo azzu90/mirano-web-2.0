@@ -195,7 +195,11 @@ const t = copy[lang];
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
+    /* 0.45rem statt 0.6rem: Cloud & DevOps hat 8 Chips (u. a. "Google Cloud",
+       "Hostinger (EU)") und lief bei 0.6rem knapp in eine zweite Zeile –
+       bei der Containerbreite von 1240px (--container-max) reicht 0.45rem,
+       um alle Gruppen auf einer Zeile zu halten. */
+    gap: 0.45rem;
   }
   .tech-chip {
     display: inline-flex;
