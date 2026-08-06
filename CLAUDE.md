@@ -14,15 +14,16 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ### Tech-Stack-Band (TechBand.astro)
 
-Aktueller Stand (Ergänzung nach Feedback Mislav, Backend-Architekt, 06.08.2026): Datenbank-Auswahl im Backend-Cluster war zu schmal (nur PostgreSQL) und Cloud/DevOps- sowie AI-Gruppe fehlten mehrere real genutzte Tools – auf sein Feedback hin ergänzt:
+**Aktueller Stand (Ergänzung/Bereinigung nach Nutzerfeedback, 06.08.2026)**: SAP-Gruppe komplett entfernt (beide Einträge "SAP" und "SAP Test Management", ersatzlos, keine Ersetzung). "JFrog" aus Cloud & DevOps entfernt (Gruppe passt jetzt wieder auf eine Zeile). "Test Management" zu QA & Testing ergänzt – generisches, handgezeichnetes Klemmbrett-mit-Häkchen-Inline-SVG (`testManagementSvg` in TechBand.astro), da keine Marke, gleiche Technik wie das LLM-Integration-Icon. "Astro" zu Frontend ergänzt (siAstro, Hex #BC52EE, gegen simple-icons geprüft).
 
-- **Frontend**: React, Next.js, Angular, Vue, TypeScript, Vaadin (technisch Frontend+Backend, aber laut Mislav hier einsortiert).
+- **Frontend**: React, Next.js, Angular, Vue, TypeScript, Vaadin (technisch Frontend+Backend, aber laut Mislav hier einsortiert), Astro.
 - **Backend**: Node.js, Java / Spring, Python, PostgreSQL, MySQL, MariaDB, MongoDB, GraphQL.
-- **Cloud & DevOps**: AWS, Google Cloud, Docker, Kubernetes, Terraform, Jenkins, JFrog, Vercel, Hostinger (EU).
-- **QA & Testing**: Cypress, Playwright, Selenium, JMeter.
-- **SAP**: SAP, SAP Test Management.
+- **Cloud & DevOps**: AWS, Google Cloud, Docker, Kubernetes, Terraform, Jenkins, Vercel, Hostinger (EU).
+- **QA & Testing**: Cypress, Playwright, Selenium, JMeter, Test Management (generisches Icon, keine Marke).
 - **AI**: Claude, Cursor, LangChain, Spring AI (kein eigenes simple-icons-Icon – nutzt siSpringboot mit), LLM Integration (generischer Sparkle-Platzhalter).
 - **Workflow**: Linear, GitHub.
+
+Frühere Ergänzung (Feedback Mislav, Backend-Architekt, 06.08.2026): Datenbank-Auswahl im Backend-Cluster war zu schmal (nur PostgreSQL) und Cloud/DevOps- sowie AI-Gruppe fehlten mehrere real genutzte Tools – auf sein Feedback hin ergänzt (MySQL/MariaDB/MongoDB, Jenkins/JFrog, LangChain/Spring AI/Hermes). JFrog und die separate SAP-Gruppe sind seit der Bereinigung 06.08.2026 wieder entfernt (siehe oben).
 
 Bewusst getrennt von PLIMA-spezifischen Tech-Chips auf /products (PlimaTechStack.astro: Java, Spring Boot, Vaadin, PostgreSQL) – dort ist es der Stack eines einzelnen Produkts, im TechBand der gesamte Expertise-Pool. Überschneidende Icons (Spring Boot, Vaadin, PostgreSQL) sind beabsichtigt und keine Inkonsistenz.
 
@@ -30,7 +31,7 @@ Bewusst getrennt von PLIMA-spezifischen Tech-Chips auf /products (PlimaTechStack
 
 **Wichtig für künftige Icon-Ergänzungen aus simple-icons**: Es reicht NICHT zu prüfen, ob ein Icon-Schlüssel existiert (`icons.siXyz !== undefined`) – der Schlüsselname garantiert nicht, dass das Icon die gemeinte Marke/das gemeinte Tool zeigt. simple-icons enthält viele gleichnamige, aber fachfremde Marken (Beispiel: `siHermes` = Paketdienstleister Hermes, nicht das KI-Tool). Vor jeder neuen Icon-Nutzung zusätzlich das SVG bzw. den Markennamen auf simpleicons.org visuell/inhaltlich verifizieren, dass es wirklich zur gemeinten Marke passt.
 
-**Standing-Regel (06.08.2026): Kein Eintrag ohne passendes Icon.** Kein Workaround-Symbol für ein Tool suchen, das kein offizielles Icon hat (Ausnahme: die AWS-Wolke ist bereits etabliert und bleibt die einzige). Im Zweifel den Eintrag weglassen, statt ihn als nackten Text-Chip ohne Icon zu zeigen – das war der Fehler bei Hermes. Bekannte, bisher unangetastete Ausnahme aus einer Bestandsaufnahme am 06.08.2026: "SAP Test Management" (SAP-Gruppe) ist ebenfalls ein reiner Text-Chip ohne Icon; noch nicht entschieden, ob entfernen oder belassen – vor einer Änderung erst mit dem Team klären.
+**Standing-Regel (06.08.2026): Kein Eintrag ohne passendes Icon.** Kein Workaround-Symbol für ein Tool suchen, das kein offizielles Icon hat (Ausnahme: die AWS-Wolke ist bereits etabliert und bleibt die einzige; "Test Management" seit 06.08.2026 als zweite Ausnahme mit generischem Klemmbrett-Icon, siehe oben). Im Zweifel den Eintrag weglassen, statt ihn als nackten Text-Chip ohne Icon zu zeigen – das war der Fehler bei Hermes. Der frühere reine Text-Chip "SAP Test Management" (SAP-Gruppe) wurde am 06.08.2026 zusammen mit "SAP" komplett aus dem Band entfernt – die Frage "entfernen oder Icon nachrüsten" ist damit erledigt (entfernt).
 
 ## Inhaltliche Festlegungen
 

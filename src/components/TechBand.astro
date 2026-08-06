@@ -9,6 +9,9 @@
 // nicht das KI-Tool – Icon-Verweis entfernt, "Hermes" lief kurzzeitig als
 // Text-Chip ohne Icon. Entfernt (nicht ersetzt) 06.08.2026: kein Workaround-
 // Symbol für ein KI-Tool ohne offizielles Icon – siehe Standing-Regel CLAUDE.md.
+// Bereinigung/Ergänzung 06.08.2026: SAP-Gruppe (SAP, SAP Test Management)
+// ersatzlos entfernt; JFrog (Cloud & DevOps) entfernt; Astro (Frontend) und
+// Test Management (QA & Testing, generisches Klemmbrett-Icon) ergänzt.
 import * as icons from 'simple-icons';
 import { getLang, type Lang } from '../i18n';
 const lang = getLang(Astro.currentLocale);
@@ -31,6 +34,11 @@ const cloudSvg =
 const playwrightSvg =
   '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><title>Playwright</title><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm0 2h14v3H5V5Zm0 5h14v9H5v-9Zm5 1.5v6l5-3-5-3Z"/></svg>';
 
+// "Test Management" ist keine Marke, daher generisches Klemmbrett-mit-Häkchen-Icon
+// als neutraler Platzhalter, gleiche Technik wie sparkleSvg/cloudSvg.
+const testManagementSvg =
+  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><title>Test Management</title><path d="M9 2a1 1 0 0 0-1 1v1H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V3a1 1 0 0 0-1-1H9Zm0 2h6v2H9V4ZM6 6h2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1h2v14H6V6Zm9.7 3.29-4.2 4.2-1.7-1.7a1 1 0 0 0-1.4 1.42l2.4 2.4a1 1 0 0 0 1.4 0l4.9-4.9a1 1 0 0 0-1.4-1.42Z"/></svg>';
+
 const groups: { name: string; items: Tech[] }[] = [
   {
     name: 'Frontend',
@@ -41,6 +49,7 @@ const groups: { name: string; items: Tech[] }[] = [
       { label: 'Vue', icon: 'siVuedotjs' },
       { label: 'TypeScript', icon: 'siTypescript' },
       { label: 'Vaadin', icon: 'siVaadin' },
+      { label: 'Astro', icon: 'siAstro' },
     ],
   },
   {
@@ -65,7 +74,6 @@ const groups: { name: string; items: Tech[] }[] = [
       { label: 'Kubernetes', icon: 'siKubernetes' },
       { label: 'Terraform', icon: 'siTerraform' },
       { label: 'Jenkins', icon: 'siJenkins' },
-      { label: 'JFrog', icon: 'siJfrog' },
       { label: 'Vercel', icon: 'siVercel' },
       { label: 'Hostinger (EU)', icon: 'siHostinger' },
     ],
@@ -77,11 +85,8 @@ const groups: { name: string; items: Tech[] }[] = [
       { label: 'Playwright', svg: playwrightSvg },
       { label: 'Selenium', icon: 'siSelenium' },
       { label: 'JMeter', icon: 'siApachejmeter' },
+      { label: 'Test Management', svg: testManagementSvg },
     ],
-  },
-  {
-    name: 'SAP',
-    items: [{ label: 'SAP', icon: 'siSap' }, { label: 'SAP Test Management' }],
   },
   {
     name: 'AI',
