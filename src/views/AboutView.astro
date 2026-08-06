@@ -254,7 +254,11 @@ const t = copy[lang];
     margin-bottom: 1.75rem;
   }
   .story-media--portrait {
-    grid-template-columns: minmax(0, 1fr) clamp(130px, 30%, 210px);
+    /* Bildspalte bewusst etwas breiter als ein reiner Bildwunsch bräuchte:
+       schmalere Textspalte lässt story[1] auf mehr Zeilen umbrechen, was
+       .story-body wieder über .founder-side hebt (siehe Kommentar bei
+       .founder-side zum Sticky-Verhalten). */
+    grid-template-columns: minmax(0, 1fr) clamp(150px, 34%, 230px);
   }
   /* Porträt rechts (wie vorher float:right), Text links – DOM bleibt Bild zuerst,
      damit auf Mobile das Bild über seinem Text steht. */
@@ -266,12 +270,26 @@ const t = copy[lang];
     grid-column: 2;
     grid-row: 1;
   }
-  /* Zagreb links (wie vorher float:left), Text rechts. Der Schlussabsatz ist
-     kurz gegen ein 3/4-hohes Bild – zentriert gelesen wirkt das als Paarung,
-     oben angeschlagen bliebe darunter eine Lücke. */
+  /* Zagreb jetzt wie Porträt: Bild rechts, Text links – einheitliche
+     Spalten-Reihenfolge in beiden Blöcken. DOM bleibt Bild-zuerst (wie beim
+     Porträt), Position kommt über grid-column, damit Mobile (Bild über Text)
+     unverändert aus der DOM-Reihenfolge folgt. Der Schlussabsatz ist kurz
+     gegen ein 3/4-hohes Bild – zentriert gelesen wirkt das als Paarung, oben
+     angeschlagen bliebe darunter eine Lücke. */
   .story-media--zagreb {
-    grid-template-columns: clamp(120px, 27%, 190px) minmax(0, 1fr);
+    /* Gleicher Grund wie bei --portrait: etwas breitere Bildspalte zwingt
+       den Schlussabsatz auf mehr Zeilen und hilft, .story-body ≥ .founder-side
+       zu halten. */
+    grid-template-columns: minmax(0, 1fr) clamp(140px, 31%, 210px);
     align-items: center;
+  }
+  .story-media--zagreb .story-media-text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .story-media--zagreb .zagreb-figure {
+    grid-column: 2;
+    grid-row: 1;
   }
   .story-media-text > :last-child {
     margin-bottom: 0;
@@ -545,7 +563,9 @@ const t = copy[lang];
       align-items: start;
     }
     .story-media--portrait .story-media-text,
-    .story-media--portrait .founder-figure {
+    .story-media--portrait .founder-figure,
+    .story-media--zagreb .story-media-text,
+    .story-media--zagreb .zagreb-figure {
       grid-column: 1;
       grid-row: auto;
     }
