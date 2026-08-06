@@ -63,7 +63,11 @@ const t = copy[lang];
       <ul>
         {partners.map((p) => {
           const content = p.logo ? (
-            <img src={p.logo} alt={`${p.name} – ${t.partnerAltSuffix}`} class="partner-logo" />
+            <img
+              src={p.logo}
+              alt={`${p.name} – ${t.partnerAltSuffix}`}
+              class:list={['partner-logo', p.slug === 'headsquare' && 'partner-logo--compact']}
+            />
           ) : (
             p.name
           );
@@ -163,6 +167,13 @@ const t = copy[lang];
     filter: grayscale(100%);
     opacity: 0.55;
     transition: filter var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+  }
+  /* Headsquare-Wortmarke ist deutlich fetter/blockiger als die anderen fünf Logos
+     und rendert dazu am breitesten (227px vs. 63–159px bei identischer 32px-Höhe) –
+     wirkt dadurch optisch schwerer, obwohl die Höhe pixelgenau gleich ist. Bewusste
+     Gewichts-Korrektur nur für diesen einen Eintrag, keine generelle 32px-Änderung. */
+  .partner-logo.partner-logo--compact {
+    height: 27px;
   }
   .partners li a:hover .partner-logo,
   .partners li a:focus-visible .partner-logo {
