@@ -151,29 +151,29 @@ const t = copy[lang];
 
   <section class="section">
     <div class="container story-grid">
-      <div class="story-intro section-head reveal">
+      <div class="story-heading section-head reveal">
         <span class="eyebrow">{t.storyEyebrow}</span>
         <h2>{t.storyTitle}</h2>
-        <p>{t.story[0]}</p>
       </div>
-      <div class="story-body reveal">
-        <div class="story-media story-media--portrait">
-          <figure class="founder-figure">
-            <img src="/images/armin.jpg" alt={t.founderAlt} width="653" height="736" loading="lazy" />
-            <figcaption>{t.founderCaption}</figcaption>
-          </figure>
-          <div class="story-media-text"><p class="story-p">{t.story[1]}</p></div>
-        </div>
-        <div class="story-media story-media--zagreb">
-          <figure class="zagreb-figure">
-            <img src="/images/zagreb-atmosphere.jpg" alt={t.zagrebAlt} width="770" height="900" loading="lazy" />
-          </figure>
-          <div class="story-media-text"><p class="story-p">{t.story[2]}</p></div>
-        </div>
-        {/* Restliche Absätze – aktuell der Schlusssatz – stehen als eigener Absatz
-            unter dem Zagreb-Bild auf voller Spaltenbreite, also gleiche Behandlung
-            wie der Auftakt oben. Bewusst NICHT über die volle Seitenbreite: dort
-            schlug der Satz aus der linken Spalte aus. */}
+      <p class="story-lead reveal">{t.story[0]}</p>
+      <div class="story-media story-media--portrait reveal">
+        <figure class="founder-figure">
+          <img src="/images/armin.jpg" alt={t.founderAlt} width="653" height="736" loading="lazy" />
+          <figcaption>{t.founderCaption}</figcaption>
+        </figure>
+        <div class="story-media-text"><p class="story-p">{t.story[1]}</p></div>
+      </div>
+      <div class="story-media story-media--zagreb reveal">
+        <figure class="zagreb-figure">
+          <img src="/images/zagreb-atmosphere.jpg" alt={t.zagrebAlt} width="770" height="900" loading="lazy" />
+        </figure>
+        <div class="story-media-text"><p class="story-p">{t.story[2]}</p></div>
+      </div>
+      {/* Restliche Absätze – aktuell der Schlusssatz – plus LinkedIn-Link, unter
+          dem Zagreb-Bild auf voller Spaltenbreite. Eigene Grid-Zeile, bewusst
+          AUSSERHALB der Spanne von .founder-side (die endet an der Unterkante
+          des Zagreb-Bilds, siehe .founder-side). */}
+      <div class="story-outro reveal">
         {t.story.slice(3).map((p: string) => <p class="story-p">{p}</p>)}
         <a class="linkedin-link" href={t.linkedinUrl} target="_blank" rel="noopener">
           <span class="li-icon" set:html={linkedinSvg} />{t.linkedinLabel}
@@ -238,24 +238,39 @@ const t = copy[lang];
      steigt trotzdem nicht auf Eyebrow-Niveau, weil sie fest in Zeile 2 sitzt.
      .section-head liefert max-width 46rem (greift erst im einspaltigen Layout)
      und den Eyebrow→H2→Text-Stagger. */
-  .story-intro {
+  .story-heading {
     grid-column: 1;
     grid-row: 1;
-    margin-bottom: 2.5rem;
+    /* h2 liefert per .section-head h2 bereits 1rem Abstand zum Lead-Absatz
+       darunter – die große .section-head-Basis (3.5rem) wird hier bewusst
+       überschrieben. */
+    margin-bottom: 0;
   }
-  .story-intro p {
-    text-wrap: pretty;
-  }
-  .story-body {
+  .story-lead {
     grid-column: 1;
     grid-row: 2;
-    /* Eine Quelle für die Bildspalte – Kachelbreite UND Lesespaltenbreite
-       leiten sich beide hiervon ab, damit sie nicht auseinanderlaufen können.
-       Die Prozentwerte lösen sich in beiden Fällen gegen dieselbe Basis auf
-       (Inhaltsbreite von .story-body), weil Media-Blöcke und freistehende
-       Absätze direkte Kinder sind. */
+    color: var(--mirano-slate);
+    margin-bottom: 2.5rem;
+    text-wrap: pretty;
+  }
+  /* Eine Quelle für die Bildspalte – Kachelbreite UND Lesespaltenbreite leiten
+     sich beide hiervon ab, damit sie nicht auseinanderlaufen können. Auf
+     .story-grid statt .story-body, weil die Media-Blöcke jetzt direkte
+     Grid-Kinder sind (für die .founder-side-Spanne, s.u.). */
+  .story-grid {
     --media-col: clamp(150px, 34%, 230px);
     --media-gap: 1.75rem;
+  }
+  .story-media--portrait {
+    grid-row: 3;
+  }
+  .story-media--zagreb {
+    grid-row: 4;
+  }
+  .story-outro {
+    grid-column: 1;
+    grid-row: 5;
+    margin-top: 1.75rem;
   }
   .story-p {
     color: var(--mirano-slate);
@@ -268,10 +283,17 @@ const t = copy[lang];
      im Bereich 901–1080px nicht zusammengedrückt wird: dort ist das Grid noch
      zweispaltig, die linke Spalte aber nur ~460px breit. */
   .story-media {
+    grid-column: 1;
     display: grid;
     gap: 0 var(--media-gap);
     align-items: start;
     margin-bottom: 1.75rem;
+  }
+  /* Trailing-Abstand zum Schlussabsatz wandert zu .story-outro (margin-top) –
+     sonst würde er in Zeile 4 mitgezählt und .founder-side ragte über die
+     Bildkante hinaus. Compound-Selektor nötig, um .story-media zu überstimmen. */
+  .story-media.story-media--zagreb {
+    margin-bottom: 0;
   }
   /* Beide Blöcke teilen sich Spaltenmaß und Anordnung (Text links, Bild rechts).
      Vorher hatten sie unterschiedliche clamp()-Werte und liefen dadurch in
@@ -361,10 +383,11 @@ const t = copy[lang];
   }
   .founder-side {
     grid-column: 2;
-    /* Spannt Zeile 1+2, damit die Box oben bei der ersten Textzeile beginnt
-       (statt erst neben story-body) – die untere Grenze bleibt dabei exakt
-       die bisherige Unterkante von story-body (Zeile 2), unverändert. */
-    grid-row: 1 / 3;
+    /* Beginnt auf Höhe des Lead-Absatzes (Zeile 2 – nicht der Eyebrow/H2 in
+       Zeile 1) und endet exakt an der Unterkante des Zagreb-Bilds (Ende
+       Zeile 4). Die Schlussabsätze + LinkedIn-Link (Zeile 5) liegen bewusst
+       außerhalb der Spanne. */
+    grid-row: 2 / 5;
     /* Header ist sticky (92px hoch) – Spalte wandert unterhalb davon mit */
     position: sticky;
     top: calc(92px + 1.5rem);
@@ -546,8 +569,11 @@ const t = copy[lang];
       grid-template-columns: 1fr;
       gap: 0;
     }
-    .story-intro,
-    .story-body,
+    .story-heading,
+    .story-lead,
+    .story-media--portrait,
+    .story-media--zagreb,
+    .story-outro,
     .founder-side {
       grid-column: 1;
       grid-row: auto;
