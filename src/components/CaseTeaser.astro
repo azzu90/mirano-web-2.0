@@ -1,7 +1,6 @@
 ---
-// Referenz-Teaser. SHOW_HEADSQUARE zentral in content/site.ts.
+// Referenz-Teaser. Headsquare wird namentlich genannt (Freigabe liegt vor); Endkunde bleibt anonym.
 import { getLang, l, type Lang } from '../i18n';
-import { SHOW_HEADSQUARE } from '../content/site';
 const lang = getLang(Astro.currentLocale);
 
 const copy: Record<Lang, any> = {
@@ -19,9 +18,9 @@ const copy: Record<Lang, any> = {
       },
       {
         href: '/references#insurance',
-        eyebrow: SHOW_HEADSQUARE ? 'For Headsquare · insurance group, Munich' : 'Munich IT consultancy · insurance group',
+        eyebrow: 'For Headsquare · insurance group, Munich',
         title: 'Test management in live operations',
-        text: 'Quality assurance in a regulated project environment – engaged since May 2026, scaling to three QA experts from September 2026.',
+        text: 'Quality assurance in a regulated project environment – engaged since May 2026, scaling to three QA experts from Q4/2026.',
         stat: '1', statUnit: 'QA expert', statLabel: 'engaged since May 2026',
       },
     ],
@@ -40,9 +39,9 @@ const copy: Record<Lang, any> = {
       },
       {
         href: '/references#insurance',
-        eyebrow: SHOW_HEADSQUARE ? 'Für Headsquare · Versicherungskonzern, München' : 'Münchner IT-Beratung · Versicherungskonzern',
+        eyebrow: 'Für Headsquare · Versicherungskonzern, München',
         title: 'Testmanagement im laufenden Betrieb',
-        text: 'Qualitätssicherung in einem regulierten Projektumfeld – im Einsatz seit Mai 2026, Ausbau auf drei QA-Experten ab September 2026.',
+        text: 'Qualitätssicherung in einem regulierten Projektumfeld – im Einsatz seit Mai 2026, Ausbau auf drei QA-Experten ab Q4/2026.',
         stat: '1', statUnit: 'QA-Experte', statLabel: 'im Einsatz seit Mai 2026',
       },
     ],
@@ -61,9 +60,9 @@ const copy: Record<Lang, any> = {
       },
       {
         href: '/references#insurance',
-        eyebrow: SHOW_HEADSQUARE ? 'Za Headsquare · osiguravajući koncern, München' : 'Minhenska IT tvrtka · osiguravajući koncern',
+        eyebrow: 'Za Headsquare · osiguravajući koncern, München',
         title: 'Test management u produkciji',
-        text: 'Osiguranje kvalitete u reguliranom projektnom okruženju – u tijeku od svibnja 2026., proširenje na tri QA stručnjaka od rujna 2026.',
+        text: 'Osiguranje kvalitete u reguliranom projektnom okruženju – u tijeku od svibnja 2026., proširenje na tri QA stručnjaka od Q4/2026.',
         stat: '1', statUnit: 'QA stručnjak', statLabel: 'u tijeku od svibnja 2026.',
       },
     ],
