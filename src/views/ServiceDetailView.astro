@@ -58,9 +58,17 @@ const howEyebrow = { en: 'Approach', de: 'Vorgehen', hr: 'Pristup' }[lang];
 
 <style>
   .offer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
     gap: 1.25rem;
+  }
+  /* Feste Breite je Breakpoint statt auto-fit – dadurch zentriert sich eine
+     unvollständige letzte Zeile statt eine leere Spalten-Lücke offenzulassen. */
+  .offer-grid .info-card {
+    flex: 0 0 calc(25% - 0.9375rem);
+    max-width: calc(25% - 0.9375rem);
   }
   .how-grid {
     display: grid;
@@ -93,10 +101,28 @@ const howEyebrow = { en: 'Approach', de: 'Vorgehen', hr: 'Pristup' }[lang];
   .back-link {
     margin-top: 2.5rem;
   }
+  @media (max-width: 1227px) {
+    .offer-grid .info-card {
+      flex-basis: calc(33.3333% - 0.8333rem);
+      max-width: calc(33.3333% - 0.8333rem);
+    }
+  }
+  @media (max-width: 927px) {
+    .offer-grid .info-card {
+      flex-basis: calc(50% - 0.625rem);
+      max-width: calc(50% - 0.625rem);
+    }
+  }
   @media (max-width: 800px) {
     .how-grid {
       grid-template-columns: 1fr;
       gap: 1.5rem;
+    }
+  }
+  @media (max-width: 607px) {
+    .offer-grid .info-card {
+      flex-basis: 100%;
+      max-width: 100%;
     }
   }
 </style>
