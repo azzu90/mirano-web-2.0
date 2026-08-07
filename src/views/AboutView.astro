@@ -361,7 +361,10 @@ const t = copy[lang];
   }
   .founder-side {
     grid-column: 2;
-    grid-row: 2;
+    /* Spannt Zeile 1+2, damit die Box oben bei der ersten Textzeile beginnt
+       (statt erst neben story-body) – die untere Grenze bleibt dabei exakt
+       die bisherige Unterkante von story-body (Zeile 2), unverändert. */
+    grid-row: 1 / 3;
     /* Header ist sticky (92px hoch) – Spalte wandert unterhalb davon mit */
     position: sticky;
     top: calc(92px + 1.5rem);
