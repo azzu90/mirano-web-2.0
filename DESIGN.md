@@ -9,7 +9,7 @@ colors:
   graphite-soft: "#3A434A"
   ink: "#22282C"
   slate: "#4A5258"
-  muted: "#7A8288"
+  muted: "#687076"
   on-dark: "#FFFFFF"
   on-dark-body: "#AEB6BC"
   porcelain: "#FDFCFA"
@@ -123,7 +123,7 @@ The palette is warm-neutral and quiet, with exactly one signal color allowed to 
 - **Limestone** (#F6F4F0): the alternate section background and default card fill for callouts (CtaBox, etc.) — one step warmer/darker than porcelain, used to separate sections without a hard line.
 - **Ink** (#22282C): headline color on light backgrounds.
 - **Slate** (#4A5258): body text on light backgrounds.
-- **Muted** (#7A8288): captions, meta text, secondary labels.
+- **Muted** (#687076): captions, meta text, secondary labels — AA-adjusted (≥4.5:1) against porcelain, limestone and white; tokens.css is the authoritative source for this value.
 - **Border** (#E7E3DC): the only line color — card borders, header divider, input strokes.
 - **Graphite** (#2C343A): the reserved dark section — footer plus at most one contrast section per page. Deliberately not pure black.
 - **Graphite Soft** (#3A434A): card/hover surfaces on top of graphite.
