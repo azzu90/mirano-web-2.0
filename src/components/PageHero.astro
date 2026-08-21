@@ -3,8 +3,10 @@ interface Props {
   eyebrow: string;
   title: string;
   lead?: string;
+  /** Optionale Mono-Meta-Zeile unter dem Lead (Data-Face-Momente, z. B. /design-system). */
+  meta?: string;
 }
-const { eyebrow, title, lead } = Astro.props;
+const { eyebrow, title, lead, meta } = Astro.props;
 ---
 
 <section class="page-hero">
@@ -12,6 +14,7 @@ const { eyebrow, title, lead } = Astro.props;
     <span class="eyebrow">{eyebrow}</span>
     <h1>{title}</h1>
     {lead && <p class="lead">{lead}</p>}
+    {meta && <p class="mono-meta hero-meta">{meta}</p>}
   </div>
 </section>
 
@@ -37,6 +40,12 @@ const { eyebrow, title, lead } = Astro.props;
   }
   .lead {
     max-width: 40rem;
+  }
+  .hero-meta {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
   }
   @media (max-width: 767px) {
     .page-hero {

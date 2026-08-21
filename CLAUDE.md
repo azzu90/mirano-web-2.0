@@ -12,6 +12,14 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 - Ausnahme: Die PLIMA-Feature-Card auf /products trägt PLIMA-Markenfarben (--plima-primary #6D28D9, --plima-highlight #8444EE, Verlauf #9A84F4→#6B3FE4 für Accent-Leiste/Badge, Grün #40AF74 / Text #1E7A4C), strikt auf diese Card begrenzt. CTA-Button "plima.cloud besuchen" ist Verlauf (--plima-primary → --plima-highlight), nicht mehr flächig. Die PLIMA-Markenfarben-Ausnahme gilt NUR auf /products, nicht auf /references – der PLIMA-Case dort nutzt für seine Tech-Stack-Chips wie das allgemeine TechBand.astro die Original-Markenfarbe je Icon aus simple-icons (PlimaTechStack.astro, variant="brand").
 
+### Design-System-Showcase (/design-system, seit 21.08.2026)
+
+- Eigenständige Seite (EN/DE/HR: `src/views/DesignSystemView.astro` + drei Page-Shims), NICHT in der Hauptnavigation – nur kleiner Footer-Link in der Bottom-Row (EN "Design system", DE "Designsystem", HR "Sustav dizajna"). Bewusst indexiert (Sitemap, kein noindex).
+- **Standing-Rule: Werte nie von Hand in den View kopieren.** Alle gezeigten Werte (Hex, px, ms, Bezier, clamp) werden zur Build-Zeit aus `src/styles/tokens.css` geparst (`src/utils/design-tokens.ts`; Kontrast-Badges: `src/utils/contrast.ts`). Die PLIMA-Ausnahme-Farben werden live aus den `--plima-*`-Props in `src/views/ProductsView.astro` geparst und auf /design-system NUR als klar gekennzeichnete Dokumentation gezeigt (Quarantäne-Block, kleine Dots) – das ist Doku-Kontext, keine Aufweichung der Regel "PLIMA-Farben nur auf /products".
+- Rollen-/Regel-Prosa ist dreisprachige Copy im View, gekeyt am Token-Namen: verschwindet ein Token aus tokens.css, verschwindet seine Kachel (Build-Warnung `[design-tokens]`), der Build bricht nie. Neue Tokens tauchen erst auf, wenn sie in die Namenslisten/Rollen-Copy des Views aufgenommen werden.
+- **Logo-Schutzzone (neu definiert mit dieser Seite, Nutzer-bestätigt 21.08.2026): x = Höhe der M-Marke** auf allen Seiten – demonstriert im Clear-Space-Block der Seite (`.cs-frame`).
+- Muted-Drift behoben (21.08.2026): DESIGN.md-Frontmatter und `.impeccable/design.json` sagten noch `#7A8288`, tokens.css ist mit `#687076` (AA-Fix) die Quelle der Wahrheit – beide Dokumente angeglichen.
+
 ### Tech-Stack-Band (TechBand.astro)
 
 **Aktueller Stand (Ergänzung/Bereinigung nach Nutzerfeedback, 06.08.2026)**: SAP-Gruppe komplett entfernt (beide Einträge "SAP" und "SAP Test Management", ersatzlos, keine Ersetzung). "JFrog" aus Cloud & DevOps entfernt (Gruppe passt jetzt wieder auf eine Zeile). "Test Management" zu QA & Testing ergänzt – generisches, handgezeichnetes Klemmbrett-mit-Häkchen-Inline-SVG (`testManagementSvg` in TechBand.astro), da keine Marke, gleiche Technik wie das LLM-Integration-Icon. "Astro" zu Frontend ergänzt (siAstro, Hex #BC52EE, gegen simple-icons geprüft).

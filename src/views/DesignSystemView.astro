@@ -1,0 +1,1938 @@
+---
+/*
+ * /design-system – das System, dokumentiert durch sich selbst.
+ *
+ * Jeder gezeigte WERT (Hex, px, ms, Bezier, clamp) wird zur Build-Zeit aus
+ * src/styles/tokens.css geparst (src/utils/design-tokens.ts) – nie von Hand
+ * eingetragen. Visuals nutzen var(--token): Text und Darstellung hängen damit
+ * beide an derselben Quelldatei und können nicht driften.
+ *
+ * Rollen-/Regel-PROSA ist dreisprachige Copy (wie überall im Projekt), gekeyt
+ * am Token-Namen: verschwindet ein Token aus tokens.css, verschwindet seine
+ * Kachel (Build-Warnung), nichts bricht.
+ *
+ * Annotations-Ebene (gestrichelte 1px-Linien + Mono-Labels für Vermessung:
+ * Schutzzone, Container-Klammern, PLIMA-Quarantäne): Meta-Sprache ÜBER das
+ * System, bewusst nicht Teil des Systems selbst – keine neue Designregel.
+ */
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBox from '../components/CtaBox.astro';
+import { getLang, type Lang } from '../i18n';
+import {
+  parseTokensCss,
+  parsePlimaProps,
+  pick,
+  parseClamp,
+  parseBezier,
+  parseMs,
+  parseGradient,
+  remToPx,
+  type Token,
+} from '../utils/design-tokens';
+import { contrastRatio, formatRatio, wcagLevel, relativeLuminance } from '../utils/contrast';
+// Nur bereits verifizierte Marken-Icons (Standing-Rule: kein Eintrag ohne geprüftes Icon).
+import { siAstro, siTypescript, siPostgresql } from 'simple-icons';
+
+const lang = getLang(Astro.currentLocale);
+
+const parsed = parseTokensCss();
+const { byName } = parsed;
+const plima = parsePlimaProps();
+const val = (name: string): string => byName[name]?.value ?? '';
+
+/* ----- Kontrast-Badges: Text-Tokens gegen ihre realen Nutzungs-Hintergründe ----- */
+const LIGHT_BGS = ['--mirano-porcelain', '--mirano-limestone', '--mirano-white'];
+const TEXT_ON_LIGHT = ['--mirano-ink', '--mirano-slate', '--mirano-muted', '--mirano-orange-deep'];
+const TEXT_ON_DARK = ['--mirano-text-on-dark', '--mirano-text-on-dark-body', '--mirano-orange-light'];
+
+interface TileContrast {
+  note: string;
+  bgVar: string;
+  onDark: boolean;
+}
+const tileContrast: Record<string, TileContrast> = {};
+for (const name of TEXT_ON_LIGHT) {
+  const fg = val(name);
+  if (!fg) continue;
+  let worst: { ratio: number; bg: string } | null = null;
+  for (const bg of LIGHT_BGS) {
+    const r = contrastRatio(fg, val(bg));
+    if (r !== null && (!worst || r < worst.ratio)) worst = { ratio: r, bg };
+  }
+  if (worst) {
+    const level = wcagLevel(worst.ratio);
+    tileContrast[name] = {
+      note: `${formatRatio(worst.ratio)}${level ? ` · ${level}` : ''}`,
+      bgVar: worst.bg,
+      onDark: false,
+    };
+  }
+}
+for (const name of TEXT_ON_DARK) {
+  const r = contrastRatio(val(name), val('--mirano-graphite'));
+  if (r !== null) {
+    const level = wcagLevel(r);
+    tileContrast[name] = {
+      note: `${formatRatio(r)}${level ? ` · ${level}` : ''}`,
+      bgVar: '--mirano-graphite',
+      onDark: true,
+    };
+  }
+}
+
+/* Helle Füllungen bekommen eine Trennlinie unterm Swatch – berechnet, nicht getaggt. */
+const isLightFill = (token: Token): boolean => {
+  const l = relativeLuminance(token.value);
+  return l !== null && l > 0.55;
+};
+const isGradient = (token: Token): boolean => token.value.startsWith('linear-gradient');
+const gradientNote = (token: Token): string => {
+  const g = parseGradient(token.value);
+  return g ? `${g.angle} · ${g.stops.join(' → ')}` : token.value;
+};
+
+/* ----- Farb-Gruppen (Reihenfolge = tokens.css-Gliederung) ----- */
+const COLOR_GROUPS = [
+  { key: 'accent', names: ['--mirano-orange', '--mirano-orange-deep', '--mirano-orange-light', '--mirano-gradient', '--mirano-gradient-logo'] },
+  { key: 'dark', names: ['--mirano-graphite', '--mirano-graphite-soft', '--mirano-border-on-dark'] },
+  { key: 'text', names: ['--mirano-ink', '--mirano-slate', '--mirano-muted', '--mirano-text-on-dark', '--mirano-text-on-dark-body'] },
+  { key: 'surface', names: ['--mirano-porcelain', '--mirano-limestone', '--mirano-white', '--mirano-border'] },
+  { key: 'status', names: ['--mirano-success', '--mirano-warning', '--mirano-error'] },
+] as const;
+const colorGroups = COLOR_GROUPS.map((g) => ({ key: g.key, tokens: pick(parsed, [...g.names]) }));
+
+/* ----- Typo: Familien & Hierarchie-Treppe ----- */
+// Gewichte = die tatsächlich geladenen Fontsource-Imports aus Base.astro (Load-Config, kein Token).
+const families = [
+  { key: 'display', token: byName['--font-display'], weights: '600 · 700', cls: 'ff-display' },
+  { key: 'body', token: byName['--font-body'], weights: '400 · 500 · 600', cls: 'ff-body' },
+  { key: 'mono', token: byName['--font-mono'], weights: '400 · 500', cls: 'ff-mono' },
+].filter((f) => f.token);
+
+const LADDER = [
+  { name: '--text-h1', cls: 'spec-h1' },
+  { name: '--text-h2', cls: 'spec-h2' },
+  { name: '--text-h3', cls: 'spec-h3' },
+  { name: '--text-h4', cls: 'spec-h4' },
+  { name: '--text-body', cls: 'spec-body' },
+  { name: '--text-small', cls: 'spec-small' },
+  { name: '--text-eyebrow', cls: 'spec-eyebrow' },
+];
+const ladder = LADDER.flatMap((def) => {
+  const token = byName[def.name];
+  if (!token) {
+    console.warn(`[design-tokens] Token fehlt in tokens.css und wird übersprungen: ${def.name}`);
+    return [];
+  }
+  const clamp = parseClamp(token.value);
+  let px = '';
+  if (clamp) {
+    const min = remToPx(clamp.min);
+    const max = remToPx(clamp.max);
+    if (min !== null && max !== null) px = `min ${min}px · max ${max}px`;
+  } else {
+    const p = remToPx(token.value);
+    if (p !== null) px = `${p}px`;
+  }
+  return [{ ...def, value: token.value, px }];
+});
+const marginalia = pick(parsed, ['--leading-tight', '--leading-body', '--tracking-display', '--tracking-eyebrow', '--tracking-meta']);
+
+/* ----- Spacing & Radius ----- */
+const radii = pick(parsed, ['--radius-control', '--radius-card', '--radius-feature']);
+const rhythm = pick(parsed, ['--section-y-desktop', '--section-y-mobile']).map((t) => ({
+  ...t,
+  px: remToPx(t.value),
+}));
+const containerToken = byName['--container-max'];
+
+/* ----- Motion ----- */
+const durTokens = pick(parsed, ['--dur-fast', '--dur-base', '--dur-entrance']).map((t) => ({
+  ...t,
+  ms: parseMs(t.value) ?? 0,
+}));
+const maxMs = Math.max(...durTokens.map((d) => d.ms), 1);
+const durations = durTokens.map((d) => ({ ...d, pct: Math.round((d.ms / maxMs) * 100) }));
+const durSummary = durTokens.map((d) => d.ms).join(' / ');
+const easeToken = byName['--ease-out'];
+const bez = easeToken ? parseBezier(easeToken.value) : null;
+const easePath = bez
+  ? `M 0 100 C ${bez[0] * 100} ${100 - bez[1] * 100}, ${bez[2] * 100} ${100 - bez[3] * 100}, 100 0`
+  : null;
+
+/* ----- Komponenten: Chips (Rezept aus TechBand.astro, Icons verifiziert) ----- */
+const chips = [siAstro, siTypescript, siPostgresql].map((i) => ({ title: i.title, hex: i.hex, svg: i.svg }));
+
+/* ----- Copy (dreisprachig, Rollen gekeyt am Token-Namen) ----- */
+const copy: Record<Lang, any> = {
+  en: {
+    title: 'Design system – Mirano Solutions',
+    desc: 'The Mirano design system, documented live: color, typography, spacing, motion and components — every value parsed from tokens.css at build time, never copied by hand.',
+    hero: {
+      eyebrow: 'Design system',
+      h1: 'Entries, not slogans.',
+      lead: 'One signal color, quiet warm-neutral surfaces, mono for data, motion as instrumentation — the system behind mirano-solutions.com, documented by itself. Every value on this page is read from tokens.css at build time.',
+    },
+    labels: {
+      parsed: 'PARSED AT BUILD',
+      live: 'live',
+      worstCase: 'worst case on light surfaces',
+      onGraphite: 'on graphite',
+      newRule: 'NEW — DEFINED WITH THIS PAGE',
+      replay: 'Replay',
+      source: 'SOURCE',
+      anchors: 'Sections',
+    },
+    anchors: [
+      ['#color', '01', 'Color'],
+      ['#type', '02', 'Type'],
+      ['#logo', '03', 'Logo'],
+      ['#space', '04', 'Space'],
+      ['#motion', '05', 'Motion'],
+      ['#components', '06', 'Components'],
+      ['#voice', '07', 'Voice'],
+    ],
+    colors: {
+      head: {
+        eyebrow: '01 · Color',
+        h2: 'One signal on warm-neutral ground',
+        p: 'Signal Orange is the only saturated color in the system, used where it means something — never as decoration. Everything else is structure: tone shifts and a single line color instead of shadows.',
+      },
+      groups: {
+        accent: 'Accent & gradients',
+        dark: 'Dark',
+        text: 'Text',
+        surface: 'Surfaces & lines',
+        status: 'Status — functional only',
+      },
+      roles: {
+        '--mirano-orange': { name: 'Signal Orange', role: 'The single accent: icons, solid secondary uses, status dots — never a large flat fill.' },
+        '--mirano-orange-deep': { name: 'Signal Orange Deep', role: 'Text-level accents on light ground — eyebrows, ghost buttons. Chosen for AA contrast where the base orange fails as text.' },
+        '--mirano-orange-light': { name: 'Signal Orange Light', role: 'The same accent role, recalibrated to stay AA on graphite.' },
+        '--mirano-gradient': { name: 'Signal Gradient', role: 'Primary CTA, accent lines, stat numbers — the system’s only large-surface gradient use.' },
+        '--mirano-gradient-logo': { name: 'Logo Gradient', role: 'Logo and brand moments only — never UI.' },
+        '--mirano-graphite': { name: 'Graphite', role: 'The reserved dark section: footer plus at most one contrast section per page. Deliberately not black.' },
+        '--mirano-graphite-soft': { name: 'Graphite Soft', role: 'Card and hover surfaces on graphite.' },
+        '--mirano-border-on-dark': { name: 'Border on Dark', role: 'Lines and borders on graphite.' },
+        '--mirano-ink': { name: 'Ink', role: 'Headlines on light ground.' },
+        '--mirano-slate': { name: 'Slate', role: 'Body text on light ground.' },
+        '--mirano-muted': { name: 'Muted', role: 'Captions, meta text, secondary labels — AA-adjusted against all light surfaces.' },
+        '--mirano-text-on-dark': { name: 'On Dark', role: 'Headlines on graphite.' },
+        '--mirano-text-on-dark-body': { name: 'On Dark Body', role: 'Body text on graphite.' },
+        '--mirano-porcelain': { name: 'Porcelain', role: 'The default page background — a clean paper white, not a cream tint.' },
+        '--mirano-limestone': { name: 'Limestone', role: 'Alternate sections and callout cards — one step warmer than porcelain, separating sections without a hard line.' },
+        '--mirano-white': { name: 'White', role: 'Default card fill.' },
+        '--mirano-border': { name: 'Border', role: 'The only line color — card borders, header divider, input strokes.' },
+        '--mirano-success': { name: 'Success', role: 'Functional state only — never decorative.' },
+        '--mirano-warning': { name: 'Warning', role: 'Functional state only — never decorative.' },
+        '--mirano-error': { name: 'Error', role: 'Functional state only — never decorative.' },
+      },
+      plima: {
+        label: 'EXCEPTION',
+        h3: 'The PLIMA exception',
+        p: 'The PLIMA feature card on /products alone carries PLIMA’s own brand colors — strictly scoped to that one card, never anywhere else. These swatches are parsed from that card’s source and appear here only as documentation.',
+      },
+    },
+    type: {
+      head: {
+        eyebrow: '02 · Typography',
+        h2: 'Three voices, one boundary',
+        p: 'A geometric display face for headlines, a humanist body face for everything readable, and mono strictly for data. The pairing performs the positioning itself: engineering precision, human delivery.',
+      },
+      families: {
+        display: { h3: 'Display', usage: 'H1 and H2 only, weight 600 — one hero headline per page.' },
+        body: { h3: 'Body', usage: 'Running text at 400; H3–H6 and UI labels at 500/600.' },
+        mono: { h3: 'Mono', usage: 'Labels, stats, dates, the eyebrow — data moments only.' },
+      },
+      weightsLabel: 'LOADED WEIGHTS',
+      dataFace: 'The Data-Face Rule: mono never appears in headlines or running prose. That boundary is what makes it feel like instrumentation rather than styling.',
+      ladder: {
+        '--text-h1': 'Hero headline',
+        '--text-h2': 'Section title',
+        '--text-h3': 'Card title',
+        '--text-h4': 'Subsection',
+        '--text-body': 'Body text at a readable measure',
+        '--text-small': 'Secondary caption',
+        '--text-eyebrow': 'The precision marker',
+      },
+    },
+    logo: {
+      head: {
+        eyebrow: '03 · Logo',
+        h2: 'Three variants, one clear space',
+        p: 'The full lockup on light ground, the white variant on graphite, the icon alone for small contexts. Nothing sits inside the clear space.',
+      },
+      variants: {
+        full: 'Full lockup — light ground',
+        white: 'White variant — graphite',
+        icon: 'Icon solo — favicon & small sizes',
+      },
+      clearspace: {
+        h3: 'Clear space',
+        p: 'On every side, the minimum distance to other elements is x — the height of the M mark. Defined as a standing rule with this page.',
+        legend: 'x = height of the M mark',
+      },
+    },
+    space: {
+      head: {
+        eyebrow: '04 · Spacing & radius',
+        h2: 'Real measures, shown at real size',
+        p: 'Three radii, one vertical rhythm, one container. The corners and bars below are rendered at their actual values — not diagrams of them.',
+      },
+      radiiH3: 'Radii',
+      rhythmH3: 'Section rhythm',
+      radiusRoles: {
+        '--radius-control': 'Buttons, inputs',
+        '--radius-card': 'Cards',
+        '--radius-feature': 'Feature surfaces',
+      },
+      containerNote: '— the exact container you are reading in right now',
+    },
+    motion: {
+      head: {
+        eyebrow: '05 · Motion',
+        h2: 'Motion as instrumentation',
+        p: 'Entries are written, lines are drawn: translateY, opacity and scaleX only, one ease curve, three duration steps, nothing over 600 ms, no loops. Under reduced motion, everything is instant.',
+      },
+      demo: {
+        eyebrow: 'Live demo',
+        text: 'This card entered the way every card on this site enters — written like a ledger line. The 3px line above drew itself on reveal: the signature move, reserved for one card per page (600 ms, component recipe).',
+      },
+      loops: 'LOOPS · NONE',
+      transforms: 'TRANSFORMS · TRANSLATEY / OPACITY / SCALEX',
+      rmNote: 'Reduced motion is active — honored: this page is already still.',
+    },
+    components: {
+      head: {
+        eyebrow: '06 · Components',
+        h2: 'Flat by default, tactile on touch',
+        p: 'No shadows at rest — structure comes from borders and tone. States are live here: hover, press and Tab are the demo, nothing is simulated.',
+      },
+      buttonsH3: 'Buttons',
+      btnPrimary: 'Primary action',
+      btnSecondary: 'Secondary',
+      btnGhost: 'Learn more →',
+      cardsH3: 'Cards',
+      cardStaticH3: '.card + .info-card',
+      cardStaticP: 'White fill, 1px border, 14px radius, no shadow. Depth is a response to state, never decoration.',
+      cardHoverH3: 'Interactive card',
+      cardHoverP: 'Hover: the border tints toward orange, the surface lifts 3 px — fast in, calm out.',
+      cardMore: 'Try it →',
+      chipsH3: 'Tech chips',
+      chipsNote: 'The tech-band recipe: mono label, 999px radius, brand color only on hover — and only for verified brand icons.',
+      ctaPointer: 'The signature CTA card — limestone, a 3px top accent that draws itself — closes this page live, as it does every page.',
+    },
+    dark: {
+      eyebrow: 'One dark section',
+      h2: 'Graphite, not black — and exactly once',
+      p: 'Each page gets at most one contrast section plus the footer. This is this page’s one dark beat; the eyebrow above switched to orange-light on its own.',
+      cardH3: 'Card on graphite',
+      cardP: 'Graphite-soft surface, its own border color, the same radius. The secondary button below picked up its on-dark override from global CSS — nothing here is restyled.',
+      btn: 'Secondary on dark',
+      tokensH3: 'Text on graphite',
+    },
+    voice: {
+      head: {
+        eyebrow: '07 · Voice',
+        h2: 'Founder-led, precise, understated',
+        p: 'The visual system and the copy follow the same principles. These five are quotable — they come from PRODUCT.md and they gate every page.',
+      },
+      principles: [
+        { title: 'Specificity over superlatives', text: 'Real dates, real numbers, a named founder, a capped pool size — never vague trust badges or generic claims.' },
+        { title: 'Show, don’t tell', text: 'Proof comes from partner logos, anonymized case studies and a live product (PLIMA), not testimonial quotes or self-description.' },
+        { title: 'Practice what you preach', text: 'Mirano operates its own SaaS products; the site reflects the same delivery discipline it sells — precise, no shortcuts, senior craft.' },
+        { title: 'Direct line, no layers', text: 'Every path should feel like it leads to the founder, not a sales funnel; understated over persuasive.' },
+        { title: 'Quality over growth', text: 'The design should never visually imply scale or size the company doesn’t have.' },
+      ],
+    },
+  },
+  de: {
+    title: 'Designsystem – Mirano Solutions',
+    desc: 'Das Mirano-Designsystem, live dokumentiert: Farbe, Typografie, Abstände, Motion und Komponenten – jeder Wert zur Build-Zeit aus tokens.css geparst, nie von Hand kopiert.',
+    hero: {
+      eyebrow: 'Designsystem',
+      h1: 'Einträge statt Slogans.',
+      lead: 'Eine Signalfarbe, ruhige warm-neutrale Flächen, Mono für Daten, Motion als Instrument – das System hinter mirano-solutions.com, dokumentiert durch sich selbst. Jeder Wert auf dieser Seite wird zur Build-Zeit aus tokens.css gelesen.',
+    },
+    labels: {
+      parsed: 'BEIM BUILD GEPARST',
+      live: 'live',
+      worstCase: 'Worst Case auf hellen Flächen',
+      onGraphite: 'auf Graphit',
+      newRule: 'NEU — MIT DIESER SEITE DEFINIERT',
+      replay: 'Erneut abspielen',
+      source: 'QUELLE',
+      anchors: 'Abschnitte',
+    },
+    anchors: [
+      ['#color', '01', 'Farbe'],
+      ['#type', '02', 'Typografie'],
+      ['#logo', '03', 'Logo'],
+      ['#space', '04', 'Abstände'],
+      ['#motion', '05', 'Motion'],
+      ['#components', '06', 'Komponenten'],
+      ['#voice', '07', 'Stimme'],
+    ],
+    colors: {
+      head: {
+        eyebrow: '01 · Farbe',
+        h2: 'Ein Signal auf warm-neutralem Grund',
+        p: 'Signal Orange ist die einzige gesättigte Farbe im System und steht nur dort, wo sie etwas bedeutet – nie als Dekoration. Alles andere ist Struktur: Tonwechsel und eine einzige Linienfarbe statt Schatten.',
+      },
+      groups: {
+        accent: 'Akzent & Verläufe',
+        dark: 'Dunkel',
+        text: 'Text',
+        surface: 'Flächen & Linien',
+        status: 'Status – nur funktional',
+      },
+      roles: {
+        '--mirano-orange': { name: 'Signal Orange', role: 'Der eine Akzent: Icons, solide Sekundär-Verwendung, Status-Punkte – nie eine große Füllfläche.' },
+        '--mirano-orange-deep': { name: 'Signal Orange Deep', role: 'Text-Akzente auf hellem Grund – Eyebrows, Ghost-Buttons. Gewählt für AA-Kontrast, wo das Basis-Orange als Text scheitert.' },
+        '--mirano-orange-light': { name: 'Signal Orange Light', role: 'Dieselbe Akzent-Rolle, rekalibriert, damit sie auf Graphit AA hält.' },
+        '--mirano-gradient': { name: 'Signal-Verlauf', role: 'Primär-CTA, Akzentlinien, Stat-Zahlen – die einzige großflächige Verlaufs-Anwendung des Systems.' },
+        '--mirano-gradient-logo': { name: 'Logo-Verlauf', role: 'Nur Logo und Markenmomente – nie UI.' },
+        '--mirano-graphite': { name: 'Graphit', role: 'Die reservierte dunkle Sektion: Footer plus höchstens eine Kontrast-Sektion pro Seite. Bewusst kein Schwarz.' },
+        '--mirano-graphite-soft': { name: 'Graphit Soft', role: 'Card- und Hover-Flächen auf Graphit.' },
+        '--mirano-border-on-dark': { name: 'Border auf Dunkel', role: 'Linien und Borders auf Graphit.' },
+        '--mirano-ink': { name: 'Ink', role: 'Headlines auf hellem Grund.' },
+        '--mirano-slate': { name: 'Slate', role: 'Fließtext auf hellem Grund.' },
+        '--mirano-muted': { name: 'Muted', role: 'Captions, Meta-Text, sekundäre Labels – AA-justiert gegen alle hellen Flächen.' },
+        '--mirano-text-on-dark': { name: 'On Dark', role: 'Headlines auf Graphit.' },
+        '--mirano-text-on-dark-body': { name: 'On Dark Body', role: 'Fließtext auf Graphit.' },
+        '--mirano-porcelain': { name: 'Porcelain', role: 'Der Standard-Seitenhintergrund – sauberes Papierweiß, kein Creme-Ton.' },
+        '--mirano-limestone': { name: 'Limestone', role: 'Wechsel-Sektionen und Callout-Cards – eine Stufe wärmer als Porcelain, trennt Sektionen ohne harte Linie.' },
+        '--mirano-white': { name: 'Weiß', role: 'Standard-Card-Füllung.' },
+        '--mirano-border': { name: 'Border', role: 'Die einzige Linienfarbe – Card-Borders, Header-Trenner, Input-Konturen.' },
+        '--mirano-success': { name: 'Success', role: 'Nur funktionaler Zustand – nie dekorativ.' },
+        '--mirano-warning': { name: 'Warning', role: 'Nur funktionaler Zustand – nie dekorativ.' },
+        '--mirano-error': { name: 'Error', role: 'Nur funktionaler Zustand – nie dekorativ.' },
+      },
+      plima: {
+        label: 'AUSNAHME',
+        h3: 'Die PLIMA-Ausnahme',
+        p: 'Allein die PLIMA-Feature-Card auf /products trägt PLIMAs eigene Markenfarben – strikt auf diese eine Card begrenzt, nirgendwo sonst. Diese Muster sind aus dem Quellcode der Card geparst und stehen hier nur als Dokumentation.',
+      },
+    },
+    type: {
+      head: {
+        eyebrow: '02 · Typografie',
+        h2: 'Drei Stimmen, eine Grenze',
+        p: 'Eine geometrische Display-Schrift für Headlines, eine humanistische Textschrift für alles Lesbare und Mono strikt für Daten. Die Paarung führt die Positionierung selbst vor: Engineering-Präzision, menschliche Delivery.',
+      },
+      families: {
+        display: { h3: 'Display', usage: 'Nur H1 und H2, Gewicht 600 – eine Hero-Headline pro Seite.' },
+        body: { h3: 'Body', usage: 'Fließtext in 400; H3–H6 und UI-Labels in 500/600.' },
+        mono: { h3: 'Mono', usage: 'Labels, Stats, Daten, das Eyebrow – ausschließlich Daten-Momente.' },
+      },
+      weightsLabel: 'GELADENE GEWICHTE',
+      dataFace: 'Die Data-Face-Regel: Mono steht nie in Headlines oder Fließtext. Genau diese Grenze lässt es wie Instrumentierung wirken statt wie Styling.',
+      ladder: {
+        '--text-h1': 'Hero-Headline',
+        '--text-h2': 'Sektionstitel',
+        '--text-h3': 'Card-Titel',
+        '--text-h4': 'Zwischentitel',
+        '--text-body': 'Fließtext im Lesemaß',
+        '--text-small': 'Sekundäre Caption',
+        '--text-eyebrow': 'Das Präzisions-Signal',
+      },
+    },
+    logo: {
+      head: {
+        eyebrow: '03 · Logo',
+        h2: 'Drei Varianten, eine Schutzzone',
+        p: 'Das volle Lockup auf hellem Grund, die weiße Variante auf Graphit, das Icon solo für kleine Kontexte. Innerhalb der Schutzzone steht nichts.',
+      },
+      variants: {
+        full: 'Volles Lockup – heller Grund',
+        white: 'Weiße Variante – Graphit',
+        icon: 'Icon solo – Favicon & kleine Größen',
+      },
+      clearspace: {
+        h3: 'Schutzzone',
+        p: 'Auf jeder Seite gilt als Mindestabstand zu anderen Elementen x – die Höhe der M-Marke. Mit dieser Seite als Standing-Rule definiert.',
+        legend: 'x = Höhe der M-Marke',
+      },
+    },
+    space: {
+      head: {
+        eyebrow: '04 · Abstände & Radien',
+        h2: 'Echte Maße, in echter Größe gezeigt',
+        p: 'Drei Radien, ein vertikaler Rhythmus, ein Container. Die Ecken und Balken unten sind in ihren tatsächlichen Werten gerendert – keine Diagramme davon.',
+      },
+      radiiH3: 'Radien',
+      rhythmH3: 'Sektions-Rhythmus',
+      radiusRoles: {
+        '--radius-control': 'Buttons, Eingabefelder',
+        '--radius-card': 'Cards',
+        '--radius-feature': 'Feature-Flächen',
+      },
+      containerNote: '– exakt der Container, in dem Sie gerade lesen',
+    },
+    motion: {
+      head: {
+        eyebrow: '05 · Motion',
+        h2: 'Motion als Instrument',
+        p: 'Einträge werden geschrieben, Linien gezeichnet: nur translateY, opacity und scaleX, eine Ease-Kurve, drei Dauer-Stufen, nichts über 600 ms, keine Loops. Bei reduzierter Bewegung ist alles sofort da.',
+      },
+      demo: {
+        eyebrow: 'Live-Demo',
+        text: 'Diese Card ist so erschienen, wie jede Card dieser Website erscheint – geschrieben wie eine Ledger-Zeile. Die 3px-Linie darüber hat sich beim Reveal gezeichnet: der Signature-Move, reserviert für eine Card pro Seite (600 ms, Komponenten-Rezept).',
+      },
+      loops: 'LOOPS · KEINE',
+      transforms: 'TRANSFORMS · TRANSLATEY / OPACITY / SCALEX',
+      rmNote: 'Reduzierte Bewegung ist aktiv – respektiert: Diese Seite ist bereits still.',
+    },
+    components: {
+      head: {
+        eyebrow: '06 · Komponenten',
+        h2: 'Flach im Ruhezustand, taktil bei Berührung',
+        p: 'Keine Schatten im Ruhezustand – Struktur entsteht aus Linien und Ton. Zustände sind hier live: Hover, Drücken und Tab sind das Demo, nichts ist simuliert.',
+      },
+      buttonsH3: 'Buttons',
+      btnPrimary: 'Primäre Aktion',
+      btnSecondary: 'Sekundär',
+      btnGhost: 'Mehr erfahren →',
+      cardsH3: 'Cards',
+      cardStaticH3: '.card + .info-card',
+      cardStaticP: 'Weiße Füllung, 1px-Linie, 14px-Radius, kein Schatten. Tiefe ist eine Reaktion auf Zustand, nie Dekoration.',
+      cardHoverH3: 'Interaktive Card',
+      cardHoverP: 'Hover: die Linie färbt sich Richtung Orange, die Fläche hebt sich 3 px – schnell rein, ruhig raus.',
+      cardMore: 'Ausprobieren →',
+      chipsH3: 'Tech-Chips',
+      chipsNote: 'Das Tech-Band-Rezept: Mono-Label, 999px-Radius, Markenfarbe nur beim Hover – und nur für verifizierte Marken-Icons.',
+      ctaPointer: 'Die Signature-CTA-Card – Limestone, ein 3px-Top-Akzent, der sich selbst zeichnet – schließt diese Seite live ab, wie jede Seite.',
+    },
+    dark: {
+      eyebrow: 'Eine dunkle Sektion',
+      h2: 'Graphit, nicht Schwarz – und genau einmal',
+      p: 'Jede Seite bekommt höchstens eine Kontrast-Sektion plus den Footer. Das hier ist der eine dunkle Beat dieser Seite; das Eyebrow darüber ist von selbst auf Orange-Light umgeschaltet.',
+      cardH3: 'Card auf Graphit',
+      cardP: 'Graphit-Soft-Fläche, eigene Linienfarbe, derselbe Radius. Der Secondary-Button unten hat sein On-Dark-Override aus dem globalen CSS bekommen – nichts hier ist umgestylt.',
+      btn: 'Secondary auf Dunkel',
+      tokensH3: 'Text auf Graphit',
+    },
+    voice: {
+      head: {
+        eyebrow: '07 · Stimme',
+        h2: 'Founder-led, präzise, understated',
+        p: 'Das visuelle System und die Texte folgen denselben Prinzipien. Diese fünf sind zitierfähig – sie stammen aus PRODUCT.md und gelten für jede Seite.',
+      },
+      principles: [
+        { title: 'Spezifik statt Superlative', text: 'Echte Daten, echte Zahlen, ein benannter Gründer, eine gedeckelte Teamgröße – nie vage Trust-Badges oder generische Behauptungen.' },
+        { title: 'Zeigen statt behaupten', text: 'Beweis liefern Partnerlogos, anonymisierte Fallstudien und ein live betriebenes Produkt (PLIMA) – keine Testimonial-Zitate, keine Selbstbeschreibung.' },
+        { title: 'Selbst anwenden, was man verkauft', text: 'Mirano betreibt eigene SaaS-Produkte; die Website spiegelt dieselbe Delivery-Disziplin, die sie verkauft – präzise, ohne Abkürzungen, Senior-Handwerk.' },
+        { title: 'Direkter Draht, keine Ebenen', text: 'Jeder Weg soll sich anfühlen, als führe er zum Gründer, nicht in einen Sales-Funnel; understated statt überredend.' },
+        { title: 'Qualität vor Wachstum', text: 'Das Design impliziert nie visuell eine Größe, die das Unternehmen nicht hat.' },
+      ],
+    },
+  },
+  hr: {
+    title: 'Sustav dizajna – Mirano Solutions',
+    desc: 'Mirano sustav dizajna, dokumentiran uživo: boje, tipografija, razmaci, animacije i komponente – svaka vrijednost parsirana iz tokens.css pri buildu, nikad prepisana ručno.',
+    hero: {
+      eyebrow: 'Sustav dizajna',
+      h1: 'Zapisi, ne slogani.',
+      lead: 'Jedna signalna boja, mirne toplo-neutralne plohe, mono za podatke, pokret kao instrument – sustav iza mirano-solutions.com, dokumentiran samim sobom. Svaka vrijednost na ovoj stranici čita se iz tokens.css pri buildu.',
+    },
+    labels: {
+      parsed: 'PARSIRANO PRI BUILDU',
+      live: 'uživo',
+      worstCase: 'najgori slučaj na svijetlim plohama',
+      onGraphite: 'na grafitu',
+      newRule: 'NOVO — DEFINIRANO OVOM STRANICOM',
+      replay: 'Ponovi',
+      source: 'IZVOR',
+      anchors: 'Odjeljci',
+    },
+    anchors: [
+      ['#color', '01', 'Boja'],
+      ['#type', '02', 'Tipografija'],
+      ['#logo', '03', 'Logo'],
+      ['#space', '04', 'Razmaci'],
+      ['#motion', '05', 'Pokret'],
+      ['#components', '06', 'Komponente'],
+      ['#voice', '07', 'Glas'],
+    ],
+    colors: {
+      head: {
+        eyebrow: '01 · Boja',
+        h2: 'Jedan signal na toplo-neutralnoj podlozi',
+        p: 'Signalna narančasta jedina je zasićena boja u sustavu i stoji samo ondje gdje nešto znači – nikad kao dekoracija. Sve ostalo je struktura: promjene tona i jedna boja linija umjesto sjena.',
+      },
+      groups: {
+        accent: 'Akcent i gradijenti',
+        dark: 'Tamno',
+        text: 'Tekst',
+        surface: 'Plohe i linije',
+        status: 'Status – samo funkcionalno',
+      },
+      roles: {
+        '--mirano-orange': { name: 'Signal Orange', role: 'Jedini akcent: ikone, solidna sekundarna upotreba, statusne točke – nikad velika ispuna.' },
+        '--mirano-orange-deep': { name: 'Signal Orange Deep', role: 'Tekstualni akcenti na svijetloj podlozi – eyebrow, ghost gumbi. Odabran za AA kontrast gdje osnovna narančasta kao tekst ne prolazi.' },
+        '--mirano-orange-light': { name: 'Signal Orange Light', role: 'Ista uloga akcenta, rekalibrirana da na grafitu ostane AA.' },
+        '--mirano-gradient': { name: 'Signalni gradijent', role: 'Primarni CTA, akcentne linije, statistički brojevi – jedina velika primjena gradijenta u sustavu.' },
+        '--mirano-gradient-logo': { name: 'Logo gradijent', role: 'Samo logo i brend-momenti – nikad UI.' },
+        '--mirano-graphite': { name: 'Grafit', role: 'Rezervirana tamna sekcija: podnožje plus najviše jedna kontrastna sekcija po stranici. Namjerno nije crna.' },
+        '--mirano-graphite-soft': { name: 'Grafit Soft', role: 'Plohe kartica i hovera na grafitu.' },
+        '--mirano-border-on-dark': { name: 'Rub na tamnom', role: 'Linije i rubovi na grafitu.' },
+        '--mirano-ink': { name: 'Ink', role: 'Naslovi na svijetloj podlozi.' },
+        '--mirano-slate': { name: 'Slate', role: 'Tekući tekst na svijetloj podlozi.' },
+        '--mirano-muted': { name: 'Muted', role: 'Natpisi, meta tekst, sekundarne oznake – AA-podešeno prema svim svijetlim plohama.' },
+        '--mirano-text-on-dark': { name: 'On Dark', role: 'Naslovi na grafitu.' },
+        '--mirano-text-on-dark-body': { name: 'On Dark Body', role: 'Tekući tekst na grafitu.' },
+        '--mirano-porcelain': { name: 'Porcelain', role: 'Zadana pozadina stranice – čista papirnata bijela, ne krem ton.' },
+        '--mirano-limestone': { name: 'Limestone', role: 'Izmjenične sekcije i istaknute kartice – stupanj topliji od porculanske, razdvaja sekcije bez tvrde linije.' },
+        '--mirano-white': { name: 'Bijela', role: 'Zadana ispuna kartica.' },
+        '--mirano-border': { name: 'Rub', role: 'Jedina boja linija – rubovi kartica, razdjelnik zaglavlja, konture polja.' },
+        '--mirano-success': { name: 'Success', role: 'Samo funkcionalno stanje – nikad dekorativno.' },
+        '--mirano-warning': { name: 'Warning', role: 'Samo funkcionalno stanje – nikad dekorativno.' },
+        '--mirano-error': { name: 'Error', role: 'Samo funkcionalno stanje – nikad dekorativno.' },
+      },
+      plima: {
+        label: 'IZNIMKA',
+        h3: 'PLIMA iznimka',
+        p: 'Samo PLIMA kartica na /products nosi PLIMA-ine vlastite boje – strogo ograničeno na tu jednu karticu, nigdje drugdje. Ovi su uzorci parsirani iz izvornog koda te kartice i ovdje stoje samo kao dokumentacija.',
+      },
+    },
+    type: {
+      head: {
+        eyebrow: '02 · Tipografija',
+        h2: 'Tri glasa, jedna granica',
+        p: 'Geometrijsko pismo za naslove, humanistički font za sve čitljivo i mono strogo za podatke. Ta kombinacija sama izvodi pozicioniranje: inženjerska preciznost, ljudska isporuka.',
+      },
+      families: {
+        display: { h3: 'Display', usage: 'Samo H1 i H2, težina 600 – jedan hero naslov po stranici.' },
+        body: { h3: 'Body', usage: 'Tekući tekst u 400; H3–H6 i UI oznake u 500/600.' },
+        mono: { h3: 'Mono', usage: 'Oznake, statistike, datumi, eyebrow – isključivo podatkovni momenti.' },
+      },
+      weightsLabel: 'UČITANE TEŽINE',
+      dataFace: 'Pravilo „data-face”: mono nikad ne stoji u naslovima ni u tekućem tekstu. Upravo ta granica čini da djeluje kao instrumentacija, a ne kao stil.',
+      ladder: {
+        '--text-h1': 'Hero naslov',
+        '--text-h2': 'Naslov sekcije',
+        '--text-h3': 'Naslov kartice',
+        '--text-h4': 'Podnaslov',
+        '--text-body': 'Tekući tekst u čitljivoj mjeri',
+        '--text-small': 'Sekundarni natpis',
+        '--text-eyebrow': 'Oznaka preciznosti',
+      },
+    },
+    logo: {
+      head: {
+        eyebrow: '03 · Logo',
+        h2: 'Tri varijante, jedan zaštitni prostor',
+        p: 'Puni logotip na svijetloj podlozi, bijela varijanta na grafitu, sam znak za male kontekste. Unutar zaštitnog prostora ne stoji ništa.',
+      },
+      variants: {
+        full: 'Puni logotip – svijetla podloga',
+        white: 'Bijela varijanta – grafit',
+        icon: 'Sam znak – favicon i male veličine',
+      },
+      clearspace: {
+        h3: 'Zaštitni prostor',
+        p: 'Sa svake strane minimalni razmak do drugih elemenata iznosi x – visinu znaka M. Definirano ovom stranicom kao trajno pravilo.',
+        legend: 'x = visina znaka M',
+      },
+    },
+    space: {
+      head: {
+        eyebrow: '04 · Razmaci i radijusi',
+        h2: 'Stvarne mjere, prikazane u stvarnoj veličini',
+        p: 'Tri radijusa, jedan vertikalni ritam, jedan kontejner. Kutovi i trake ispod prikazani su u stvarnim vrijednostima – nisu dijagrami.',
+      },
+      radiiH3: 'Radijusi',
+      rhythmH3: 'Ritam sekcija',
+      radiusRoles: {
+        '--radius-control': 'Gumbi, polja unosa',
+        '--radius-card': 'Kartice',
+        '--radius-feature': 'Istaknute plohe',
+      },
+      containerNote: '– upravo kontejner u kojem upravo čitate',
+    },
+    motion: {
+      head: {
+        eyebrow: '05 · Pokret',
+        h2: 'Pokret kao instrument',
+        p: 'Zapisi se ispisuju, linije se crtaju: samo translateY, opacity i scaleX, jedna krivulja, tri koraka trajanja, ništa preko 600 ms, bez petlji. Uz smanjeno kretanje sve je trenutno.',
+      },
+      demo: {
+        eyebrow: 'Demo uživo',
+        text: 'Ova se kartica pojavila kao i svaka kartica na ovoj stranici – ispisana poput retka u knjizi. Linija od 3 px iznad iscrtala se pri otkrivanju: prepoznatljiv potez, rezerviran za jednu karticu po stranici (600 ms, recept komponente).',
+      },
+      loops: 'PETLJE · NEMA',
+      transforms: 'TRANSFORMACIJE · TRANSLATEY / OPACITY / SCALEX',
+      rmNote: 'Smanjeno kretanje je aktivno – poštujemo: ova je stranica već mirna.',
+    },
+    components: {
+      head: {
+        eyebrow: '06 · Komponente',
+        h2: 'Ravno u mirovanju, taktilno na dodir',
+        p: 'Bez sjena u mirovanju – struktura nastaje iz linija i tona. Stanja su ovdje uživo: hover, pritisak i Tab su demo, ništa nije simulirano.',
+      },
+      buttonsH3: 'Gumbi',
+      btnPrimary: 'Primarna radnja',
+      btnSecondary: 'Sekundarno',
+      btnGhost: 'Saznajte više →',
+      cardsH3: 'Kartice',
+      cardStaticH3: '.card + .info-card',
+      cardStaticP: 'Bijela ispuna, rub od 1 px, radijus 14 px, bez sjene. Dubina je odgovor na stanje, nikad dekoracija.',
+      cardHoverH3: 'Interaktivna kartica',
+      cardHoverP: 'Hover: rub poprima narančastu, ploha se podiže 3 px – brzo unutra, mirno van.',
+      cardMore: 'Isprobajte →',
+      chipsH3: 'Tech čipovi',
+      chipsNote: 'Recept tech-banda: mono natpis, radijus 999 px, boja marke samo na hover – i samo za provjerene ikone marki.',
+      ctaPointer: 'Prepoznatljiva CTA kartica – limestone, gornji akcent od 3 px koji se sam iscrtava – zatvara ovu stranicu uživo, kao i svaku.',
+    },
+    dark: {
+      eyebrow: 'Jedna tamna sekcija',
+      h2: 'Grafit, ne crna – i točno jednom',
+      p: 'Svaka stranica dobiva najviše jednu kontrastnu sekciju plus podnožje. Ovo je jedini tamni takt ove stranice; eyebrow iznad sam se prebacio na svijetlu narančastu.',
+      cardH3: 'Kartica na grafitu',
+      cardP: 'Ploha graphite-soft, vlastita boja ruba, isti radijus. Sekundarni gumb ispod dobio je svoju tamnu varijantu iz globalnog CSS-a – ništa ovdje nije posebno stilizirano.',
+      btn: 'Sekundarno na tamnom',
+      tokensH3: 'Tekst na grafitu',
+    },
+    voice: {
+      head: {
+        eyebrow: '07 · Glas',
+        h2: 'Vođeno osnivačem, precizno, suzdržano',
+        p: 'Vizualni sustav i tekstovi slijede ista načela. Ovih pet može se citirati – dolaze iz PRODUCT.md i vrijede za svaku stranicu.',
+      },
+      principles: [
+        { title: 'Konkretnost umjesto superlativa', text: 'Stvarni datumi, stvarne brojke, imenovani osnivač, ograničena veličina tima – nikad neodređene značke povjerenja ni generičke tvrdnje.' },
+        { title: 'Pokazati, ne tvrditi', text: 'Dokaz su logotipi partnera, anonimizirane studije slučaja i proizvod u produkciji (PLIMA) – bez citata preporuka i samoopisivanja.' },
+        { title: 'Primjenjujemo što prodajemo', text: 'Mirano vodi vlastite SaaS proizvode; stranica odražava istu disciplinu isporuke koju prodaje – precizno, bez prečaca, senior zanat.' },
+        { title: 'Izravna linija, bez posrednika', text: 'Svaki put treba voditi do osnivača, ne u prodajni lijevak; suzdržano umjesto nametljivog.' },
+        { title: 'Kvaliteta prije rasta', text: 'Dizajn nikad vizualno ne sugerira veličinu koju tvrtka nema.' },
+      ],
+    },
+  },
+};
+const t = copy[lang];
+
+/* Meta-Zeile im Hero: jedes Segment live aus dem Parser. */
+const metaLine = [
+  'TOKENS.CSS',
+  parsed.meta.version?.toUpperCase(),
+  parsed.meta.date,
+  `${parsed.meta.count} CUSTOM PROPERTIES`,
+  t.labels.parsed,
+]
+  .filter(Boolean)
+  .join(' · ');
+---
+
+<Base title={t.title} description={t.desc}>
+  <PageHero eyebrow={t.hero.eyebrow} title={t.hero.h1} lead={t.hero.lead} meta={metaLine} />
+
+  <nav class="ds-anchors" aria-label={t.labels.anchors}>
+    <div class="container">
+      <ul>
+        {t.anchors.map(([href, num, label]: [string, string, string]) => (
+          <li>
+            <a href={href}><span class="idx">{num}</span>{label}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 01 · Farbe -->
+  <section id="color" class="section" aria-labelledby="color-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.colors.head.eyebrow}</span>
+        <h2 id="color-h">{t.colors.head.h2}</h2>
+        <p>{t.colors.head.p}</p>
+      </div>
+
+      {colorGroups.map((group) => (
+        <div class="color-group reveal">
+          <h3 class="group-label">{t.colors.groups[group.key]}</h3>
+          <div class="tile-grid">
+            {group.tokens.map((token) => {
+              const meta = t.colors.roles[token.name];
+              const c = tileContrast[token.name];
+              const gradient = isGradient(token);
+              return (
+                <div class={`card color-tile${gradient ? ' tile-span' : ''}`}>
+                  <div
+                    class={`swatch${group.key === 'status' ? ' swatch-sm' : ''}${isLightFill(token) ? ' swatch-line' : ''}`}
+                    style={`background: var(${token.name})`}
+                    aria-hidden="true"
+                  >
+                    {c && (
+                      <span class="swatch-specimen" style={`color: var(${token.name}); background: var(${c.bgVar})`}>Ag</span>
+                    )}
+                  </div>
+                  <div class="tile-info">
+                    <p class="tile-name">{meta?.name ?? token.name}</p>
+                    <p class="mono-meta tile-code">{token.name} · {gradient ? gradientNote(token) : token.value}</p>
+                    {meta?.role && <p class="tile-role">{meta.role}</p>}
+                    {c && (
+                      <p class="mono-meta tile-contrast">{c.note} · {c.onDark ? t.labels.onGraphite : t.labels.worstCase}</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {plima.length > 0 && (
+        <div class="plima-quarantine reveal">
+          <p class="quarantine-label">{t.colors.plima.label} — /PRODUCTS</p>
+          <h3>{t.colors.plima.h3}</h3>
+          <p class="tile-role">{t.colors.plima.p}</p>
+          <ul class="plima-dots" role="list">
+            {plima.map((p) => (
+              <li>
+                <span class="plima-dot" style={`background: ${p.value}`} aria-hidden="true"></span>
+                <span class="mono-meta tile-code">{p.name} · {p.value}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mono-meta quarantine-src">{t.labels.source}: SRC/VIEWS/PRODUCTSVIEW.ASTRO</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- 02 · Typografie -->
+  <section id="type" class="section section-limestone" aria-labelledby="type-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.type.head.eyebrow}</span>
+        <h2 id="type-h">{t.type.head.h2}</h2>
+        <p>{t.type.head.p}</p>
+      </div>
+
+      <div class="type-families reveal">
+        {families.map((f) => (
+          <div class="card info-card type-card">
+            <p class={`type-aa ${f.cls}`} aria-hidden="true">Aa</p>
+            <h3>{t.type.families[f.key].h3}</h3>
+            <p class="mono-meta tile-code">{f.token!.name} · {f.token!.value}</p>
+            <p class="mono-meta type-weights">{t.type.weightsLabel} · {f.weights}</p>
+            <p class="tile-role">{t.type.families[f.key].usage}</p>
+            {f.key === 'mono' && (
+              <>
+                <span class="stat-number type-stat" aria-hidden="true">0123456789</span>
+                <p class="tile-role">{t.type.dataFace}</p>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div class="type-ladder reveal">
+        {ladder.map((row) => (
+          <div class="ladder-row">
+            <span class={`spec ${row.cls}`}>{t.type.ladder[row.name]}</span>
+            <p class="mono-meta ladder-note">
+              {row.name} · {row.value}{row.px ? ` · ${row.px}` : ''}<span class="live-size" data-suffix={t.labels.live}></span>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div class="type-marginalia reveal">
+        {marginalia.map((token) => (
+          <span class="mono-meta">{token.name} · {token.value}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Logo -->
+  <section id="logo" class="section" aria-labelledby="logo-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.logo.head.eyebrow}</span>
+        <h2 id="logo-h">{t.logo.head.h2}</h2>
+        <p>{t.logo.head.p}</p>
+      </div>
+
+      <div class="logo-grid reveal">
+        <div class="card logo-tile">
+          <div class="logo-stage">
+            <img src="/logo/mirano.svg" alt="" width="356" height="167" loading="lazy" />
+          </div>
+          <div class="tile-info">
+            <p class="tile-name">{t.logo.variants.full}</p>
+            <p class="mono-meta tile-code">/logo/mirano.svg</p>
+          </div>
+        </div>
+        <div class="card logo-tile">
+          <div class="logo-stage logo-stage-dark">
+            <img src="/logo/mirano-white.svg" alt="" width="356" height="167" loading="lazy" />
+          </div>
+          <div class="tile-info">
+            <p class="tile-name">{t.logo.variants.white}</p>
+            <p class="mono-meta tile-code">/logo/mirano-white.svg</p>
+          </div>
+        </div>
+        <div class="card logo-tile">
+          <div class="logo-stage">
+            <img class="logo-icon" src="/favicon.svg" alt="" width="64" height="64" loading="lazy" />
+          </div>
+          <div class="tile-info">
+            <p class="tile-name">{t.logo.variants.icon}</p>
+            <p class="mono-meta tile-code">/favicon.svg</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card clearspace reveal">
+        <div class="clearspace-stage">
+          <div class="cs-frame" aria-hidden="true">
+            <img src="/logo/mirano.svg" alt="" width="356" height="167" loading="lazy" />
+            <span class="cs-x cs-top">x</span>
+            <span class="cs-x cs-bottom">x</span>
+            <span class="cs-x cs-left">x</span>
+            <span class="cs-x cs-right">x</span>
+          </div>
+        </div>
+        <div class="clearspace-info">
+          <p class="mono-meta new-badge">{t.labels.newRule}</p>
+          <h3>{t.logo.clearspace.h3}</h3>
+          <p class="tile-role">{t.logo.clearspace.p}</p>
+          <p class="mono-meta cs-legend"><img class="cs-legend-mark" src="/favicon.svg" alt="" width="64" height="64" loading="lazy" />{t.logo.clearspace.legend}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · Abstände & Radien -->
+  <section id="space" class="section section-limestone" aria-labelledby="space-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.space.head.eyebrow}</span>
+        <h2 id="space-h">{t.space.head.h2}</h2>
+        <p>{t.space.head.p}</p>
+      </div>
+
+      <div class="space-grid reveal">
+        <div class="card space-card">
+          <h3>{t.space.radiiH3}</h3>
+          <div class="radius-row">
+            {radii.map((token) => (
+              <div class="radius-demo-wrap">
+                <div class="radius-demo" style={`border-radius: var(${token.name})`} aria-hidden="true"></div>
+                <p class="mono-meta tile-code">{token.name} · {token.value}</p>
+                <p class="tile-role">{t.space.radiusRoles[token.name] ?? ''}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="card space-card">
+          <h3>{t.space.rhythmH3}</h3>
+          <div class="ybars">
+            {rhythm.map((token) => (
+              <div class="ybar-wrap">
+                <div class="ybar" style={`width: var(${token.name})`} aria-hidden="true"></div>
+                <p class="mono-meta tile-code">{token.name} · {token.value}{token.px ? ` · ${token.px}px` : ''}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {containerToken && (
+        <div class="container-demo reveal" aria-hidden="true">
+          <span class="cd-tick"></span>
+          <span class="cd-line"></span>
+          <p class="mono-meta cd-label">{containerToken.name} · {containerToken.value} {t.space.containerNote}</p>
+          <span class="cd-line"></span>
+          <span class="cd-tick"></span>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- 05 · Motion -->
+  <section id="motion" class="section" aria-labelledby="motion-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.motion.head.eyebrow}</span>
+        <h2 id="motion-h">{t.motion.head.h2}</h2>
+        <p>{t.motion.head.p}</p>
+      </div>
+
+      <div class="motion-grid">
+        <div class="motion-demo reveal" id="motion-demo">
+          <div class="card demo-stage">
+            <div class="demo-accent" aria-hidden="true"></div>
+            <div class="card demo-card">
+              <span class="eyebrow">{t.motion.demo.eyebrow}</span>
+              <p>{t.motion.demo.text}</p>
+            </div>
+            <div class="dur-bars">
+              {durations.map((d) => (
+                <div class="dur-track">
+                  <div class="dur-lane" style={`width: ${d.pct}%`} aria-hidden="true">
+                    <div class="dur-bar" style={`transition-duration: var(${d.name})`}></div>
+                  </div>
+                  <p class="mono-meta tile-code">{d.name} · {d.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <button type="button" class="btn-secondary replay">{t.labels.replay}</button>
+          <p class="mono-meta rm-note">{t.motion.rmNote}</p>
+        </div>
+
+        <div class="motion-side reveal">
+          {easePath && (
+            <figure class="card ease-fig">
+              <svg viewBox="-8 -8 116 116" role="img" aria-label={easeToken?.value}>
+                <line class="ease-ref" x1="0" y1="100" x2="100" y2="0" vector-effect="non-scaling-stroke" />
+                <path class="ease-curve" d={easePath} fill="none" vector-effect="non-scaling-stroke" />
+              </svg>
+              <figcaption class="mono-meta tile-code">--ease-out · {easeToken?.value}</figcaption>
+            </figure>
+          )}
+          <ul class="motion-facts" role="list">
+            <li class="mono-meta">{t.motion.transforms}</li>
+            <li class="mono-meta">EASE · {easeToken?.value ?? '—'}</li>
+            <li class="mono-meta">DUR · {durSummary} MS · ≤ 600 MS</li>
+            <li class="mono-meta">{t.motion.loops}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · Komponenten -->
+  <section id="components" class="section section-limestone" aria-labelledby="components-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.components.head.eyebrow}</span>
+        <h2 id="components-h">{t.components.head.h2}</h2>
+        <p>{t.components.head.p}</p>
+      </div>
+
+      <div class="comp-block reveal">
+        <h3 class="group-label">{t.components.buttonsH3}</h3>
+        <div class="btn-row">
+          <div class="btn-demo">
+            <button type="button" class="btn-primary">{t.components.btnPrimary}</button>
+            <p class="mono-meta tile-code">.btn-primary · hover brightness(1.06) · active scale(0.98)</p>
+          </div>
+          <div class="btn-demo">
+            <button type="button" class="btn-secondary">{t.components.btnSecondary}</button>
+            <p class="mono-meta tile-code">.btn-secondary · hover border→ink · active scale(0.98)</p>
+          </div>
+          <div class="btn-demo">
+            <button type="button" class="btn-ghost">{t.components.btnGhost}</button>
+            <p class="mono-meta tile-code">.btn-ghost · hover underline · active scale(0.98)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-block reveal">
+        <h3 class="group-label">{t.components.cardsH3}</h3>
+        <div class="card-row">
+          <div class="card info-card">
+            <h3>{t.components.cardStaticH3}</h3>
+            <p>{t.components.cardStaticP}</p>
+          </div>
+          <a class="demo-link" href="#components">
+            <div class="card info-card demo-surface">
+              <h3>{t.components.cardHoverH3}</h3>
+              <p>{t.components.cardHoverP}</p>
+              <span class="demo-more">{t.components.cardMore}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="comp-block reveal">
+        <h3 class="group-label">{t.components.chipsH3}</h3>
+        <ul class="chip-row" role="list">
+          {chips.map((c) => (
+            <li class="tech-chip" style={`--brand: #${c.hex}`}>
+              <span class="tech-icon" set:html={c.svg} />
+              {c.title}
+            </li>
+          ))}
+        </ul>
+        <p class="tile-role chips-note">{t.components.chipsNote}</p>
+        <p class="tile-role">{t.components.ctaPointer}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Die EINE dunkle Sektion dieser Seite (One-Dark-Section-Regel, plus Footer) -->
+  <section id="dark" class="section section-dark" aria-labelledby="dark-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.dark.eyebrow}</span>
+        <h2 id="dark-h">{t.dark.h2}</h2>
+        <p>{t.dark.p}</p>
+      </div>
+
+      <div class="dark-grid reveal">
+        <div class="dark-card">
+          <h3>{t.dark.cardH3}</h3>
+          <p>{t.dark.cardP}</p>
+          <p class="mono-meta tile-code dark-code">--mirano-graphite-soft · {val('--mirano-graphite-soft')} · --mirano-border-on-dark · {val('--mirano-border-on-dark')}</p>
+          <button type="button" class="btn-secondary">{t.dark.btn}</button>
+        </div>
+        <div class="dark-tokens">
+          <h3 class="group-label group-label-dark">{t.dark.tokensH3}</h3>
+          {pick(parsed, TEXT_ON_DARK).map((token) => {
+            const c = tileContrast[token.name];
+            return (
+              <div class="dark-token">
+                <span class="dark-sample" style={`color: var(${token.name})`} aria-hidden="true">Ag</span>
+                <span class="mono-meta tile-code dark-code">{token.name} · {token.value}{c ? ` · ${c.note}` : ''}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 · Stimme -->
+  <section id="voice" class="section" aria-labelledby="voice-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">{t.voice.head.eyebrow}</span>
+        <h2 id="voice-h">{t.voice.head.h2}</h2>
+        <p>{t.voice.head.p}</p>
+      </div>
+      <div class="voice-grid reveal">
+        {t.voice.principles.map((p: { title: string; text: string }, i: number) => (
+          <div class="card info-card voice-card">
+            <p class="voice-index" aria-hidden="true">0{i + 1}</p>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mono-meta voice-src">{t.labels.source}: PRODUCT.MD</p>
+    </div>
+  </section>
+
+  <CtaBox />
+</Base>
+
+<script>
+  // Replay der Motion-Demo: Klassen-Reset + erzwungener Reflow, dann erneut animieren.
+  // Der globale Reveal-Observer (Base.astro) unobserved nach dem ersten Treffer –
+  // danach gehört die Klasse diesem Script, kein Konflikt.
+  const demo = document.getElementById('motion-demo');
+  const replayBtn = document.querySelector('.replay');
+  if (demo && replayBtn) {
+    replayBtn.addEventListener('click', () => {
+      demo.style.removeProperty('transition-delay');
+      demo.classList.remove('is-visible');
+      void demo.offsetWidth;
+      demo.classList.add('is-visible');
+    });
+  }
+
+  // Typo-Treppe: aktuell berechnete px-Größe je Stufe (clamp() lebt) – aktualisiert bei Resize.
+  const rows = document.querySelectorAll('.ladder-row');
+  const updateSizes = () => {
+    rows.forEach((row) => {
+      const spec = row.querySelector('.spec');
+      const out = row.querySelector('.live-size') as HTMLElement | null;
+      if (spec && out) {
+        const px = Math.round(parseFloat(getComputedStyle(spec).fontSize) * 10) / 10;
+        out.textContent = ` · ${px}px ${out.dataset.suffix ?? 'live'}`;
+      }
+    });
+  };
+  updateSizes();
+  let raf = 0;
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(updateSizes);
+  });
+</script>
+
+<style>
+  /* Anker-Navigation: Mono-Zeile unterm Hero – Data-Face-konform. */
+  .ds-anchors {
+    border-bottom: 1px solid var(--mirano-border);
+    background: var(--mirano-porcelain);
+  }
+  .ds-anchors ul {
+    list-style: none;
+    margin: 0;
+    padding: 1.1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+  }
+  .ds-anchors a {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--mirano-muted);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .ds-anchors a:hover {
+    color: var(--mirano-orange-deep);
+  }
+  .ds-anchors .idx {
+    color: var(--mirano-orange-deep);
+    margin-right: 0.5rem;
+  }
+  section[id] {
+    scroll-margin-top: 108px;
+  }
+
+  /* ----- Gemeinsame Kachel-Bausteine ----- */
+  .group-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-muted);
+    margin-bottom: 1.1rem;
+  }
+  .tile-name {
+    font-weight: 600;
+    color: var(--mirano-ink);
+    font-size: 0.9375rem;
+  }
+  .tile-code {
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+  }
+  .tile-role {
+    font-size: 0.875rem;
+    color: var(--mirano-slate);
+  }
+  .tile-contrast {
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+  }
+
+  /* ----- 01 · Farbe ----- */
+  .color-group {
+    margin-bottom: 3rem;
+  }
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1rem;
+  }
+  .color-tile {
+    overflow: hidden;
+  }
+  .tile-span {
+    grid-column: 1 / -1;
+  }
+  .swatch {
+    position: relative;
+    height: 110px;
+  }
+  .swatch-sm {
+    height: 64px;
+  }
+  .swatch-line {
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  .swatch-specimen {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1;
+    padding: 0.3rem 0.5rem;
+    border-radius: var(--radius-control);
+    border: 1px solid var(--mirano-border);
+  }
+  .tile-info {
+    padding: 1rem 1.1rem 1.15rem;
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+  }
+
+  /* PLIMA-Quarantäne: Annotations-Rahmen (gestrichelt = Meta-Ebene, keine neue Designregel). */
+  .plima-quarantine {
+    margin-top: 3rem;
+    background: var(--mirano-white);
+    border: 1px dashed color-mix(in srgb, var(--mirano-ink) 25%, var(--mirano-border));
+    border-radius: var(--radius-card);
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+  .quarantine-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-muted);
+    border: 1px solid var(--mirano-border);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+  }
+  .plima-quarantine .tile-role {
+    max-width: 46rem;
+  }
+  .plima-dots {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.75rem;
+  }
+  .plima-dots li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .plima-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--mirano-border);
+    flex: 0 0 auto;
+  }
+  .quarantine-src {
+    font-size: 0.6875rem;
+    letter-spacing: var(--tracking-meta);
+  }
+
+  /* ----- 02 · Typografie ----- */
+  .type-families {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .type-aa {
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    color: var(--mirano-ink);
+  }
+  .ff-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+  .ff-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+  }
+  .ff-mono {
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+  .type-weights {
+    font-size: 0.6875rem;
+    letter-spacing: var(--tracking-meta);
+  }
+  .type-stat {
+    font-size: var(--text-h3);
+    margin-top: 0.4rem;
+  }
+  .type-ladder {
+    border-top: 1px solid var(--mirano-border);
+  }
+  .ladder-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--mirano-border);
+  }
+  .ladder-note {
+    font-size: 0.75rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .spec {
+    display: block;
+  }
+  .spec-h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--mirano-ink);
+  }
+  .spec-h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-h2);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--mirano-ink);
+  }
+  .spec-h3 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--text-h3);
+    color: var(--mirano-ink);
+  }
+  .spec-h4 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--text-h4);
+    color: var(--mirano-ink);
+  }
+  .spec-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--mirano-slate);
+  }
+  .spec-small {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: var(--text-small);
+    color: var(--mirano-slate);
+  }
+  .spec-eyebrow {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--mirano-orange-deep);
+  }
+  .type-marginalia {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+  }
+  .type-marginalia .mono-meta {
+    font-size: 0.75rem;
+  }
+
+  /* ----- 03 · Logo ----- */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .logo-tile {
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+  .logo-stage {
+    display: grid;
+    place-items: center;
+    min-height: 160px;
+    padding: 2rem;
+  }
+  .logo-stage img {
+    width: auto;
+    height: 64px;
+  }
+  .logo-stage .logo-icon {
+    height: 48px;
+  }
+  .logo-stage-dark {
+    background: var(--mirano-graphite);
+  }
+  .logo-tile .tile-info {
+    border-top: 1px solid var(--mirano-border);
+  }
+
+  .clearspace {
+    /* Schutzzone: x = Höhe der M-Marke (des runden Icons). NEUE Standing-Rule,
+       mit dieser Seite definiert (bewusst KEIN tokens.css-Wert). Verhältnis im
+       SVG gemessen: Icon-Kreis 71.32 von 125.25 viewBox-Einheiten = 56.9 %
+       der Lockup-Höhe (public/logo/mirano.svg). */
+    --logo-h: 88px;
+    --cs: calc(var(--logo-h) * 0.569);
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2.5rem;
+    align-items: center;
+    padding: 2.5rem;
+  }
+  .clearspace-stage {
+    display: grid;
+    place-items: center;
+  }
+  .cs-frame {
+    position: relative;
+    padding: var(--cs);
+    border: 1px dashed color-mix(in srgb, var(--mirano-ink) 25%, var(--mirano-border));
+  }
+  .cs-frame img {
+    width: auto;
+    height: var(--logo-h);
+    outline: 1px dashed color-mix(in srgb, var(--mirano-ink) 12%, var(--mirano-border));
+  }
+  .cs-x {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--mirano-muted);
+  }
+  .cs-top {
+    top: calc(var(--cs) / 2);
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .cs-bottom {
+    bottom: calc(var(--cs) / 2);
+    left: 50%;
+    transform: translate(-50%, 50%);
+  }
+  .cs-left {
+    left: calc(var(--cs) / 2);
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .cs-right {
+    right: calc(var(--cs) / 2);
+    top: 50%;
+    transform: translate(50%, -50%);
+  }
+  .clearspace-info {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+  .new-badge {
+    font-size: 0.6875rem;
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--mirano-orange-deep);
+    border: 1px solid color-mix(in srgb, var(--mirano-orange) 35%, var(--mirano-border));
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+  }
+  .cs-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+  }
+  /* Die Legende zeigt die M-Marke in exakt x-Größe – x erklärt sich selbst. */
+  .cs-legend-mark {
+    width: auto;
+    height: var(--cs);
+    flex: 0 0 auto;
+  }
+
+  /* ----- 04 · Abstände & Radien ----- */
+  .space-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 1rem;
+  }
+  .space-card {
+    padding: 1.75rem;
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+  .space-card h3 {
+    font-size: 1.0625rem;
+  }
+  .radius-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .radius-demo-wrap {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+  .radius-demo {
+    width: 104px;
+    height: 104px;
+    background: var(--mirano-limestone);
+    border: 1px solid var(--mirano-border);
+  }
+  .radius-demo-wrap .tile-role {
+    font-size: 0.8125rem;
+  }
+  .ybars {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .ybar-wrap {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .ybar {
+    height: 18px;
+    background: var(--mirano-limestone);
+    border: 1px solid var(--mirano-border);
+    max-width: 100%;
+  }
+  .container-demo {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .cd-tick {
+    flex: 0 0 auto;
+    width: 1px;
+    align-self: stretch;
+    min-height: 2rem;
+    border-left: 1px dashed color-mix(in srgb, var(--mirano-ink) 25%, var(--mirano-border));
+  }
+  .cd-line {
+    flex: 1 1 auto;
+    border-top: 1px dashed color-mix(in srgb, var(--mirano-ink) 25%, var(--mirano-border));
+  }
+  .cd-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  /* ----- 05 · Motion ----- */
+  .motion-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .motion-demo {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+  .demo-stage {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 1.75rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+  /* Rezept-Spiegel von CtaBox.astro (.cta-accent): 600 ms / 150 ms sind
+     Komponenten-Rezeptwerte, keine Tokens – auf der Seite auch so annotiert.
+     Transitions nur im sichtbaren Zustand: Klassen-Entzug resettet sofort,
+     erneutes Setzen animiert (Replay). */
+  .demo-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--mirano-gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .motion-demo.is-visible .demo-accent {
+    transform: scaleX(1);
+    transition: transform 600ms var(--ease-out) 150ms;
+  }
+  .demo-card {
+    background: var(--mirano-limestone);
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.6rem;
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .motion-demo.is-visible .demo-card {
+    opacity: 1;
+    transform: none;
+    transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+  }
+  .demo-card p {
+    font-size: 0.9375rem;
+    color: var(--mirano-slate);
+  }
+  .dur-bars {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .dur-track {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .dur-lane {
+    height: 10px;
+    background: var(--mirano-limestone);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .dur-bar {
+    height: 100%;
+    background: var(--mirano-gradient);
+    border-radius: 999px;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .motion-demo.is-visible .dur-bar {
+    transform: scaleX(1);
+    transition-property: transform;
+    transition-timing-function: var(--ease-out);
+  }
+  .rm-note {
+    display: none;
+    font-size: 0.75rem;
+  }
+  :global(html:not(.js)) .replay {
+    display: none;
+  }
+  .motion-side {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+  .ease-fig {
+    margin: 0;
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+  }
+  .ease-fig svg {
+    width: 150px;
+    height: 150px;
+  }
+  .ease-curve {
+    stroke: var(--mirano-orange);
+    stroke-width: 2px;
+  }
+  .ease-ref {
+    stroke: color-mix(in srgb, var(--mirano-ink) 25%, var(--mirano-border));
+    stroke-width: 1px;
+    stroke-dasharray: 4 4;
+  }
+  .motion-facts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .motion-facts .mono-meta {
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-meta);
+  }
+
+  /* ----- 06 · Komponenten ----- */
+  .comp-block {
+    margin-bottom: 3rem;
+  }
+  .comp-block:last-of-type {
+    margin-bottom: 0;
+  }
+  .btn-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  @media (max-width: 900px) {
+    .btn-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  .btn-demo {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    align-content: start;
+  }
+  .card-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  /* Rezept-Spiegel von ServicesGrid.astro (.service/.service-surface) –
+     kanonische Werte leben dort; hier nur var()-Bezüge. */
+  .demo-link {
+    text-decoration: none;
+    display: block;
+  }
+  .demo-surface {
+    height: 100%;
+    transition: border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+  }
+  .demo-link:hover .demo-surface {
+    border-color: color-mix(in srgb, var(--mirano-orange) 40%, var(--mirano-border));
+    transform: translateY(-3px);
+    transition-duration: var(--dur-fast);
+  }
+  .demo-link:active .demo-surface {
+    transform: translateY(-1px);
+  }
+  .demo-more {
+    font-weight: 600;
+    font-size: var(--text-small);
+    color: var(--mirano-orange-deep);
+    display: inline-block;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .demo-link:hover .demo-more {
+    transform: translateX(3px);
+  }
+  /* Rezept-Spiegel von TechBand.astro (.tech-chip) – kanonisch dort. */
+  .chip-row {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .tech-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--mirano-slate);
+    background: var(--mirano-white);
+    border: 1px solid var(--mirano-border);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .tech-chip:hover {
+    border-color: color-mix(in srgb, var(--brand, var(--mirano-orange)) 45%, var(--mirano-border));
+    color: var(--mirano-ink);
+  }
+  .tech-icon :global(svg) {
+    width: 15px;
+    height: 15px;
+    fill: var(--mirano-muted);
+  }
+  .tech-chip:hover .tech-icon :global(svg) {
+    fill: var(--brand, var(--mirano-orange));
+  }
+  .chips-note {
+    margin-bottom: 0.35rem;
+  }
+
+  /* ----- Die eine dunkle Sektion ----- */
+  .dark-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .dark-card {
+    background: var(--mirano-graphite-soft);
+    border: 1px solid var(--mirano-border-on-dark);
+    border-radius: var(--radius-card);
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+  }
+  .dark-card p {
+    font-size: 0.9375rem;
+  }
+  .group-label-dark {
+    color: var(--mirano-text-on-dark-body);
+    margin-bottom: 0;
+  }
+  .dark-tokens {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+  .dark-token {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--mirano-border-on-dark);
+    border-radius: var(--radius-control);
+    padding: 0.9rem 1.1rem;
+  }
+  .dark-sample {
+    font-weight: 600;
+    font-size: var(--text-h4);
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+  .dark-code {
+    color: var(--mirano-text-on-dark-body);
+  }
+
+  /* ----- 07 · Stimme ----- */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .voice-index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--mirano-orange-deep);
+  }
+  .voice-src {
+    font-size: 0.6875rem;
+    letter-spacing: var(--tracking-meta);
+  }
+
+  /* ----- Reduced Motion: Demo-Kinder sichtbar, Hinweis einblenden ----- */
+  @media (prefers-reduced-motion: reduce) {
+    .demo-card,
+    .demo-accent,
+    .dur-bar {
+      opacity: 1;
+      transform: none;
+    }
+    .rm-note {
+      display: block;
+    }
+  }
+
+  /* ----- Responsive ----- */
+  @media (max-width: 900px) {
+    .type-families,
+    .logo-grid,
+    .clearspace,
+    .space-grid,
+    .motion-grid,
+    .card-row,
+    .dark-grid {
+      grid-template-columns: 1fr;
+    }
+    .clearspace {
+      --logo-h: 64px;
+      padding: 1.75rem;
+      gap: 1.75rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .ladder-row {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      align-items: start;
+    }
+    .ladder-note {
+      text-align: left;
+      white-space: normal;
+    }
+    .ybar {
+      max-width: 100%;
+    }
+  }
+</style>
