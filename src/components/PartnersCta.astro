@@ -2,6 +2,7 @@
 import { getLang, l, type Lang } from '../i18n';
 import fs from 'node:fs';
 import path from 'node:path';
+import { SHOW_IFTECH } from '../content/site';
 const lang = getLang(Astro.currentLocale);
 
 const partners = [
@@ -10,7 +11,7 @@ const partners = [
   { name: 'Visoka Razina', slug: 'visoka-razina', url: 'https://visokarazina.hr' },
   { name: 'Respect-ing', slug: 'respect-ing', url: 'https://respect-ing.hr' },
   { name: 'Mira Solis', slug: 'mira-solis', url: 'https://mirasolis.hr' },
-  { name: 'If-Tech', slug: 'if-tech', url: 'https://www.if-tech.de/' },
+  ...(SHOW_IFTECH ? [{ name: 'If-Tech', slug: 'if-tech', url: 'https://www.if-tech.de/' }] : []),
 ].map((p) => {
   const dir = path.join(process.cwd(), 'public/logo/partners');
   const svgPath = path.join(dir, `${p.slug}.svg`);
