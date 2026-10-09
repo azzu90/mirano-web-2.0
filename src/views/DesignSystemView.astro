@@ -31,6 +31,7 @@ import {
   type Token,
 } from '../utils/design-tokens';
 import { contrastRatio, formatRatio, wcagLevel, relativeLuminance } from '../utils/contrast';
+import { measureLockup } from '../utils/lockup-geometry';
 // Nur bereits verifizierte Marken-Icons (Standing-Rule: kein Eintrag ohne geprüftes Icon).
 import { siAstro, siTypescript, siPostgresql } from 'simple-icons';
 
@@ -164,6 +165,20 @@ const easePath = bez
 /* ----- Komponenten: Chips (Rezept aus TechBand.astro, Icons verifiziert) ----- */
 const chips = [siAstro, siTypescript, siPostgresql].map((i) => ({ title: i.title, hex: i.hex, svg: i.svg }));
 
+/* ----- Logo-Schutzzone: Geometrie zur Build-Zeit aus der Datei gemessen (nichts von Hand) -----
+   x = Höhe der M-Marke, ab der ARTWORK-Kante gemessen (nicht ab der viewBox-Kante – die hat
+   einen asymmetrischen transparenten Rand). Details und Absicherung: src/utils/lockup-geometry.ts */
+const lockup = await measureLockup('public/logo/mirano.svg');
+const num = (n: number, digits: number): number => Math.round(n * 10 ** digits) / 10 ** digits;
+const csVars = [
+  `--k:${num(lockup.k, 6)}`, // x / img-Höhe
+  `--ar:${num(lockup.aspect, 6)}`, // img-Breite / img-Höhe
+  `--il:${num(lockup.inset.left, 6)}`, // Artwork-Rand als Anteil der img-Box (links/rechts: Breite, oben/unten: Höhe)
+  `--it:${num(lockup.inset.top, 6)}`,
+  `--ir:${num(lockup.inset.right, 6)}`,
+  `--ib:${num(lockup.inset.bottom, 6)}`,
+].join(';');
+
 /* ----- Copy (dreisprachig, Rollen gekeyt am Token-Namen) ----- */
 const copy: Record<Lang, any> = {
   en: {
@@ -270,7 +285,7 @@ const copy: Record<Lang, any> = {
       },
       clearspace: {
         h3: 'Clear space',
-        p: 'On every side, the minimum distance to other elements is x — the height of the M mark. Defined as a standing rule with this page.',
+        p: 'On every side, the minimum distance to other elements is x — the height of the M mark — measured from the artwork edge (inner dashed box), not from the file’s canvas. Defined as a standing rule with this page.',
         legend: 'x = height of the M mark',
       },
     },
@@ -451,7 +466,7 @@ const copy: Record<Lang, any> = {
       },
       clearspace: {
         h3: 'Schutzzone',
-        p: 'Auf jeder Seite gilt als Mindestabstand zu anderen Elementen x – die Höhe der M-Marke. Mit dieser Seite als Standing-Rule definiert.',
+        p: 'Auf jeder Seite gilt als Mindestabstand zu anderen Elementen x – die Höhe der M-Marke –, gemessen ab der Artwork-Kante (innere gestrichelte Box), nicht ab dem Dateirand. Mit dieser Seite als Standing-Rule definiert.',
         legend: 'x = Höhe der M-Marke',
       },
     },
@@ -632,7 +647,7 @@ const copy: Record<Lang, any> = {
       },
       clearspace: {
         h3: 'Zaštitni prostor',
-        p: 'Sa svake strane minimalni razmak do drugih elemenata iznosi x – visinu znaka M. Definirano ovom stranicom kao trajno pravilo.',
+        p: 'Sa svake strane minimalni razmak do drugih elemenata iznosi x – visinu znaka M –, mjereno od ruba grafike (unutarnji isprekidani okvir), a ne od ruba datoteke. Definirano ovom stranicom kao trajno pravilo.',
         legend: 'x = visina znaka M',
       },
     },
@@ -859,7 +874,7 @@ const metaLine = [
       <div class="logo-grid reveal">
         <div class="card logo-tile">
           <div class="logo-stage">
-            <img src="/logo/mirano.svg" alt="" width="356" height="167" loading="lazy" />
+            <img src="/logo/mirano.svg" alt="" width="424" height="198" loading="lazy" />
           </div>
           <div class="tile-info">
             <p class="tile-name">{t.logo.variants.full}</p>
@@ -886,10 +901,14 @@ const metaLine = [
         </div>
       </div>
 
-      <div class="card clearspace reveal">
+      <div class="card clearspace reveal" style={csVars}>
         <div class="clearspace-stage">
+          <!-- .cs-frame = die img-Box. Innenbox (.cs-art) = Artwork-Bounding-Box per Prozent-Insets
+               der img-Box; Außenbox (.cs-outer) = x jenseits der Innenbox auf allen vier Seiten. -->
           <div class="cs-frame" aria-hidden="true">
-            <img src="/logo/mirano.svg" alt="" width="356" height="167" loading="lazy" />
+            <img src="/logo/mirano.svg" alt="" width="424" height="198" loading="lazy" />
+            <span class="cs-art"></span>
+            <span class="cs-outer"></span>
             <span class="cs-x cs-top">x</span>
             <span class="cs-x cs-bottom">x</span>
             <span class="cs-x cs-left">x</span>
@@ -1457,12 +1476,15 @@ const metaLine = [
   }
 
   .clearspace {
-    /* Schutzzone: x = Höhe der M-Marke (des runden Icons). NEUE Standing-Rule,
-       mit dieser Seite definiert (bewusst KEIN tokens.css-Wert). Verhältnis im
-       SVG gemessen: Icon-Kreis 71.32 von 125.25 viewBox-Einheiten = 56.9 %
-       der Lockup-Höhe (public/logo/mirano.svg). */
+    /* Schutzzone: x = Höhe der M-Marke (des Kreises), ab der ARTWORK-Kante gemessen – nicht
+       ab der viewBox-Kante (die hat einen asymmetrischen transparenten Rand). NEUE
+       Standing-Rule, mit dieser Seite definiert (bewusst KEIN tokens.css-Wert).
+       Die unitlosen Variablen --k (x / img-Höhe), --ar (Seitenverhältnis der img-Box) und
+       --il/--it/--ir/--ib (Artwork-Rand als Anteil der img-Box) setzt das Markup inline:
+       zur Build-Zeit aus public/logo/mirano.svg gemessen (src/utils/lockup-geometry.ts),
+       nie von Hand gepflegt. */
     --logo-h: 88px;
-    --cs: calc(var(--logo-h) * 0.569);
+    --cs: calc(var(--logo-h) * var(--k));
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
     gap: 2.5rem;
@@ -1473,41 +1495,70 @@ const metaLine = [
     display: grid;
     place-items: center;
   }
+  /* .cs-frame = die img-Box (viewBox des Lockups). Innenbox und Außenbox sind Overlays darauf;
+     alle Prozentwerte beziehen sich auf die img-Box (left/right auf die Breite, top/bottom auf die Höhe). */
   .cs-frame {
+    /* Artwork-Rand in px (nur für die Platzreservierung unten) */
+    --ot: calc(var(--logo-h) * var(--it));
+    --ob: calc(var(--logo-h) * var(--ib));
+    --ol: calc(var(--logo-h) * var(--ar) * var(--il));
+    --or: calc(var(--logo-h) * var(--ar) * var(--ir));
+    /* Zentrum des Artworks innerhalb der img-Box (für die x-Labels) */
+    --cx: calc((var(--il) + (1 - var(--il) - var(--ir)) / 2) * 100%);
+    --cy: calc((var(--it) + (1 - var(--it) - var(--ib)) / 2) * 100%);
     position: relative;
-    padding: var(--cs);
-    border: 1px dashed color-mix(in srgb, var(--mirano-ink) 25%, var(--mirano-border));
+    width: calc(var(--logo-h) * var(--ar));
+    height: var(--logo-h);
+    /* Die Außenbox ragt über die img-Box hinaus: Platz reservieren, damit sie nie überlappt oder abgeschnitten wird. */
+    margin: calc(var(--cs) - var(--ot)) calc(var(--cs) - var(--or)) calc(var(--cs) - var(--ob)) calc(var(--cs) - var(--ol));
   }
   .cs-frame img {
-    width: auto;
-    height: var(--logo-h);
-    outline: 1px dashed color-mix(in srgb, var(--mirano-ink) 12%, var(--mirano-border));
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .cs-art,
+  .cs-outer {
+    position: absolute;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+  /* Innenbox = Artwork-Bounding-Box (Referenzkante der Regel) */
+  .cs-art {
+    inset: calc(var(--it) * 100%) calc(var(--ir) * 100%) calc(var(--ib) * 100%) calc(var(--il) * 100%);
+    border: 1px dashed color-mix(in srgb, var(--mirano-ink) 15%, var(--mirano-border));
+  }
+  /* Außenbox = Schutzzone: x jenseits der Innenbox, auf allen vier Seiten */
+  .cs-outer {
+    top: calc(var(--it) * 100% - var(--cs));
+    right: calc(var(--ir) * 100% - var(--cs));
+    bottom: calc(var(--ib) * 100% - var(--cs));
+    left: calc(var(--il) * 100% - var(--cs));
+    border: 1px dashed color-mix(in srgb, var(--mirano-ink) 25%, var(--mirano-border));
   }
   .cs-x {
     position: absolute;
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     color: var(--mirano-muted);
-  }
-  .cs-top {
-    top: calc(var(--cs) / 2);
-    left: 50%;
     transform: translate(-50%, -50%);
+  }
+  /* Jedes x sitzt mittig im Streifen zwischen Innen- und Außenbox */
+  .cs-top {
+    left: var(--cx);
+    top: calc(var(--it) * 100% - var(--cs) / 2);
   }
   .cs-bottom {
-    bottom: calc(var(--cs) / 2);
-    left: 50%;
-    transform: translate(-50%, 50%);
+    left: var(--cx);
+    top: calc((1 - var(--ib)) * 100% + var(--cs) / 2);
   }
   .cs-left {
-    left: calc(var(--cs) / 2);
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: calc(var(--il) * 100% - var(--cs) / 2);
+    top: var(--cy);
   }
   .cs-right {
-    right: calc(var(--cs) / 2);
-    top: 50%;
-    transform: translate(50%, -50%);
+    left: calc((1 - var(--ir)) * 100% + var(--cs) / 2);
+    top: var(--cy);
   }
   .clearspace-info {
     display: grid;
